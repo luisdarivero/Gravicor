@@ -22,7 +22,7 @@ public class BD {
         this.isConectado = conectarBD(generarURL());
     }
     
-    private boolean conectarBD(String URL){
+    public boolean conectarBD(String URL){
         try{
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             this.conexion = DriverManager.getConnection(URL);
@@ -35,7 +35,7 @@ public class BD {
         return true;
     }
     
-    private String generarURL(){
+    public String generarURL(){
         return "jdbc:sqlserver://" + this.direccionIP + ":" + this.puerto + ";databaseName=" + this.nombreBD + ";user=" + this.usuarioBD + ";password=" + this.contrasenaBD + ";";
     }
     
@@ -67,6 +67,27 @@ public class BD {
             return null;
         }
         return resultado;
+    }
+    
+    public Object[][] selectO(String query,String[] columnas){
+        LinkedList<LinkedList<String>> lista = select(query, columnas);
+        if(lista == null){
+            return null;
+        }
+        
+        else{
+            
+            Object[][] resultado = new Object [lista.size()][lista.get(0).size()];;
+            for(int i = 0; i < lista.size(); i++){
+                for(int j = 0; j < lista.get(0).size(); j++){
+                    resultado[i][j] = lista.get(i).get(j);
+                }
+            }
+            
+            return resultado;
+        }
+        
+        
     }
     
     public boolean insert(String query){

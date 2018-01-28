@@ -193,10 +193,10 @@ public class Registro extends javax.swing.JFrame {
             Globales.baseDatos = new BD("LAPTOP-LVSV7Q0O","1433","GRAVICOR",usuarioTextField.getText(),new String(contrasenaTextField.getPassword()));
             if(Globales.baseDatos.isIsConectado() == true){
                 
-                
+                this.dispose();
                 MenuPrincipal menu = new MenuPrincipal();
                 menu.setVisible(true);
-                this.dispose();
+                
             }
             else{
                 throw new NoConectionDataBaseException("Error al conectar con la base de datos: "

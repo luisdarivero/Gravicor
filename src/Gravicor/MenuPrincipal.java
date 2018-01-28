@@ -23,28 +23,36 @@ public class MenuPrincipal extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setTitle("Menú principal");
+        JButton[] botones = {gestionGrenaB, gestionVentasB, reportesB, cobranzaB, tesoreriaB, gastosg, configuracionCuenta};
         try{
+            
             String query = "select GESTIONPIEDRAGRENA, GESTIONVENTAS, REPORTES, COBRANZA, TESORERIA, GESTIONGASTOSGENERALES, CONFIGURACIONCUENTAS from USUARIO where usuario.EMAIL = 'luisdarivero.s@gmail.com'";
             String[] columnas =  {"GESTIONPIEDRAGRENA", "GESTIONVENTAS", "REPORTES", "COBRANZA", "TESORERIA", "GESTIONGASTOSGENERALES", "CONFIGURACIONCUENTAS"};
             LinkedList<LinkedList<String>> permisos = Globales.baseDatos.select(query, columnas);
+            
             if(permisos != null){
+                
                 System.out.println(permisos);
-                JButton[] botones = {gestionGrenaB, gestionVentasB, reportesB, cobranzaB, tesoreriaB, gastosg, configuracionCuenta};
+                
                 for(int i = 0; i < botones.length; i++){
                     if((permisos.get(i).get(0)).equals(new String("0"))){
                         botones[i].setEnabled(false);
                     }
                 }
+                
             }
             else{
                 throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.baseDatos.getUltimoError());
             }
         }
         catch(NoConectionDataBaseException e){
+            
+            for(int i = 0; i < botones.length; i++){
+                    
+                    botones[i].setEnabled(false);
+                    
+            }
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
-            Registro registro = new Registro();
-            registro.setVisible(true);
-            this.dispose();
         }
         
         
@@ -98,6 +106,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
         configuracionCuenta.setContentAreaFilled(false);
         configuracionCuenta.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         configuracionCuenta.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/configuracion de cuentas 2.png"))); // NOI18N
+        configuracionCuenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                configuracionCuentaActionPerformed(evt);
+            }
+        });
 
         tesoreriaB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/tesoreria 1.png"))); // NOI18N
         tesoreriaB.setContentAreaFilled(false);
@@ -197,6 +210,19 @@ public class MenuPrincipal extends javax.swing.JFrame {
         registro.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void configuracionCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_configuracionCuentaActionPerformed
+        boolean bandera = Globales.bdTemp.conectarBD(Globales.bdTemp.generarURL());
+        if(bandera != false){
+            ConfiguracionCuentas cuentas = new ConfiguracionCuentas();
+            cuentas.setVisible(true);
+            this.dispose();
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+        }
+        
+    }//GEN-LAST:event_configuracionCuentaActionPerformed
 
     /**
      * @param args the command line arguments

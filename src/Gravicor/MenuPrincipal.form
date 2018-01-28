@@ -186,6 +186,9 @@
               <Image iconType="3" name="/Gravicor/Assets/configuracion de cuentas 2.png"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="configuracionCuentaActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="tesoreriaB">
           <Properties>

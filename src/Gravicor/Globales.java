@@ -11,4 +11,6 @@ package Gravicor;
  */
 public class Globales {
     public static BD baseDatos = null;
+    //esta variable temporal de base de datos solo es para pruebas
+    public static BD bdTemp =  new BD("LAPTOP-LVSV7Q0O","1433","GRAVICOR","luisdarivero.s@gmail.com","adminJava");
 }
