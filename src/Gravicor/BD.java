@@ -1,6 +1,8 @@
 package Gravicor;
 import java.sql.*;
 import java.util.LinkedList;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 
 public class BD {
@@ -67,6 +69,33 @@ public class BD {
             return null;
         }
         return resultado;
+    }
+    
+    public boolean insertarEnTabla(String query,String[] columnas, JTable tabla){
+        LinkedList<LinkedList<String>> lista = select(query, columnas);
+        if(lista == null){
+            return false;
+        }
+        if(lista.get(0).size() == 0){
+            return true;
+        }
+        DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+        //añade los datos solo de la primera fila
+        for(int i=0;i<columnas.length;i++){
+            model.setValueAt(lista.get(i).get(0), 0, i);
+        }
+        //si hay mas se ejecuta
+        if(lista.get(0).size() > 1){
+            for(int i = 1; i< lista.get(0).size(); i++){
+                String[] cadena = new String[columnas.length];
+                for(int j = 0; j<lista.size(); j++ ){
+                    cadena[j] = lista.get(j).get(i);
+                }
+                model.addRow(cadena);
+            }
+        }
+        //model.addRow(new Object[]{"Column 1", "Column 2", "Column 3", ""});
+        return true;
     }
     
     public Object[][] selectO(String query,String[] columnas){
