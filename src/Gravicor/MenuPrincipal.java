@@ -32,7 +32,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
             
             if(permisos != null){
                 
-                System.out.println(permisos);
+                //System.out.println(permisos);
                 
                 for(int i = 0; i < botones.length; i++){
                     if((permisos.get(i).get(0)).equals(new String("0"))){

@@ -5,7 +5,9 @@
  */
 package Gravicor;
 
+import java.util.LinkedList;
 import javax.swing.JOptionPane;
+import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  *
@@ -108,6 +110,11 @@ public class Registro extends javax.swing.JFrame {
         jLabel4.setText("Contraseña:");
 
         contrasenaTextField.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        contrasenaTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                contrasenaTextFieldActionPerformed(evt);
+            }
+        });
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/ContinuarAzul.png"))); // NOI18N
         jButton2.setToolTipText("");
@@ -179,7 +186,7 @@ public class Registro extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void usuarioTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usuarioTextFieldActionPerformed
-        // TODO add your handling code here:
+        jButton2ActionPerformed(null);
     }//GEN-LAST:event_usuarioTextFieldActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -190,12 +197,25 @@ public class Registro extends javax.swing.JFrame {
                 throw new NoTypeRequiredException("Fomato de usuario o contraseña invalido, por favor"
                         + " verifica que los datos ingresados sean correctos");
             }
-            Globales.baseDatos = new BD("LAPTOP-LVSV7Q0O","1433","GRAVICOR",usuarioTextField.getText(),new String(contrasenaTextField.getPassword()));
+            String textoEncriptadoConMD5=DigestUtils.md5Hex(new String(contrasenaTextField.getPassword()));
+            String user = usuarioTextField.getText();
+            Globales.baseDatos = new BD("LAPTOP-LVSV7Q0O","1433","GRAVICOR","luisdarivero.s@gmail.com","adminJava");
             if(Globales.baseDatos.isIsConectado() == true){
+                //comprobar el usuario y contraseña
+                String[] columnas = {"CONTRASENA"};
+                LinkedList<LinkedList<String>> resultado = Globales.baseDatos.select("select CONTRASENA FROM USUARIO WHERE USUARIO.USERNAME = '"+user.toLowerCase()+"'", columnas);
                 
-                this.dispose();
-                MenuPrincipal menu = new MenuPrincipal();
-                menu.setVisible(true);
+                if(resultado.get(0).size() > 0){
+                    if(!(resultado.get(0).get(0)).equals(textoEncriptadoConMD5)){
+                        throw new NoTypeRequiredException("La contraseña o usuario son incorectos, por favor corrígelos");
+                    }
+                    this.dispose();
+                    MenuPrincipal menu = new MenuPrincipal();
+                    menu.setVisible(true);
+                }
+                else{
+                    throw new NoTypeRequiredException("La contraseña o usuario son incorectos, por favor corrígelos");
+                }
                 
             }
             else{
@@ -212,6 +232,11 @@ public class Registro extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void contrasenaTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contrasenaTextFieldActionPerformed
+        // TODO add your handling code here:
+        jButton2ActionPerformed(null);
+    }//GEN-LAST:event_contrasenaTextFieldActionPerformed
 
     /**
      * @param args the command line arguments

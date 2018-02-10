@@ -5,10 +5,12 @@
  */
 package Gravicor;
 
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
+import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  *
@@ -59,6 +61,8 @@ public class AnadirUsuario extends javax.swing.JFrame {
         tesoreriaB = new javax.swing.JRadioButton();
         jButton3 = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        usuarioT = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -163,28 +167,22 @@ public class AnadirUsuario extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Calibri", 1, 48)); // NOI18N
         jLabel7.setText("Añadir nuevo usuario");
 
+        jLabel6.setFont(new java.awt.Font("Calibri", 0, 20)); // NOI18N
+        jLabel6.setText("Usuario:");
+
+        usuarioT.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        usuarioT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                usuarioTActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel3)
-                                .addComponent(jLabel2)
-                                .addComponent(jLabel4))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(76, 76, 76)
-                                .addComponent(jLabel5)))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(contrasenaT)
-                            .addComponent(rContrasenaT)
-                            .addComponent(apellidosT)
-                            .addComponent(nombresT)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(127, 127, 127)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -198,17 +196,12 @@ public class AnadirUsuario extends javax.swing.JFrame {
                                         .addGap(24, 24, 24)
                                         .addComponent(permisosL))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(32, 32, 32)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGap(32, 32, 32)
-                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(ventasB)
-                                                    .addComponent(piedraB)))
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGap(32, 32, 32)
-                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(cobranzaB)
-                                                    .addComponent(reportesB))))
+                                            .addComponent(ventasB)
+                                            .addComponent(piedraB)
+                                            .addComponent(cobranzaB)
+                                            .addComponent(reportesB))
                                         .addGap(99, 99, 99)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(gastosB)
@@ -216,7 +209,26 @@ public class AnadirUsuario extends javax.swing.JFrame {
                                             .addComponent(cuentasB)))
                                     .addComponent(activoCB, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel6)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel4))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addGap(76, 76, 76)
+                                    .addComponent(jLabel5))))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(contrasenaT)
+                            .addComponent(rContrasenaT)
+                            .addComponent(apellidosT)
+                            .addComponent(nombresT)
+                            .addComponent(usuarioT))))
                 .addGap(140, 140, 140))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -252,7 +264,11 @@ public class AnadirUsuario extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(apellidosT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
-                .addGap(46, 46, 46)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(usuarioT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addComponent(activoCB)
                 .addGap(18, 18, 18)
                 .addComponent(permisosL)
@@ -270,7 +286,7 @@ public class AnadirUsuario extends javax.swing.JFrame {
                     .addComponent(cuentasB))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(cobranzaB)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
+                .addGap(29, 29, 29)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -330,6 +346,16 @@ public class AnadirUsuario extends javax.swing.JFrame {
             if(apellidosT.getText().length()<4 || apellidosT.getText().length()>50){
                 throw new NoTypeRequiredException("Existe un error en el formato del campo 'apellidos', por favor corrígelo");
             }
+            if(usuarioT.getText().length()<4 || usuarioT.getText().length()>50){
+                throw new NoTypeRequiredException("Existe un error en el formato del campo 'Usuario', por favor corrígelo");
+            }
+            String[] columnas = {"IDUSUARIO"};
+            LinkedList<LinkedList<String>> usuarios = Globales.bdTemp.select("select IDUSUARIO FROM USUARIO WHERE USUARIO.USERNAME = '" +usuarioT.getText().toLowerCase() +"'", columnas);
+            if(usuarios.get(0).size()>0){
+                throw new NoTypeRequiredException("Existe un error en el formato del campo 'Usuario', el usuario "
+                        + "que intentas añadir ya existe, por favor elige otro");
+            
+            }
             JRadioButton[] botones = {piedraB, ventasB, reportesB, cobranzaB, tesoreriaB, gastosB, cuentasB};
             String[] l = new String[8];
             for(int i = 0; i<botones.length; i++){
@@ -346,11 +372,11 @@ public class AnadirUsuario extends javax.swing.JFrame {
             else{
                 l[7] = "2";
             }
-            
+            original =DigestUtils.md5Hex(original);
             String query = "insert into USUARIO (EMAIL, CONTRASENA, NOMBRES, APELLIDOS, GESTIONPIEDRAGRENA, GESTIONVENTAS,REPORTES"
-                    + ",COBRANZA,TESORERIA,GESTIONGASTOSGENERALES,CONFIGURACIONCUENTAS,ACTIVO)\n" +
+                    + ",COBRANZA,TESORERIA,GESTIONGASTOSGENERALES,CONFIGURACIONCUENTAS,ACTIVO,USERNAME)\n" +
 " values('" +emailT.getText().toLowerCase() + "', '"+ original +"', '"+nombresT.getText().toLowerCase()+"','"+apellidosT.getText().toLowerCase()+"'"
-                    + ", "+l[0]+" ,"+l[1]+","+l[2]+","+l[3]+","+l[4]+","+l[5]+","+l[6]+","+l[7]+")";
+                    + ", "+l[0]+" ,"+l[1]+","+l[2]+","+l[3]+","+l[4]+","+l[5]+","+l[6]+","+l[7]+ ",'" + usuarioT.getText().toLowerCase() +"')";
             
             boolean res = Globales.bdTemp.insert(query);
             if(res){
@@ -359,7 +385,7 @@ public class AnadirUsuario extends javax.swing.JFrame {
                 this.dispose();
             }
             else{
-                throw new NoConectionDataBaseException("Error al conectar con la base de datos");
+                throw new NoConectionDataBaseException("Error al conectar con la base de datos: "  + Globales.bdTemp.getUltimoError());
             }
         }
         catch(NoTypeRequiredException e){
@@ -386,6 +412,10 @@ public class AnadirUsuario extends javax.swing.JFrame {
             
         }
     }//GEN-LAST:event_activoCBActionPerformed
+
+    private void usuarioTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usuarioTActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_usuarioTActionPerformed
 
     /**
      * @param args the command line arguments
@@ -437,6 +467,7 @@ public class AnadirUsuario extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField nombresT;
@@ -445,6 +476,7 @@ public class AnadirUsuario extends javax.swing.JFrame {
     private javax.swing.JPasswordField rContrasenaT;
     private javax.swing.JRadioButton reportesB;
     private javax.swing.JRadioButton tesoreriaB;
+    private javax.swing.JTextField usuarioT;
     private javax.swing.JRadioButton ventasB;
     // End of variables declaration//GEN-END:variables
 }

@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
+import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  *
@@ -27,19 +28,23 @@ public class EditarUsuario extends javax.swing.JFrame {
         this.setTitle("Añadir Usuario");
         activoCB.setSelected(true);
         String query = "select * from usuario where usuario.IDUSUARIO = " + Globales.temp;
-        String[] Columnas = {"IDUSUARIO" ,"EMAIL", "CONTRASENA", "NOMBRES", "APELLIDOS", "GESTIONPIEDRAGRENA", "GESTIONVENTAS","REPORTES","COBRANZA","TESORERIA","GESTIONGASTOSGENERALES","CONFIGURACIONCUENTAS","ACTIVO"};
+        String[] Columnas = {"IDUSUARIO" ,"EMAIL", "CONTRASENA", "NOMBRES", "APELLIDOS", "GESTIONPIEDRAGRENA", "GESTIONVENTAS","REPORTES","COBRANZA","TESORERIA","GESTIONGASTOSGENERALES","CONFIGURACIONCUENTAS","ACTIVO","USERNAME"};
         
         try{
             LinkedList<LinkedList<String>> resultado = Globales.bdTemp.select(query, Columnas);
             if(resultado == null){
                 throw new NoConectionDataBaseException("No fue posible conectarse a la base de datos");
             }
-            System.out.println(resultado);
+            contrasenaT.setEnabled(false);
+            rContrasenaT.setEnabled(false);
+            //System.out.println(resultado);
             emailT.setText(resultado.get(1).get(0));
-            contrasenaT.setText(resultado.get(2).get(0));
-            rContrasenaT.setText(resultado.get(2).get(0));
+            //contrasenaT.setText(resultado.get(2).get(0));
+            //rContrasenaT.setText(resultado.get(2).get(0));
             nombresT.setText(resultado.get(3).get(0));
             apellidosT.setText(resultado.get(4).get(0));
+            usuarioT.setText(resultado.get(13).get(0));
+            usuarioT.setEnabled(false);
             
             JRadioButton[] botones = {piedraB, ventasB, reportesB, cobranzaB, tesoreriaB, gastosB, cuentasB};
             for(int i = 0; i<botones.length; i++){
@@ -111,6 +116,9 @@ public class EditarUsuario extends javax.swing.JFrame {
         tesoreriaB = new javax.swing.JRadioButton();
         jButton3 = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        usuarioT = new javax.swing.JTextField();
+        editarContrasenaCB = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -215,6 +223,25 @@ public class EditarUsuario extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Calibri", 1, 48)); // NOI18N
         jLabel7.setText("Editar usuario");
 
+        jLabel6.setFont(new java.awt.Font("Calibri", 0, 20)); // NOI18N
+        jLabel6.setText("Usuario:");
+
+        usuarioT.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        usuarioT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                usuarioTActionPerformed(evt);
+            }
+        });
+
+        editarContrasenaCB.setFont(new java.awt.Font("Tahoma", 0, 19)); // NOI18N
+        editarContrasenaCB.setText("¿Cambiar contraseña?");
+        editarContrasenaCB.setOpaque(false);
+        editarContrasenaCB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editarContrasenaCBActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -222,47 +249,52 @@ public class EditarUsuario extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel3)
-                                .addComponent(jLabel2)
-                                .addComponent(jLabel4))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(76, 76, 76)
-                                .addComponent(jLabel5)))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(contrasenaT)
-                            .addComponent(rContrasenaT)
-                            .addComponent(apellidosT)
-                            .addComponent(nombresT)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(127, 127, 127)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(18, 18, 18)
-                                .addComponent(emailT))
+                                .addGap(24, 24, 24)
+                                .addComponent(permisosL))
                             .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(32, 32, 32)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(24, 24, 24)
-                                        .addComponent(permisosL))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(32, 32, 32)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(ventasB)
-                                            .addComponent(piedraB)
-                                            .addComponent(cobranzaB)
-                                            .addComponent(reportesB))
-                                        .addGap(99, 99, 99)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(gastosB)
-                                            .addComponent(tesoreriaB)
-                                            .addComponent(cuentasB)))
-                                    .addComponent(activoCB, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(ventasB)
+                                    .addComponent(piedraB)
+                                    .addComponent(cobranzaB)
+                                    .addComponent(reportesB))
+                                .addGap(99, 99, 99)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(gastosB)
+                                    .addComponent(tesoreriaB)
+                                    .addComponent(cuentasB)))
+                            .addComponent(activoCB, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel6)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel3)
+                                            .addComponent(jLabel2)
+                                            .addComponent(jLabel4)
+                                            .addComponent(jLabel1))
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                            .addGap(76, 76, 76)
+                                            .addComponent(jLabel5))))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(contrasenaT)
+                                    .addComponent(rContrasenaT)
+                                    .addComponent(apellidosT)
+                                    .addComponent(nombresT)
+                                    .addComponent(usuarioT)
+                                    .addComponent(emailT)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(106, 106, 106)
+                                .addComponent(editarContrasenaCB)
                                 .addGap(0, 0, Short.MAX_VALUE)))))
                 .addGap(140, 140, 140))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -280,11 +312,13 @@ public class EditarUsuario extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addComponent(jLabel7)
-                .addGap(42, 42, 42)
+                .addGap(2, 2, 2)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(emailT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(19, 19, 19)
+                .addGap(18, 18, 18)
+                .addComponent(editarContrasenaCB)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(contrasenaT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
@@ -300,7 +334,11 @@ public class EditarUsuario extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(apellidosT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
-                .addGap(46, 46, 46)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(usuarioT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addComponent(activoCB)
                 .addGap(18, 18, 18)
                 .addComponent(permisosL)
@@ -318,7 +356,7 @@ public class EditarUsuario extends javax.swing.JFrame {
                     .addComponent(cuentasB))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(cobranzaB)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
+                .addGap(30, 30, 30)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -364,12 +402,12 @@ public class EditarUsuario extends javax.swing.JFrame {
             if(!Globales.isValidEmailAddress(emailT.getText()) || emailT.getText().length()>50){
                 throw new NoTypeRequiredException("El e-mail no tiene una direccion valida");
             }
-            if(contrasenaT.getPassword().length< 6 || contrasenaT.getPassword().length> 50){
+            if(editarContrasenaCB.isSelected() && (contrasenaT.getPassword().length< 6 || contrasenaT.getPassword().length> 50)){
                 throw new NoTypeRequiredException("La contraseña es muy corta. Por lo menos debes usar 6 caracteres y máximo 50 caracteres");
             }
             String original = new String(contrasenaT.getPassword());
             String repeticion = new String(rContrasenaT.getPassword());
-            if(!original.equals(repeticion)){
+            if(editarContrasenaCB.isSelected() && (!original.equals(repeticion))){
                 throw new NoTypeRequiredException("Las contraseñas no coinciden, por favor verifícalas");
             }
             if(nombresT.getText().length()<4 || nombresT.getText().length()>50){
@@ -378,6 +416,8 @@ public class EditarUsuario extends javax.swing.JFrame {
             if(apellidosT.getText().length()<4 || apellidosT.getText().length()>50){
                 throw new NoTypeRequiredException("Existe un error en el formato del campo 'apellidos', por favor corrígelo");
             }
+            
+            original=DigestUtils.md5Hex(original); 
             JRadioButton[] botones = {piedraB, ventasB, reportesB, cobranzaB, tesoreriaB, gastosB, cuentasB};
             String[] l = new String[8];
             for(int i = 0; i<botones.length; i++){
@@ -394,24 +434,45 @@ public class EditarUsuario extends javax.swing.JFrame {
             else{
                 l[7] = "2";
             }
-            
-            String[] u = {"EMAIL = '"+ emailT.getText().toLowerCase()+"'," ,
-            "CONTRASENA = '" + original + "',", 
-            "NOMBRES = '" + nombresT.getText().toLowerCase()+ "',", 
-            "APELLIDOS = '" + apellidosT.getText().toLowerCase()+"',", 
-            "GESTIONPIEDRAGRENA = "+l[0] + ",", 
-            "GESTIONVENTAS = "+ l[1]+ ",",
-            "REPORTES = "+ l[2]+ ",",
-            "COBRANZA = "+l[3] + ",",
-            "TESORERIA = "+ l[4]+ ",",
-            "GESTIONGASTOSGENERALES = "+ l[5]+ ",",
-            "CONFIGURACIONCUENTAS = "+ l[6]+ ",",
-            "ACTIVO = "+ l[7]};
-            
-            
-            
-            String query = "update usuario set " + u[0] + u[1] + u[2] + u[3] + u[4] + u[5] + u[6] + u[7] + u[8] + u[9] + u[10] + u[11] + " where usuario.IDUSUARIO = " + Globales.temp;
-            //System.out.println(query);
+            String query = "";
+            if(editarContrasenaCB.isSelected()){
+                String[] u = {"EMAIL = '"+ emailT.getText().toLowerCase()+"'," ,
+                "CONTRASENA = '" + original + "',", 
+                "NOMBRES = '" + nombresT.getText().toLowerCase()+ "',", 
+                "APELLIDOS = '" + apellidosT.getText().toLowerCase()+"',", 
+                "GESTIONPIEDRAGRENA = "+l[0] + ",", 
+                "GESTIONVENTAS = "+ l[1]+ ",",
+                "REPORTES = "+ l[2]+ ",",
+                "COBRANZA = "+l[3] + ",",
+                "TESORERIA = "+ l[4]+ ",",
+                "GESTIONGASTOSGENERALES = "+ l[5]+ ",",
+                "CONFIGURACIONCUENTAS = "+ l[6]+ ",",
+                "ACTIVO = "+ l[7]};
+
+
+
+                 query = "update usuario set " + u[0] + u[1] + u[2] + u[3] + u[4] + u[5] + u[6] + u[7] + u[8] + u[9] + u[10] + u[11] + " where usuario.IDUSUARIO = " + Globales.temp;
+                //System.out.println(query);
+            }
+            else{
+                String[] u = {"EMAIL = '"+ emailT.getText().toLowerCase()+"'," ,
+                " ", 
+                "NOMBRES = '" + nombresT.getText().toLowerCase()+ "',", 
+                "APELLIDOS = '" + apellidosT.getText().toLowerCase()+"',", 
+                "GESTIONPIEDRAGRENA = "+l[0] + ",", 
+                "GESTIONVENTAS = "+ l[1]+ ",",
+                "REPORTES = "+ l[2]+ ",",
+                "COBRANZA = "+l[3] + ",",
+                "TESORERIA = "+ l[4]+ ",",
+                "GESTIONGASTOSGENERALES = "+ l[5]+ ",",
+                "CONFIGURACIONCUENTAS = "+ l[6]+ ",",
+                "ACTIVO = "+ l[7]};
+
+
+
+                 query = "update usuario set " + u[0] + u[1] + u[2] + u[3] + u[4] + u[5] + u[6] + u[7] + u[8] + u[9] + u[10] + u[11] + " where usuario.IDUSUARIO = " + Globales.temp;
+                //System.out.println(query);
+            }
             boolean res = Globales.bdTemp.update(query);//Globales.bdTemp.insert(query);
             if(res){
                 
@@ -420,7 +481,7 @@ public class EditarUsuario extends javax.swing.JFrame {
                 this.dispose();
             }
             else{
-                throw new NoConectionDataBaseException("Error al conectar con la base de datos");
+                throw new NoConectionDataBaseException("Error al conectar con la base de datos: " + Globales.bdTemp.getUltimoError());
             }
         }
         catch(NoTypeRequiredException e){
@@ -447,6 +508,22 @@ public class EditarUsuario extends javax.swing.JFrame {
             
         }
     }//GEN-LAST:event_activoCBActionPerformed
+
+    private void usuarioTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usuarioTActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_usuarioTActionPerformed
+
+    private void editarContrasenaCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarContrasenaCBActionPerformed
+        if(editarContrasenaCB.isSelected()){
+            contrasenaT.setEnabled(true);
+            rContrasenaT.setEnabled(true);
+        }
+        else{
+           contrasenaT.setEnabled(false);
+            rContrasenaT.setEnabled(false); 
+        }
+        
+    }//GEN-LAST:event_editarContrasenaCBActionPerformed
 
     /**
      * @param args the command line arguments
@@ -490,6 +567,7 @@ public class EditarUsuario extends javax.swing.JFrame {
     private javax.swing.JRadioButton cobranzaB;
     private javax.swing.JPasswordField contrasenaT;
     private javax.swing.JRadioButton cuentasB;
+    private javax.swing.JCheckBox editarContrasenaCB;
     private javax.swing.JTextField emailT;
     private javax.swing.JRadioButton gastosB;
     private javax.swing.JButton jButton2;
@@ -499,6 +577,7 @@ public class EditarUsuario extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField nombresT;
@@ -507,6 +586,7 @@ public class EditarUsuario extends javax.swing.JFrame {
     private javax.swing.JPasswordField rContrasenaT;
     private javax.swing.JRadioButton reportesB;
     private javax.swing.JRadioButton tesoreriaB;
+    private javax.swing.JTextField usuarioT;
     private javax.swing.JRadioButton ventasB;
     // End of variables declaration//GEN-END:variables
 }

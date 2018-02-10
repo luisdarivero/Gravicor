@@ -31,4 +31,6 @@ public class Globales {
         }
         return result;
     }
+    
+    
 }

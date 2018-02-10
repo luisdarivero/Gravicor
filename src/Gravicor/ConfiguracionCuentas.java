@@ -25,9 +25,9 @@ public class ConfiguracionCuentas extends javax.swing.JFrame {
         this.setResizable(false);
         this.setTitle("Configuración de cuentas");
         try{
-            String query = "select IDUSUARIO, NOMBRES, APELLIDOS, EMAIL, ACTIVO \n" +
+            String query = "select IDUSUARIO, USERNAME, NOMBRES, APELLIDOS, EMAIL, ACTIVO \n" +
                             "from USUARIO";
-            String[] columnas = {"IDUSUARIO", "NOMBRES", "APELLIDOS", "EMAIL", "ACTIVO"};
+            String[] columnas = {"IDUSUARIO", "USERNAME","NOMBRES", "APELLIDOS", "EMAIL", "ACTIVO"};
             
             boolean  bandera = Globales.bdTemp.insertarEnTabla( query,columnas, tabla);
             
@@ -39,11 +39,11 @@ public class ConfiguracionCuentas extends javax.swing.JFrame {
             //tabla.getModel().getValueAt(WIDTH, ICONIFIED) row-column
             //tabla.getModel().getRowCount()
             for(int i = 0; i< tabla.getModel().getRowCount() ; i++){
-                if((new String("1")).equals((String)tabla.getModel().getValueAt(i,4))){
-                    tabla.getModel().setValueAt("Activo", i, 4);
+                if((new String("1")).equals((String)tabla.getModel().getValueAt(i,5))){
+                    tabla.getModel().setValueAt("Activo", i, 5);
                 }
                 else{
-                    tabla.getModel().setValueAt("Inctivo", i, 4);
+                    tabla.getModel().setValueAt("Inctivo", i, 5);
                 }
             }
             
@@ -78,14 +78,14 @@ public class ConfiguracionCuentas extends javax.swing.JFrame {
         tabla.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null}
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "ID Usuario", "Nombre", "Apellidos", "E-Mail", "Estatus"
+                "ID Usuario", "Usuario", "Nombre", "Apellidos", "E-mail", "Title 6"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
