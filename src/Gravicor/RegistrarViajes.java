@@ -145,17 +145,18 @@ public class RegistrarViajes extends javax.swing.JFrame {
             }
             
         
-            int tiempoDeEsperaMinutos = 2;
+            int tiempoDeEsperaMinutos = 3;
             query = "Select CONVERT(VARCHAR, VIAJE.HORA, 108) as Hora from viaje where VIAJE.IDCAMION = " + codigoDeBarrasInt + " and viaje.FECHA = convert(varchar, getDate(), 106)"; 
             columnas[0] = "Hora";
-
+             
             LinkedList<LinkedList<String>> viajesDeHoy = Globales.bdTemp.select(query, columnas);
+            //System.out.println("viajes de hoy: " + viajesDeHoy);
             if(viajesDeHoy == null){
                 
                 throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.bdTemp.getUltimoError());
             }
             //revisar el numero de viajes que tiene y si cumple seguir:
-            if(viajesDeHoy.get(0).size() > 1){
+            if(viajesDeHoy.get(0).size() >= 1){
                 //funcion para calcular si ya se puede hacer el siguiente registro
                 query = "SELECT CONVERT(VARCHAR, GETDATE(), 108) as HoraActual";
                 columnas[0] = "HoraActual";
@@ -186,12 +187,15 @@ public class RegistrarViajes extends javax.swing.JFrame {
                     //System.out.println("entro al if: 3");
                     diferencia = tiempoActualMinutos - tiempoRegistroMinutos;
                 }
-                //System.out.println("Hora actual: "  + horaActual.get(0).get(0));
-                //System.out.println("Ultimo registro: "  +viajesDeHoy.get(0).get(viajesDeHoy.get(0).size()-1));
-                //System.out.println("diferencia: " + diferencia);
+                /*
+                System.out.println("camion: " + codigoDeBarrasInt);
+                System.out.println("Hora actual: "  + horaActual.get(0).get(0));
+                System.out.println("Ultimo registro: "  +viajesDeHoy.get(0).get(viajesDeHoy.get(0).size()-1));
+                System.out.println("diferencia: " + diferencia);
+                System.out.println("----------------------------------");*/
                 //System.out.println("Ultimo registro: "  +viajesDeHoy.get(0).get(viajesDeHoy.get(0).size()-1));
                 
-                if(tiempoDeEsperaMinutos > diferencia){
+                if(tiempoDeEsperaMinutos >= diferencia){
                     registroTF.setText("");
                     throw new NoTypeRequiredException("El tiempo desde tu ultima descarga no permite generar un nuevo registro");
                     
