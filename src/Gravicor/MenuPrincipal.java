@@ -26,7 +26,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         JButton[] botones = {gestionGrenaB, gestionVentasB, reportesB, cobranzaB, tesoreriaB, gastosg, configuracionCuenta};
         try{
             
-            String query = "select GESTIONPIEDRAGRENA, GESTIONVENTAS, REPORTES, COBRANZA, TESORERIA, GESTIONGASTOSGENERALES, CONFIGURACIONCUENTAS from USUARIO where usuario.EMAIL = 'luisdarivero.s@gmail.com'";
+            String query = "select GESTIONPIEDRAGRENA, GESTIONVENTAS, REPORTES, COBRANZA, TESORERIA, GESTIONGASTOSGENERALES, CONFIGURACIONCUENTAS from USUARIO where usuario.USERNAME = '"+Globales.currentUser+"'";
             String[] columnas =  {"GESTIONPIEDRAGRENA", "GESTIONVENTAS", "REPORTES", "COBRANZA", "TESORERIA", "GESTIONGASTOSGENERALES", "CONFIGURACIONCUENTAS"};
             LinkedList<LinkedList<String>> permisos = Globales.baseDatos.select(query, columnas);
             
@@ -86,6 +86,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
         gestionGrenaB.setContentAreaFilled(false);
         gestionGrenaB.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         gestionGrenaB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/gestion piedra en greña 2.png"))); // NOI18N
+        gestionGrenaB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gestionGrenaBActionPerformed(evt);
+            }
+        });
 
         gestionVentasB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/gestion de ventas1.png"))); // NOI18N
         gestionVentasB.setContentAreaFilled(false);
@@ -223,6 +228,19 @@ public class MenuPrincipal extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_configuracionCuentaActionPerformed
+
+    private void gestionGrenaBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gestionGrenaBActionPerformed
+        //pantalla a gestion de piedra en greña
+        boolean bandera = Globales.bdTemp.conectarBD(Globales.bdTemp.generarURL());
+        if(bandera != false){
+            GestionDePiedra piedra= new GestionDePiedra();
+            piedra.setVisible(true);
+            this.dispose();
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_gestionGrenaBActionPerformed
 
     /**
      * @param args the command line arguments

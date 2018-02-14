@@ -209,6 +209,8 @@ public class Registro extends javax.swing.JFrame {
                     if(!(resultado.get(0).get(0)).equals(textoEncriptadoConMD5)){
                         throw new NoTypeRequiredException("La contraseña o usuario son incorectos, por favor corrígelos");
                     }
+                    
+                    Globales.currentUser = user.toLowerCase();
                     this.dispose();
                     MenuPrincipal menu = new MenuPrincipal();
                     menu.setVisible(true);

@@ -130,6 +130,9 @@
               <Image iconType="3" name="/Gravicor/Assets/gestion piedra en gre&#xf1;a 2.png"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="gestionGrenaBActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="gestionVentasB">
           <Properties>

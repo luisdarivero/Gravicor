@@ -77,6 +77,7 @@ public class BD {
             return false;
         }
         if(lista.get(0).size() == 0){
+            
             return true;
         }
         DefaultTableModel model = (DefaultTableModel) tabla.getModel();
@@ -95,6 +96,7 @@ public class BD {
             }
         }
         //model.addRow(new Object[]{"Column 1", "Column 2", "Column 3", ""});
+        
         return true;
     }
     

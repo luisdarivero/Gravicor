@@ -4,11 +4,14 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Daniel/Documents/NetBeansProjects/Gravicor/src/Gravicor/BD.java</file>
+            <file>file:/C:/Users/Daniel/Documents/NetBeansProjects/Gravicor/src/Gravicor/MenuPrincipal.java</file>
             <file>file:/C:/Users/Daniel/Documents/NetBeansProjects/Gravicor/src/Gravicor/Globales.java</file>
+            <file>file:/C:/Users/Daniel/Documents/NetBeansProjects/Gravicor/src/Gravicor/ViajeRegistrado.java</file>
             <file>file:/C:/Users/Daniel/Documents/NetBeansProjects/Gravicor/src/Gravicor/Registro.java</file>
-            <file>file:/C:/Users/Daniel/Documents/NetBeansProjects/Gravicor/src/Gravicor/AnadirUsuario.java</file>
+            <file>file:/C:/Users/Daniel/Documents/NetBeansProjects/Gravicor/src/Gravicor/RegistrarViajes.java</file>
+            <file>file:/C:/Users/Daniel/Documents/NetBeansProjects/Gravicor/src/Gravicor/NoSirve.java</file>
             <file>file:/C:/Users/Daniel/Documents/NetBeansProjects/Gravicor/src/Gravicor/ConfiguracionCuentas.java</file>
-            <file>file:/C:/Users/Daniel/Documents/NetBeansProjects/Gravicor/src/Gravicor/EditarUsuario.java</file>
+            <file>file:/C:/Users/Daniel/Documents/NetBeansProjects/Gravicor/src/Gravicor/GestionDePiedra.java</file>
         </group>
     </open-files>
 </project-private>
