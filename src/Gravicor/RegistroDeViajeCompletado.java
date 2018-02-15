@@ -20,6 +20,17 @@ public class RegistroDeViajeCompletado extends javax.swing.JFrame {
     /**
      * Creates new form NoSirve
      */
+    
+    String queryViajes = null;
+    String[] columnasViajes = null;
+    String IDcamion = null;
+    String tipoCamion = null;
+    String operadorCamion = null;
+    String numeroDeViajes = null;
+    
+    
+    
+    
     public RegistroDeViajeCompletado() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -32,7 +43,11 @@ public class RegistroDeViajeCompletado extends javax.swing.JFrame {
                             "convert(varchar, viaje.FECHA, 106) = convert(varchar, GETDATE(), 106)";
             String[] columnas = {"Fecha","Hora", "CAPACIDAD"};
             
+            queryViajes = query;
+            columnasViajes = columnas;
+            
             boolean  bandera = Globales.bdTemp.insertarEnTabla( query,columnas, tabla);
+            
             if(!bandera){
                 throw new NoConectionDataBaseException("Tu registro fue guardado pero por el momento no se puede mostrar la tabla: " + Globales.bdTemp.getUltimoError());
             }
@@ -58,6 +73,11 @@ public class RegistroDeViajeCompletado extends javax.swing.JFrame {
             tipoCamionLB.setText(datosCamion.get(1).get(0));
             operadorCamionLB.setText(datosCamion.get(2).get(0));
             viajesLB.setText(conteoViajes.get(0).get(0));
+            
+            IDcamion = datosCamion.get(0).get(0);
+            tipoCamion = datosCamion.get(1).get(0);
+            operadorCamion = datosCamion.get(2).get(0);
+            numeroDeViajes = conteoViajes.get(0).get(0);
                   
             
             
@@ -68,7 +88,8 @@ public class RegistroDeViajeCompletado extends javax.swing.JFrame {
         }
         conteoCambioDePantalla();
     }
-    static int conteoSiguientePantalla = 7;
+    static int conteoSiguientePantalla = 11;
+    static boolean seguirContando = true;
     public  void conteoCambioDePantalla(){
         
         ScheduledExecutorService exec = Executors.newScheduledThreadPool(1);
@@ -77,7 +98,10 @@ public class RegistroDeViajeCompletado extends javax.swing.JFrame {
         Runnable task = new Runnable() {
             @Override
             public void run() {
-                conteoSiguientePantalla--;
+                if(seguirContando){
+                    conteoSiguientePantalla--;
+                }
+                
                 //System.out.println("el reloj va: " + Integer.toString(conteoSiguientePantalla));
                 if (conteoSiguientePantalla == 0) {
                     continuarBActionPerformed(null);
@@ -179,6 +203,11 @@ public class RegistroDeViajeCompletado extends javax.swing.JFrame {
         jButton2.setContentAreaFilled(false);
         jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton2.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/terminarJornada2.png"))); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -267,6 +296,35 @@ public class RegistroDeViajeCompletado extends javax.swing.JFrame {
         nuevoViaje.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_continuarBActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        seguirContando = false;
+        Object[] options = {"Si",
+                    "No"};
+        int n = JOptionPane.showOptionDialog(this,
+            "¿Deseas terminar la jornada del día?",
+            "Terminar jornada",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE,
+            null,     //do not use a custom Icon
+            options,  //the titles of buttons
+            options[0]); //default button title
+        //System.out.println("tu eleccion fue; " + Integer.toString(n));
+        if(n == 0){
+            ImprimirTicketViaje ticket = new ImprimirTicketViaje(queryViajes,
+    columnasViajes,
+    IDcamion,
+    tipoCamion,
+    operadorCamion,
+    numeroDeViajes);
+            ticket.setVisible(true);
+            JOptionPane.showMessageDialog(this, "Felicidades, por favor recoje tu ticket");
+            continuarBActionPerformed(null);
+        }
+        else{
+            seguirContando = true;
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
