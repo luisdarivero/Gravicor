@@ -28,6 +28,10 @@ public class RegistroDeViajeCompletado extends javax.swing.JFrame {
     String operadorCamion = null;
     String numeroDeViajes = null;
     
+    int conteoSiguientePantalla = 11;
+    boolean seguirContando = true;
+    boolean terminarConteo = false;
+    
     
     
     
@@ -36,7 +40,18 @@ public class RegistroDeViajeCompletado extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setTitle("Registro completo");
-        
+        //codigo para saber si ya se imprimio un ticket en el día por un camion
+        try{
+            String queryTickets = "select IDIMPRESION from impresion where CAMIONID = "+Globales.ultimoCamion+" and  convert(varchar, DIA, 106) = convert(varchar, GETDATE(), 106)";
+            String [] columnasTickets = {"IDIMPRESION"};
+            LinkedList<LinkedList<String>> infoTickets = Globales.bdTemp.select(queryTickets, columnasTickets);
+            if(infoTickets == null || infoTickets.get(0).size() >= 1){
+                throw new NoConectionDataBaseException();
+            }
+        }
+        catch(NoConectionDataBaseException e){
+            jButton2.setEnabled(false);
+        }
         try{
             String query = "Select  convert(varchar, viaje.FECHA, 106) as Fecha,  CONVERT(VARCHAR, VIAJE.HORA, 108) as Hora, TIPOCAMION.CAPACIDAD from VIAJE, CAMION, TIPOCAMION\n" +
                             " WHERE VIAJE.IDCAMION = " +Globales.ultimoCamion + "  and VIAJE.ESACTIVO = 1 and viaje.IDCAMION = camion.IDCAMION and camion.IDTIPOCAMION = TIPOCAMION.IDTIPOCAMION and\n" +
@@ -88,8 +103,7 @@ public class RegistroDeViajeCompletado extends javax.swing.JFrame {
         }
         conteoCambioDePantalla();
     }
-    static int conteoSiguientePantalla = 11;
-    static boolean seguirContando = true;
+    
     public  void conteoCambioDePantalla(){
         
         ScheduledExecutorService exec = Executors.newScheduledThreadPool(1);
@@ -101,11 +115,14 @@ public class RegistroDeViajeCompletado extends javax.swing.JFrame {
                 if(seguirContando){
                     conteoSiguientePantalla--;
                 }
-                
+                if(terminarConteo == true){
+                    exec.shutdown();
+                }
                 //System.out.println("el reloj va: " + Integer.toString(conteoSiguientePantalla));
                 if (conteoSiguientePantalla == 0) {
                     continuarBActionPerformed(null);
                     exec.shutdown();
+                    
                 }
             }
         };
@@ -292,6 +309,8 @@ public class RegistroDeViajeCompletado extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void continuarBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_continuarBActionPerformed
+        seguirContando = false;
+        terminarConteo = true;
         RegistrarViajes nuevoViaje = new RegistrarViajes();
         nuevoViaje.setVisible(true);
         this.dispose();
@@ -299,6 +318,8 @@ public class RegistroDeViajeCompletado extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         seguirContando = false;
+        
+        
         Object[] options = {"Si",
                     "No"};
         int n = JOptionPane.showOptionDialog(this,
@@ -310,19 +331,31 @@ public class RegistroDeViajeCompletado extends javax.swing.JFrame {
             options,  //the titles of buttons
             options[0]); //default button title
         //System.out.println("tu eleccion fue; " + Integer.toString(n));
+        
+        
         if(n == 0){
             ImprimirTicketViaje ticket = new ImprimirTicketViaje(queryViajes,
-    columnasViajes,
-    IDcamion,
-    tipoCamion,
-    operadorCamion,
-    numeroDeViajes);
+                                                                    columnasViajes,
+                                                                    IDcamion,
+                                                                    tipoCamion,
+                                                                    operadorCamion,
+                                                                    numeroDeViajes);
             ticket.setVisible(true);
+            try{
+                String queryTickets = "INSERT INTO IMPRESION (DIA,HORA,CAMIONID) VALUES (GETDATE(), GETdATE(), "+Globales.ultimoCamion+")";
+                
+                Globales.bdTemp.insert(queryTickets);
+                
+            }
+            catch(Exception e){
+                
+            }
             JOptionPane.showMessageDialog(this, "Felicidades, por favor recoje tu ticket");
             continuarBActionPerformed(null);
         }
         else{
             seguirContando = true;
+            conteoSiguientePantalla += 5;
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 

@@ -81,7 +81,7 @@ public class ConfiguracionCuentas extends javax.swing.JFrame {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "ID Usuario", "Usuario", "Nombre", "Apellidos", "E-mail", "Title 6"
+                "ID Usuario", "Usuario", "Nombre", "Apellidos", "E-mail", "Activo"
             }
         ) {
             boolean[] canEdit = new boolean [] {
