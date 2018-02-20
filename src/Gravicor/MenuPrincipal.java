@@ -96,6 +96,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
         gestionVentasB.setContentAreaFilled(false);
         gestionVentasB.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         gestionVentasB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/gestion de ventas2.png"))); // NOI18N
+        gestionVentasB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gestionVentasBActionPerformed(evt);
+            }
+        });
 
         reportesB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/reportes y estadisticas 1.png"))); // NOI18N
         reportesB.setContentAreaFilled(false);
@@ -241,6 +246,19 @@ public class MenuPrincipal extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_gestionGrenaBActionPerformed
+
+    private void gestionVentasBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gestionVentasBActionPerformed
+        // TODO add your handling code here:
+        boolean bandera = Globales.bdTemp.conectarBD(Globales.bdTemp.generarURL());
+        if(bandera != false){
+            GestionDeVentas ventas= new GestionDeVentas();
+            ventas.setVisible(true);
+            this.dispose();
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_gestionVentasBActionPerformed
 
     /**
      * @param args the command line arguments

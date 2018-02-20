@@ -13,19 +13,19 @@ import javax.swing.JOptionPane;
  *
  * @author Daniel
  */
-public class AnadirCamion extends javax.swing.JFrame {
+public class EditarCamion extends javax.swing.JFrame {
 
     /**
      * Creates new form AnadirCamion
      */
-    public AnadirCamion() {
+    public EditarCamion() {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setTitle("Añadir Camion");
         
         try{
-            String query = "select TIPOCAMION.DESCRIPCION from tipoCamion ";
+            String query = "select TIPOCAMION.DESCRIPCION from tipoCamion";
             String[] columnas = {"DESCRIPCION"};
             LinkedList<LinkedList<String>> DescripcionCamiones = Globales.bdTemp.select(query, columnas);
             if(DescripcionCamiones == null){
@@ -38,6 +38,30 @@ public class AnadirCamion extends javax.swing.JFrame {
             
             DefaultComboBoxModel model = new DefaultComboBoxModel(modeloDescripcion);
             descripcionCB.setModel(model);
+            
+            //INGRESAR LOS DATOS DEL CAMION SELECCIONADO
+            
+            query = "SELECT IDCAMION, OPERADOR, TIPOCAMION.DESCRIPCION, COLOR, ACTIVO FROM CAMION, TIPOCAMION WHERE"
+                    + " CAMION.IDCAMION = "+Globales.temp+" AND CAMION.IDTIPOCAMION = TIPOCAMION.IDTIPOCAMION";
+            String[] columnasCamion = {"IDCAMION", "OPERADOR", "DESCRIPCION", "COLOR", "ACTIVO"};
+            
+            LinkedList<LinkedList<String>> datosCamion = Globales.bdTemp.select(query, columnasCamion);
+            
+            if(datosCamion == null || datosCamion.size() == 0){
+                throw new NoConectionDataBaseException("Error al conectarse con la base de datos: " + Globales.bdTemp.getUltimoError());
+            }
+            
+            numeroComercialTB.setText(datosCamion.get(0).get(0));
+            operadorTB.setText(datosCamion.get(1).get(0));
+            colorTB.setText(datosCamion.get(3).get(0));
+            
+            if(!datosCamion.get(4).get(0).equals(new String("1"))){
+                activoCB.setSelected(false);
+            }
+            
+            //descripcionCB.setActionCommand("torton");//datosCamion.get(2).get(0));
+            descripcionCB.setSelectedItem(datosCamion.get(2).get(0));
+            
         }
         catch(NoConectionDataBaseException e){
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
@@ -65,6 +89,7 @@ public class AnadirCamion extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         cancelarB = new javax.swing.JButton();
         continuarB = new javax.swing.JButton();
+        activoCB = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -83,6 +108,7 @@ public class AnadirCamion extends javax.swing.JFrame {
         jLabel4.setText("Color:");
 
         numeroComercialTB.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        numeroComercialTB.setEnabled(false);
         numeroComercialTB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 numeroComercialTBActionPerformed(evt);
@@ -96,7 +122,7 @@ public class AnadirCamion extends javax.swing.JFrame {
         colorTB.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
 
         jLabel5.setFont(new java.awt.Font("Calibri", 1, 48)); // NOI18N
-        jLabel5.setText("Añadir Camion");
+        jLabel5.setText("Editar Camión");
 
         cancelarB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/cancelar1.png"))); // NOI18N
         cancelarB.setContentAreaFilled(false);
@@ -118,40 +144,55 @@ public class AnadirCamion extends javax.swing.JFrame {
             }
         });
 
+        activoCB.setFont(new java.awt.Font("Calibri", 0, 20)); // NOI18N
+        activoCB.setSelected(true);
+        activoCB.setText("Activo");
+        activoCB.setContentAreaFilled(false);
+        activoCB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                activoCBActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(125, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(103, 103, 103)
-                        .addComponent(jLabel5))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(cancelarB, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(123, 123, 123)
-                        .addComponent(continuarB, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4))
-                        .addGap(39, 39, 39)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(numeroComercialTB)
-                            .addComponent(operadorTB)
-                            .addComponent(colorTB)
-                            .addComponent(descripcionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(125, 125, 125))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(cancelarB, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(123, 123, 123)
+                                .addComponent(continuarB, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel4))
+                                .addGap(39, 39, 39)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(numeroComercialTB)
+                                    .addComponent(operadorTB)
+                                    .addComponent(colorTB)
+                                    .addComponent(descripcionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(31, 31, 31)
+                                        .addComponent(activoCB)))))
+                        .addGap(125, 125, 125))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addGap(244, 244, 244))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(34, 34, 34)
+                .addGap(30, 30, 30)
                 .addComponent(jLabel5)
-                .addGap(37, 37, 37)
+                .addGap(41, 41, 41)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(numeroComercialTB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -167,11 +208,13 @@ public class AnadirCamion extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(colorTB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(47, 47, 47)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(activoCB)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(continuarB, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cancelarB, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(77, Short.MAX_VALUE))
+                .addGap(37, 37, 37))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -209,20 +252,6 @@ public class AnadirCamion extends javax.swing.JFrame {
             catch(Exception e){
                 throw new NoTypeRequiredException("El numero comercial ingresado no es valido, debe ser numerico, por favor introducelo de nuevo");
             }
-            if(revisar <0 || revisar >1000){
-                throw new NoTypeRequiredException("El numero comercial ingresado no es valido, debe ser un número entre 0 y 1000, por favor introducelo de nuevo");
-            }
-            String query = "SELECT IDCAMION FROM CAMION WHERE CAMION.IDCAMION = "+Integer.toString(revisar)+"";
-            String[] columnas = {"IDCAMION"};
-            LinkedList<LinkedList<String>> idCamion = Globales.bdTemp.select(query, columnas);
-            //System.out.println(idCamion);
-            if(idCamion == null){
-                throw new NoConectionDataBaseException("Error al conectar con la base de datos: " + Globales.bdTemp.getUltimoError());
-            }
-            //El número comercial seleccionado ya existe, por favor ingresa otro
-            if(idCamion.get(0).size() >0){
-                throw new NoTypeRequiredException("El número comercial seleccionado ya existe, por favor ingresa otro");
-            }
             
             if(operadorTB.getText().length()<5 || operadorTB.getText().length() >50){
                 throw new NoTypeRequiredException("El nombre del operador no es valido, por favor ingresa un nombre entre 5 y 50 caracteres");
@@ -231,19 +260,29 @@ public class AnadirCamion extends javax.swing.JFrame {
             if(colorTB.getText().length()<3 || colorTB.getText().length() >15){
                 throw new NoTypeRequiredException("El color ingresado no es valido, por favor ingresa un texto entre 3 y 15 caracteres");
             }
+            String camionActivo;
+            if(activoCB.isSelected()){
+                camionActivo = "1";
+            }
+            else{
+                camionActivo = "2";
+            }
             
-            query = "select tipocamion.IDTIPOCAMION from tipocamion where tipocamion.descripcion = '"+ descripcionCB.getSelectedItem()+"'";
-            columnas[0] = "IDTIPOCAMION";
+            String query = "select tipocamion.IDTIPOCAMION from tipocamion where tipocamion.descripcion = '"+ descripcionCB.getSelectedItem()+"'";
+            String[] columnas = {"IDTIPOCAMION"};
             LinkedList<LinkedList<String>> idTipoCamion = Globales.bdTemp.select(query, columnas);
             if(idTipoCamion == null || idTipoCamion.get(0).size()==0){
                 throw new NoConectionDataBaseException("Error al conectarse con la base de datos: " + Globales.bdTemp.getUltimoError());
             }
-            query = "insert into CAMION (IDCAMION, OPERADOR, IDTIPOCAMION, COLOR, ACTIVO) VALUES ("+Integer.toString(revisar)+""
-                            + ", '"+operadorTB.getText().toLowerCase()+"', "+idTipoCamion.get(0).get(0)+",'"+colorTB.getText().toLowerCase()+"',  1)";
-            boolean bandera = Globales.bdTemp.insert(query);
+            query = "UPDATE CAMION SET OPERADOR = '"+operadorTB.getText().toLowerCase()+"', IDTIPOCAMION = "+idTipoCamion.get(0).get(0)+", COLOR = '"+colorTB.getText().toLowerCase()+"', ACTIVO = "+camionActivo+" "
+                    + "WHERE CAMION.IDCAMION = "+revisar+"";
+            
+            //query = "insert into CAMION (IDCAMION, OPERADOR, IDTIPOCAMION, COLOR, ACTIVO) VALUES ("+Integer.toString(revisar)+""
+                            //+ ", '"+operadorTB.getText().toLowerCase()+"', "+idTipoCamion.get(0).get(0)+",'"+colorTB.getText().toLowerCase()+"',  1)";
+            boolean bandera = Globales.bdTemp.update(query);
             if(bandera){
                 GestionDeCamiones camiones= new GestionDeCamiones();
-            camiones.setVisible(true);
+                camiones.setVisible(true);
             this.dispose();
             }
             else{
@@ -258,6 +297,10 @@ public class AnadirCamion extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_continuarBActionPerformed
+
+    private void activoCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_activoCBActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_activoCBActionPerformed
 
     /**
      * @param args the command line arguments
@@ -276,25 +319,27 @@ public class AnadirCamion extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AnadirCamion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditarCamion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AnadirCamion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditarCamion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AnadirCamion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditarCamion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AnadirCamion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditarCamion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AnadirCamion().setVisible(true);
+                new EditarCamion().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox activoCB;
     private javax.swing.JButton cancelarB;
     private javax.swing.JTextField colorTB;
     private javax.swing.JButton continuarB;

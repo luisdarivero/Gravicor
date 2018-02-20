@@ -143,7 +143,21 @@ public class RegistrarViajes extends javax.swing.JFrame {
             if(usuarioValido.get(0).size() <= 0){
                 throw new NoTypeRequiredException("El código ingresado no es valido, por favor introducelo de nuevo");
             }
+            String queryCamionActivo= "SELECT ACTIVO.DESCRIPCION\n" +
+                                        "FROM CAMION, ACTIVO\n" +
+                                        "WHERE CAMION.ACTIVO = ACTIVO.IDACTIVO AND CAMION.IDCAMION = "+codigoDeBarrasInt+"";
             
+            String[] columnasCamionActivo = {"DESCRIPCION"};
+            
+            LinkedList<LinkedList<String>> camionActivo = Globales.bdTemp.select(queryCamionActivo, columnasCamionActivo);
+            
+            if(camionActivo == null || camionActivo.get(0).size() == 0){
+                throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.bdTemp.getUltimoError());
+            }
+            
+            if(!camionActivo.get(0).get(0).equals(new String("ACTIVO"))){
+                throw new NoTypeRequiredException("Este camión está registrado como 'Inactivo', por favor contacta al administrador");
+            }
         
             int tiempoDeEsperaMinutos = 3;
             query = "Select CONVERT(VARCHAR, VIAJE.HORA, 108) as Hora from viaje where VIAJE.IDCAMION = " + codigoDeBarrasInt + " and viaje.FECHA = convert(varchar, getDate(), 106)"; 

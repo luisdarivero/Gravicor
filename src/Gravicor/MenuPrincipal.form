@@ -147,6 +147,9 @@
               <Image iconType="3" name="/Gravicor/Assets/gestion de ventas2.png"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="gestionVentasBActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="reportesB">
           <Properties>
