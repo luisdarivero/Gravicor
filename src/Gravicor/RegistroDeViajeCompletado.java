@@ -73,7 +73,7 @@ public class RegistroDeViajeCompletado extends javax.swing.JFrame {
             String[] columnasDescripcionGeneral = {"IDCAMION", "DESCRIPCION", "OPERADOR" };
             LinkedList<LinkedList<String>> datosCamion = Globales.bdTemp.select(query, columnasDescripcionGeneral);
             
-            query = "select COUNT(*) AS CONTEOVIAJES FROM VIAJE WHERE VIAJE.IDCAMION = " +Globales.ultimoCamion + " AND convert(varchar, viaje.FECHA, 106) = convert(varchar, GETDATE(), 106)";
+            query = "select COUNT(*) AS CONTEOVIAJES FROM VIAJE WHERE VIAJE.IDCAMION = " +Globales.ultimoCamion + " AND convert(varchar, viaje.FECHA, 106) = convert(varchar, GETDATE(), 106) and VIAJE.ESACTIVO = 1";
             String[] columnasConteo = {"CONTEOVIAJES"};
             LinkedList<LinkedList<String>> conteoViajes = Globales.bdTemp.select(query, columnasConteo);
             

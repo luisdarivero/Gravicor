@@ -5,15 +5,20 @@
  */
 package Gravicor;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Daniel
  */
 public class HistorialViajesDelDia extends javax.swing.JFrame {
-
+    private MyGregorianCalendar diaHistorial = new MyGregorianCalendar();
     /**
      * Creates new form HistorialViajesDelDia
      */
@@ -24,16 +29,47 @@ public class HistorialViajesDelDia extends javax.swing.JFrame {
         this.setTitle("Historial de viajes");
         
         try{
-            String query = "SELECT CAMION.IDCAMION,TIPOCAMION.DESCRIPCION,TIPOCAMION.CAPACIDAD, COUNT(*) AS CONTEO, SUM(TIPOCAMION.TONELADAS) AS SUBTOTALTONELADAS\n" +
+            String queryFecha = "SELECT convert(varchar, getdate(), 105) as FECHA";
+            String[] columnasFecha = {"FECHA"};
+            LinkedList<LinkedList<String>> fecha = Globales.bdTemp.select(queryFecha, columnasFecha);
+            if(fecha == null){
+                throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.bdTemp.getUltimoError());
+            }
+            if(fecha.size() <1 || fecha.get(0).size() < 1){
+                throw new NoTypeRequiredException("No se pudo conectar con la base de datos, error inesperado");
+            }
+            
+            String[] resultadoFecha = fecha.get(0).get(0).split("-");
+            GregorianCalendar dia = new GregorianCalendar();
+            diaHistorial.set(new Integer(resultadoFecha[2]),new Integer(resultadoFecha[1]) -1,new Integer(resultadoFecha[0]));
+            calendario.setMaxSelectableDate(diaHistorial.getTime());
+            calendario.setDate(diaHistorial.getTime());
+            dia.set(2018,0,1);
+            calendario.setMinSelectableDate(dia.getTime());
+            
+            actualizarPantalla(fecha.get(0).get(0));
+           
+            
+        }
+        catch(NoConectionDataBaseException e){
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+        }
+        catch(NoTypeRequiredException e){
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error al guardar el registro", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+    
+    public void actualizarPantalla(String fecha) throws NoConectionDataBaseException, NoTypeRequiredException{
+        String query = "SELECT CAMION.IDCAMION,TIPOCAMION.DESCRIPCION,TIPOCAMION.CAPACIDAD, COUNT(*) AS CONTEO, SUM(TIPOCAMION.TONELADAS) AS SUBTOTALTONELADAS\n" +
 "FROM CAMION, VIAJE, TIPOCAMION\n" +
-"WHERE CAMION.IDCAMION = VIAJE.IDCAMION AND CAMION.IDTIPOCAMION = TIPOCAMION.IDTIPOCAMION AND convert(varchar, VIAJE.FECHA, 106) = convert(varchar, getDate(), 106)\n" +
+"WHERE CAMION.IDCAMION = VIAJE.IDCAMION and VIAJE.ESACTIVO = 1 AND CAMION.IDTIPOCAMION = TIPOCAMION.IDTIPOCAMION AND convert(varchar, VIAJE.FECHA, 105) = '"+fecha+"'\n" +
 "GROUP BY VIAJE.IDCAMION, CAMION.IDCAMION, TIPOCAMION.DESCRIPCION, TIPOCAMION.CAPACIDAD";
             String[] columnas = {"IDCAMION","DESCRIPCION","CAPACIDAD","CONTEO", "SUBTOTALTONELADAS"};
             Globales.bdTemp.insertarEnTabla(query, columnas, tabla);
             
             query = "SELECT SUM(TIPOCAMION.CAPACIDAD) AS TOTALMC, SUM(TIPOCAMION.TONELADAS) AS TOTALTONELADAS \n" +
 "FROM VIAJE, CAMION, TIPOCAMION\n" +
-"WHERE CAMION.IDCAMION = VIAJE.IDCAMION  AND convert(varchar, VIAJE.FECHA, 106) = convert(varchar, getDate(), 106) AND CAMION.IDTIPOCAMION = TIPOCAMION.IDTIPOCAMION";
+"WHERE CAMION.IDCAMION = VIAJE.IDCAMION  AND convert(varchar, VIAJE.FECHA, 105) = '"+fecha+"' AND CAMION.IDTIPOCAMION = TIPOCAMION.IDTIPOCAMION and VIAJE.ESACTIVO = 1";
             
             String[] columnasTotales = {"TOTALMC", "TOTALTONELADAS"};
             
@@ -47,14 +83,6 @@ public class HistorialViajesDelDia extends javax.swing.JFrame {
             
             totalMC.setText(totales.get(0).get(0));
             totalTon.setText(totales.get(1).get(0));
-            fechaTF.setText("20/02/2018");
-        }
-        catch(NoConectionDataBaseException e){
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
-        }
-        catch(NoTypeRequiredException e){
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Error al guardar el registro", JOptionPane.WARNING_MESSAGE);
-        }
     }
 
     /**
@@ -75,9 +103,11 @@ public class HistorialViajesDelDia extends javax.swing.JFrame {
         totalMC = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         totalTon = new javax.swing.JLabel();
-        fechaTF = new javax.swing.JFormattedTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        calendario = new com.toedter.calendar.JDateChooser();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -119,8 +149,6 @@ public class HistorialViajesDelDia extends javax.swing.JFrame {
         totalTon.setFont(new java.awt.Font("Calibri", 0, 36)); // NOI18N
         totalTon.setText("0");
 
-        fechaTF.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
-
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/realizarCorteDelDia1.png"))); // NOI18N
         jButton1.setContentAreaFilled(false);
         jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -135,73 +163,102 @@ public class HistorialViajesDelDia extends javax.swing.JFrame {
             }
         });
 
+        calendario.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/actualizar1.png"))); // NOI18N
+        jButton3.setContentAreaFilled(false);
+        jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton3.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/actualizar2.png"))); // NOI18N
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/editarViajesDeCamion1.png"))); // NOI18N
+        jButton4.setContentAreaFilled(false);
+        jButton4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton4.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/editarViajesDeCamion2.png"))); // NOI18N
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(1039, 1039, 1039)
+                .addComponent(jLabel5)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(137, 137, 137)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 111, Short.MAX_VALUE)
-                .addComponent(fechaTF, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(91, 91, 91))
-            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(137, 137, 137)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(calendario, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 722, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(130, 130, 130))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(186, 186, 186)
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
-                        .addComponent(totalMC)
-                        .addGap(104, 104, 104)
+                        .addComponent(totalMC))
+                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(105, 105, 105)
                         .addComponent(jLabel3)
                         .addGap(18, 18, 18)
                         .addComponent(totalTon))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(328, 328, 328)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(64, 64, 64)
-                        .addComponent(jLabel5)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 722, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(130, 130, 130))
+                        .addGap(95, 95, 95)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(161, 161, 161))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(36, 36, 36)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(calendario, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addGap(36, 36, 36)
-                                .addComponent(jLabel1))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addGap(52, 52, 52)
-                                .addComponent(fechaTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(34, 34, 34)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(totalMC)
-                    .addComponent(totalTon))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(72, 72, 72)
-                        .addComponent(jLabel5)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(21, 21, 21))))
+                        .addGap(0, 175, Short.MAX_VALUE)
+                        .addComponent(jLabel5))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(totalMC)
+                            .addComponent(totalTon))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(47, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -224,6 +281,89 @@ public class HistorialViajesDelDia extends javax.swing.JFrame {
         piedra.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
+    
+    private void limpiarTabla(){
+        DefaultTableModel dtm = (DefaultTableModel)tabla.getModel(); 
+        int numRows = dtm.getRowCount();
+        //dtm.removeRow(0);
+        dtm.setRowCount(0);
+        String[] columnas = {"","","","",""};
+        dtm.addRow(columnas);
+    }
+    
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        String fecha = sdf.format(calendario.getDate());
+        String[] resultadoFecha = fecha.split("-");
+        diaHistorial = new MyGregorianCalendar();
+        diaHistorial.set(new Integer(resultadoFecha[2]),new Integer(resultadoFecha[1]) -1,new Integer(resultadoFecha[0]));
+        //System.out.println(sdf.format(diaHistorial.getTime()));
+        //diaHistorial.getTime()
+        limpiarTabla();
+        
+        try{
+            actualizarPantalla(fecha);
+        }
+        catch(NoConectionDataBaseException e){
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+        }
+        catch(NoTypeRequiredException e){
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error al guardar el registro", JOptionPane.WARNING_MESSAGE);
+        }
+
+        
+        
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        
+        
+        //obtener el camion a editar
+        try{
+            String query = "SELECT CAMION.IDCAMION FROM CAMION where CAMION.ACTIVO = 1";
+            String[] columnas = {"IDCAMION"};
+
+            Object[][] listaCamiones = Globales.bdTemp.selectO(query, columnas);
+            if(listaCamiones == null){
+                throw new NoConectionDataBaseException("Error al conectarse con la base de datos: " + Globales.bdTemp.getUltimoError());
+            }
+            Object[] possiblesCamiones  = listaCamiones[0];
+
+            String camion = "";
+            try{
+                    camion = (String)JOptionPane.showInputDialog(
+                                this,
+                                "Editar viajes de un camión:\n"
+                                + "\"Selecciona el camión al que quieres editar sus viajes\"",
+                                "Editar viajes de un camión",
+                                JOptionPane.QUESTION_MESSAGE,
+                                null,
+                                possiblesCamiones,
+                                possiblesCamiones[0]);
+
+                }
+                catch(Exception e){
+                    throw new NoTypeRequiredException("No se pudo realizar la operación especificada");
+                    
+                }
+
+            if (camion != null){
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                Globales.ultimaFecha = sdf.format(diaHistorial.getTime());
+                Globales.ultimoCamion = camion;
+                HistorialViajePorDiaCamion viajeCamion= new HistorialViajePorDiaCamion();
+                viajeCamion.setVisible(true);
+                this.dispose();
+            }
+        }
+        catch(NoConectionDataBaseException e){
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+            }
+        catch(NoTypeRequiredException e){
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error al guardar el registro", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -261,9 +401,11 @@ public class HistorialViajesDelDia extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JFormattedTextField fechaTF;
+    private com.toedter.calendar.JDateChooser calendario;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

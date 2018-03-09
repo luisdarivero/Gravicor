@@ -23,7 +23,9 @@ public class Globales {
     
     public static String temp = "1";
     
-    public static String ultimoCamion = "2";
+    public static String ultimoCamion = "3";
+    
+    public static String ultimaFecha = "25-02-2018";
     
     public static boolean isValidEmailAddress(String email) {
         boolean result = true;
