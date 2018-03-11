@@ -8,6 +8,8 @@ package Gravicor;
 
 import java.util.LinkedList;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  *
@@ -158,8 +160,8 @@ public class RegistrarViajes extends javax.swing.JFrame {
             if(!camionActivo.get(0).get(0).equals(new String("ACTIVO"))){
                 throw new NoTypeRequiredException("Este camión está registrado como 'Inactivo', por favor contacta al administrador");
             }
-        
-            int tiempoDeEsperaMinutos = 3;
+            ConfiguracionPrograma configuraciones = new ConfiguracionPrograma();
+            Integer tiempoDeEsperaMinutos = configuraciones.getValueWithHash("TiempoEsperaSiguienteViaje");
             query = "Select CONVERT(VARCHAR, VIAJE.HORA, 108) as Hora from viaje where VIAJE.IDCAMION = " + codigoDeBarrasInt + " and viaje.FECHA = convert(varchar, getDate(), 106)"; 
             columnas[0] = "Hora";
              
@@ -201,11 +203,14 @@ public class RegistrarViajes extends javax.swing.JFrame {
                     //System.out.println("entro al if: 3");
                     diferencia = tiempoActualMinutos - tiempoRegistroMinutos;
                 }
+                
+                
                 /*
                 System.out.println("camion: " + codigoDeBarrasInt);
                 System.out.println("Hora actual: "  + horaActual.get(0).get(0));
                 System.out.println("Ultimo registro: "  +viajesDeHoy.get(0).get(viajesDeHoy.get(0).size()-1));
-                System.out.println("diferencia: " + diferencia);
+                System.out.println("diferencia: " + (tiempoDeEsperaMinutos-diferencia));
+                
                 System.out.println("----------------------------------");*/
                 //System.out.println("Ultimo registro: "  +viajesDeHoy.get(0).get(viajesDeHoy.get(0).size()-1));
                 
@@ -257,9 +262,50 @@ public class RegistrarViajes extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         //no se revisa el estatus de la base de datos por que se quiere que siempre este
         //seleccionado el cuadro para introducir los codigos de barras
-        GestionDePiedra piedra= new GestionDePiedra();
-        piedra.setVisible(true);
-        this.dispose();
+        //prueba
+        JPasswordField pwd = new JPasswordField(32);
+        int action = JOptionPane.showConfirmDialog(null, pwd,"Ingresa tu contraseña",JOptionPane.OK_CANCEL_OPTION);
+        
+       
+        //termina prueba
+        //primero se verifica la contraseña del usuario
+       
+        try{
+            if(action < 0 || action>0){
+                //se selecciono el boton cancelar
+            }
+            else{
+                String[] columnas = {"CONTRASENA"};
+                LinkedList<LinkedList<String>> resultado = Globales.bdTemp.select("select CONTRASENA FROM USUARIO WHERE USUARIO.USERNAME = '"+Globales.currentUser+"'", columnas);
+                if(resultado==null){
+                    throw new NoConectionDataBaseException("Error al conectar con la base de datos: "
+                        + Globales.bdTemp.getUltimoError());
+                }
+                String textoEncriptadoConMD5=DigestUtils.md5Hex(new String(pwd.getPassword()));
+                if(resultado.get(0).size() > 0){
+                    if(!(resultado.get(0).get(0)).equals(textoEncriptadoConMD5)){
+                        throw new NoTypeRequiredException("La contraseña es incorrecta, por favor corrígela");
+                    }
+                    
+                    
+                    //se cmbia de pantalla
+                    GestionDePiedra piedra= new GestionDePiedra();
+                    piedra.setVisible(true);
+                    this.dispose();
+                }
+                else{
+                    throw new NoTypeRequiredException("La contraseña es incorrecta, por favor corrígela");
+                }
+            }
+            
+            
+        }
+        catch(NoTypeRequiredException e){
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error de formato", JOptionPane.ERROR_MESSAGE);
+        }
+        catch(NoConectionDataBaseException e){
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

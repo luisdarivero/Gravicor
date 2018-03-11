@@ -76,6 +76,11 @@ public class EstablecerConfiguraciones extends javax.swing.JFrame {
         jButton1.setContentAreaFilled(false);
         jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton1.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/cancelar2.png"))); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/guardar1.png"))); // NOI18N
         jButton3.setContentAreaFilled(false);
@@ -170,6 +175,15 @@ public class EstablecerConfiguraciones extends javax.swing.JFrame {
             if(!config.modificarConfiguraciones(keys, values)){
                 throw new NoTypeRequiredException("Error inesperado al guardar los datos");
             }
+            boolean bandera = Globales.bdTemp.conectarBD(Globales.bdTemp.generarURL());
+            if(bandera != false){
+                GestionDePiedra pantallaConfiguracion= new GestionDePiedra();
+                pantallaConfiguracion.setVisible(true);
+                this.dispose();
+            }
+            else{
+                JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+            }
         }
         catch(NoTypeRequiredException e){
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error al guardar el registro", JOptionPane.WARNING_MESSAGE);
@@ -178,6 +192,19 @@ public class EstablecerConfiguraciones extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Hubo un error al guardar los ajustes", "Error al guardar el registro", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        boolean bandera = Globales.bdTemp.conectarBD(Globales.bdTemp.generarURL());
+        if(bandera != false){
+            GestionDePiedra pantallaConfiguracion= new GestionDePiedra();
+            pantallaConfiguracion.setVisible(true);
+            this.dispose();
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

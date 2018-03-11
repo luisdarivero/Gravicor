@@ -27,8 +27,8 @@ public class RegistroDeViajeCompletado extends javax.swing.JFrame {
     String tipoCamion = null;
     String operadorCamion = null;
     String numeroDeViajes = null;
-    
-    int conteoSiguientePantalla = 11;
+    ConfiguracionPrograma configuraciones = new ConfiguracionPrograma();
+    Integer conteoSiguientePantalla = configuraciones.getValueWithHash("TiempoEsperaConfirmacionViaje");;
     boolean seguirContando = true;
     boolean terminarConteo = false;
     
