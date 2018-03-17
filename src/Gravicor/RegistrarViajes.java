@@ -142,7 +142,7 @@ public class RegistrarViajes extends javax.swing.JFrame {
             String[] columnas = {"IDCAMION"};
             LinkedList<LinkedList<String>> usuarioValido = Globales.bdTemp.select(query, columnas);
             
-            if(usuarioValido.get(0).size() <= 0){
+            if(usuarioValido.get(0).size() == 0 || usuarioValido == null){
                 throw new NoTypeRequiredException("El código ingresado no es valido, por favor introducelo de nuevo");
             }
             String queryCamionActivo= "SELECT ACTIVO.DESCRIPCION\n" +

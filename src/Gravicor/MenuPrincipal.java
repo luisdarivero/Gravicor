@@ -106,6 +106,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
         reportesB.setContentAreaFilled(false);
         reportesB.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         reportesB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/reportes y estadisticas 2.png"))); // NOI18N
+        reportesB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reportesBActionPerformed(evt);
+            }
+        });
 
         cobranzaB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/cobranza 1.png"))); // NOI18N
         cobranzaB.setContentAreaFilled(false);
@@ -259,6 +264,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_gestionVentasBActionPerformed
+
+    private void reportesBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportesBActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_reportesBActionPerformed
 
     /**
      * @param args the command line arguments
