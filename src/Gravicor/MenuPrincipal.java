@@ -267,6 +267,15 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
     private void reportesBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportesBActionPerformed
         // TODO add your handling code here:
+        boolean bandera = Globales.bdTemp.conectarBD(Globales.bdTemp.generarURL());
+        if(bandera != false){
+            ReporteEstadisticas reportes = new ReporteEstadisticas();
+            reportes.setVisible(true);
+            this.dispose();
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_reportesBActionPerformed
 
     /**
