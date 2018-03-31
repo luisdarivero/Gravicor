@@ -5,6 +5,8 @@
  */
 package Gravicor;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Daniel
@@ -56,14 +58,14 @@ public class GestionarClientes extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tabla);
 
-        jButton1.setText("añadir usuario");
+        jButton1.setText("Añadir Cliente");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Editar Usuario");
+        jButton2.setText("Editar Cliente");
 
         jButton3.setText("regresar");
 
@@ -119,7 +121,15 @@ public class GestionarClientes extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        boolean bandera = Globales.bdTemp.conectarBD(Globales.bdTemp.generarURL());
+        if(bandera != false){
+            AnadirCliente cliente = new AnadirCliente();
+            cliente.setVisible(true);
+            this.dispose();
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
