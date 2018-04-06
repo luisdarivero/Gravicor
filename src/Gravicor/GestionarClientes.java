@@ -18,6 +18,40 @@ public class GestionarClientes extends javax.swing.JFrame {
      */
     public GestionarClientes() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+        this.setTitle("Gestionar Clientes");
+        
+        try{
+            String query = "SELECT DISTINCT CLIENTE.CLIENTEID,CLIENTE.NOMBRECLIENTE ,\n" +
+                "\n" +
+                "(SELECT PRECIO_CLIENTE_MATERIAL.PRECIO \n" +
+                "	FROM PRECIO_CLIENTE_MATERIAL \n" +
+                "	WHERE  PRECIO_CLIENTE_MATERIAL.CLIENTEID = CLIENTE.CLIENTEID AND PRECIO_CLIENTE_MATERIAL.MATERIALID = 1 ) AS 'GRAVAUNMEDIO',\n" +
+                "\n" +
+                "(SELECT PRECIO_CLIENTE_MATERIAL.PRECIO \n" +
+                "	FROM PRECIO_CLIENTE_MATERIAL \n" +
+                "	WHERE  PRECIO_CLIENTE_MATERIAL.CLIENTEID = CLIENTE.CLIENTEID AND PRECIO_CLIENTE_MATERIAL.MATERIALID = 2 ) AS 'GRAVATRESCUARTOS',\n" +
+                "\n" +
+                "(SELECT PRECIO_CLIENTE_MATERIAL.PRECIO \n" +
+                "	FROM PRECIO_CLIENTE_MATERIAL \n" +
+                "	WHERE  PRECIO_CLIENTE_MATERIAL.CLIENTEID = CLIENTE.CLIENTEID AND PRECIO_CLIENTE_MATERIAL.MATERIALID = 3 ) AS 'ARENILLA'\n" +
+                "\n" +
+                "FROM CLIENTE, PRECIO_CLIENTE_MATERIAL \n" +
+                "WHERE CLIENTE.CLIENTEID = PRECIO_CLIENTE_MATERIAL.CLIENTEID";
+            String[] columnas = {"CLIENTEID","NOMBRECLIENTE","GRAVAUNMEDIO","GRAVATRESCUARTOS","ARENILLA"};
+            
+            boolean  bandera = Globales.bdTemp.insertarEnTabla( query,columnas, tabla);
+            
+            if(bandera == false){
+                throw new NoConectionDataBaseException("Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError());
+                
+            }
+        }
+        catch(NoConectionDataBaseException e){
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+        }
+        
     }
 
     /**
@@ -35,6 +69,7 @@ public class GestionarClientes extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -69,6 +104,8 @@ public class GestionarClientes extends javax.swing.JFrame {
 
         jButton3.setText("regresar");
 
+        jLabel1.setText("Gestionar Cientes");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -86,14 +123,22 @@ public class GestionarClientes extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(68, 68, 68)
                 .addComponent(jButton3)
+                .addGap(320, 320, 320)
+                .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addComponent(jButton3)
-                .addGap(55, 55, 55)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(36, 36, 36)
+                        .addComponent(jButton3)
+                        .addGap(55, 55, 55))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(44, 44, 44)))
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -171,6 +216,7 @@ public class GestionarClientes extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tabla;

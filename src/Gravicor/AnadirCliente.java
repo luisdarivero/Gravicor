@@ -18,6 +18,9 @@ public class AnadirCliente extends javax.swing.JFrame {
      */
     public AnadirCliente() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+        this.setTitle("Anadir Cliente");
     }
 
     /**
