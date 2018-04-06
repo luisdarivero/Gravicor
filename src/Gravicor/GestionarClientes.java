@@ -91,6 +91,7 @@ public class GestionarClientes extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tabla.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tabla);
 
         jButton1.setText("Añadir Cliente");
@@ -101,6 +102,11 @@ public class GestionarClientes extends javax.swing.JFrame {
         });
 
         jButton2.setText("Editar Cliente");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("regresar");
 
@@ -176,6 +182,25 @@ public class GestionarClientes extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if(tabla.getSelectedRow() < 0){
+            JOptionPane.showMessageDialog(this, "Por favor selecciona de la tabla el usuario que deseas editar", "Error de selección", JOptionPane.ERROR_MESSAGE);
+        }
+        else{
+            Integer clienteID = Integer.parseInt((String) tabla.getModel().getValueAt(tabla.getSelectedRow(), 0));
+            boolean bandera = Globales.bdTemp.conectarBD(Globales.bdTemp.generarURL());
+            if(bandera != false){
+                EditarCliente editarCliente = new EditarCliente();
+                editarCliente.setClienteID(clienteID);
+                editarCliente.setVisible(true);
+                this.dispose();
+            }
+            else{
+                JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
