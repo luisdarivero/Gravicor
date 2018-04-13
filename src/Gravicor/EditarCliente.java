@@ -5,6 +5,9 @@
  */
 package Gravicor;
 
+import java.util.LinkedList;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Daniel
@@ -25,6 +28,34 @@ public class EditarCliente extends javax.swing.JFrame {
     private void initMyComponents(){
         //tituloLB.setText(this.clienteID.toString());
         clienteIDTB.setText(clienteID.toString());
+        try{
+            String query = "SELECT DISTINCT CLIENTE.NOMBRECLIENTE, \n" +
+                "	(SELECT PRECIO_CLIENTE_MATERIAL.PRECIO\n" +
+                "     FROM PRECIO_CLIENTE_MATERIAL\n" +
+                "     WHERE  PRECIO_CLIENTE_MATERIAL.CLIENTEID = CLIENTE.CLIENTEID AND PRECIO_CLIENTE_MATERIAL.MATERIALID = 1 ) AS 'GRAVAUNMEDIO',\n" +
+                "	 (SELECT PRECIO_CLIENTE_MATERIAL.PRECIO\n" +
+                "     FROM PRECIO_CLIENTE_MATERIAL\n" +
+                "     WHERE  PRECIO_CLIENTE_MATERIAL.CLIENTEID = CLIENTE.CLIENTEID AND PRECIO_CLIENTE_MATERIAL.MATERIALID = 2 ) AS 'GRAVATRESCUARTOS',\n" +
+                "	 (SELECT PRECIO_CLIENTE_MATERIAL.PRECIO\n" +
+                "     FROM PRECIO_CLIENTE_MATERIAL\n" +
+                "     WHERE  PRECIO_CLIENTE_MATERIAL.CLIENTEID = CLIENTE.CLIENTEID AND PRECIO_CLIENTE_MATERIAL.MATERIALID = 3 ) AS 'ARENILLA'\n" +
+                "FROM CLIENTE, PRECIO_CLIENTE_MATERIAL\n" +
+                "WHERE CLIENTE.CLIENTEID = PRECIO_CLIENTE_MATERIAL.CLIENTEID AND CLIENTE.CLIENTEID = "+ clienteID.toString();
+            String[] columnas = {"NOMBRECLIENTE","GRAVAUNMEDIO","GRAVATRESCUARTOS","ARENILLA"};
+            
+            LinkedList<LinkedList<String>> infoCliente = Globales.bdTemp.select(query, columnas);
+            if(infoCliente == null || infoCliente.size() < 1){
+                throw new NoConectionDataBaseException("Error de conexión a la base de datos: " + Globales.bdTemp.getUltimoError());
+            }
+            clienteTF.setText(infoCliente.get(0).get(0));
+            gravamedioTF.setText(infoCliente.get(1).get(0));
+            gravaTresCuartosTF.setText(infoCliente.get(2).get(0));
+            arenillaTF.setText(infoCliente.get(3).get(0));
+        }
+        catch(NoConectionDataBaseException e){
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+        }
+        
     }
     
     private Integer clienteID = 1;
@@ -49,10 +80,12 @@ public class EditarCliente extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         clienteIDTB = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
+        clienteTF = new javax.swing.JTextField();
+        gravamedioTF = new javax.swing.JTextField();
+        gravaTresCuartosTF = new javax.swing.JTextField();
+        arenillaTF = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -69,9 +102,26 @@ public class EditarCliente extends javax.swing.JFrame {
 
         jLabel5.setText("Precio arenilla:");
 
+        clienteIDTB.setEditable(false);
         clienteIDTB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clienteIDTBActionPerformed(evt);
+            }
+        });
+
+        clienteTF.setEditable(false);
+
+        jButton1.setText("Aceptar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Cancelar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
             }
         });
 
@@ -82,19 +132,26 @@ public class EditarCliente extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(200, 200, 200)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton2)
                     .addComponent(jLabel5)
                     .addComponent(jLabel4)
                     .addComponent(jLabel3)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2))
-                .addGap(100, 100, 100)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(clienteIDTB, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
-                    .addComponent(jTextField2)
-                    .addComponent(jTextField3)
-                    .addComponent(jTextField4)
-                    .addComponent(jTextField5))
-                .addContainerGap(132, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(100, 100, 100)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(clienteIDTB, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
+                            .addComponent(clienteTF)
+                            .addComponent(gravamedioTF)
+                            .addComponent(gravaTresCuartosTF)
+                            .addComponent(arenillaTF))
+                        .addContainerGap(132, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1)
+                        .addGap(191, 191, 191))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -106,20 +163,24 @@ public class EditarCliente extends javax.swing.JFrame {
                 .addGap(28, 28, 28)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(clienteTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(gravamedioTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(31, 31, 31)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(gravaTresCuartosTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(191, Short.MAX_VALUE))
+                    .addComponent(arenillaTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(74, 74, 74)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
+                .addContainerGap(94, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -139,6 +200,67 @@ public class EditarCliente extends javax.swing.JFrame {
     private void clienteIDTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clienteIDTBActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_clienteIDTBActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        try{
+            if(clienteIDTB.getText().equals(new String(""))){
+                throw new NoTypeRequiredException("No existe un valor de cliente seleccionado");
+            }
+            float gravaMedio;
+            try{
+                gravaMedio = Float.parseFloat(gravamedioTF.getText());
+            }
+            catch(Exception e){
+                throw new NoTypeRequiredException("Introduce un valor correcto para el precio de la grava de un medio (numérico)");
+            }
+            float gravaTresCuartos;
+            try{
+                gravaTresCuartos = Float.parseFloat(gravaTresCuartosTF.getText());
+            }
+            catch(Exception e){
+                throw new NoTypeRequiredException("Introduce un valor correcto para el precio de la grava de tres cuartos (numérico)");
+            }
+            float arenilla;
+            try{
+                arenilla = Float.parseFloat(arenillaTF.getText());
+            }
+            catch(Exception e){
+                throw new NoTypeRequiredException("Introduce un valor correcto para el precio de la arenilla (numérico)");
+            }
+            boolean actualizarCliente = Globales.bdTemp.editarCliente(this.clienteID, Float.parseFloat(gravamedioTF.getText()),  Float.parseFloat(gravaTresCuartosTF.getText()),
+                     Float.parseFloat(arenillaTF.getText()));
+            if(!actualizarCliente){
+                throw new NoConectionDataBaseException("Error al actualizar el cliente: " + Globales.bdTemp.getUltimoError());
+            }
+            else{
+                GestionarClientes clientes = new GestionarClientes();
+                clientes.setVisible(true);
+                this.dispose();
+            }
+            
+        }
+        catch(NoTypeRequiredException e){
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error al guardar el registro", JOptionPane.WARNING_MESSAGE);
+        }
+        catch(NoConectionDataBaseException e){
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+        }
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        boolean bandera = Globales.bdTemp.conectarBD(Globales.bdTemp.generarURL());
+        if(bandera != false){
+            GestionarClientes regresar = new GestionarClientes();
+            regresar.setVisible(true);
+            this.dispose();
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -176,16 +298,18 @@ public class EditarCliente extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField arenillaTF;
     private javax.swing.JTextField clienteIDTB;
+    private javax.swing.JTextField clienteTF;
+    private javax.swing.JTextField gravaTresCuartosTF;
+    private javax.swing.JTextField gravamedioTF;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
     // End of variables declaration//GEN-END:variables
 }

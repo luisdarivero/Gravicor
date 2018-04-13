@@ -160,6 +160,42 @@ public class BD {
         return false;
     }
     
+    public boolean editarCliente(int idCliente, float precioGravaMedio, float precioGravaTresCuartos, float precioArenilla ){
+        if (!(this.isConectado = conectarBD(generarURL()))){
+            return false;
+        }
+        int queryReturn;
+        try{
+            //se consulta el stored procedure
+            Connection con = this.getConexion();
+        
+            CallableStatement proc_stmt = con.prepareCall("{? = call EDITARCLIENTE(?,?,?,?) }");
+            proc_stmt.registerOutParameter(1, java.sql.Types.INTEGER);
+            proc_stmt.setInt(2, idCliente);
+            proc_stmt.setFloat(3, precioGravaMedio);
+            proc_stmt.setFloat(4, precioGravaTresCuartos);
+            proc_stmt.setFloat(5, precioArenilla);  
+
+            boolean rs = proc_stmt.execute();//regresar null si esta variable es falsa por que hay un error
+            queryReturn = proc_stmt.getInt(1);
+            if(queryReturn != -1 && queryReturn != 0 && queryReturn !=1){
+             throw new Exception("Error ineserado, valor de retorno invalido de procedimiento 'INSERTARCLIENTE'");   
+            }
+        }
+        catch(Exception e){
+            this.setUltimoError(e.getMessage());
+            return false;
+        }
+        if(queryReturn == -1){
+            this.setUltimoError("El ID del cliente especificado no existe");
+            return false;
+        }
+        else if(queryReturn == 0){
+            this.setUltimoError("Error inesperado en el procedimiento 'EDITARCLIENTE' al tratar de registrar los datos");
+        }
+        return true;
+    }
+    
     public boolean insertarCliente(String nombreCliente, float precioGravaMedio, float precioGravaTresCuartos, float precioArenilla){
         if (!(this.isConectado = conectarBD(generarURL()))){
             return false;
