@@ -177,9 +177,10 @@ public class BD {
             proc_stmt.setFloat(5, precioArenilla);  
 
             boolean rs = proc_stmt.execute();//regresar null si esta variable es falsa por que hay un error
+            
             queryReturn = proc_stmt.getInt(1);
             if(queryReturn != -1 && queryReturn != 0 && queryReturn !=1){
-             throw new Exception("Error ineserado, valor de retorno invalido de procedimiento 'INSERTARCLIENTE'");   
+             throw new Exception("Error ineserado, valor de retorno invalido de procedimiento 'EDITARCLIENTE'");   
             }
         }
         catch(Exception e){
@@ -211,8 +212,10 @@ public class BD {
             proc_stmt.setFloat(3, precioGravaMedio);
             proc_stmt.setFloat(4, precioGravaTresCuartos);
             proc_stmt.setFloat(5, precioArenilla);  
+            
 
             boolean rs = proc_stmt.execute();//regresar null si esta variable es falsa por que hay un error
+            
             queryReturn = proc_stmt.getInt(1);
             if(queryReturn != -1 && queryReturn != 0 && queryReturn !=1){
              throw new Exception("Error ineserado, valor de retorno invalido de procedimiento 'INSERTARCLIENTE'");   
@@ -228,8 +231,230 @@ public class BD {
         }
         else if(queryReturn == 0){
             this.setUltimoError("Error inesperado en el procediiento 'INSERTARCLIENTE' al tratar de registrar los datos");
+            return false;
         }
         return true;
+    }
+    
+    public int obtenerClienteID(String nombreCliente){
+        if (!(this.isConectado = conectarBD(generarURL()))){
+            return -3;
+        }
+        int queryReturn;
+        try{
+            //se consulta el stored procedure
+            Connection con = this.getConexion();
+        
+            CallableStatement proc_stmt = con.prepareCall("{? = call OBTENERCLIENTE(?) }");
+            proc_stmt.registerOutParameter(1, java.sql.Types.INTEGER);
+            proc_stmt.setString(2, nombreCliente);
+            
+            boolean rs = proc_stmt.execute();//regresar null si esta variable es falsa por que hay un error
+            
+            queryReturn = proc_stmt.getInt(1);
+            if(queryReturn < -2){
+                throw new Exception("Valor de retorno inesperado al ejecutar la instrucción 'OBTENERCLIENTE'");  
+            }
+        }
+        catch(Exception e){
+            this.setUltimoError(e.getMessage());
+            return -3;
+        }
+        if(queryReturn == -1){
+            this.setUltimoError("No existe el registro insertado al ejecutar 'OBTENERCLIENTE': " + nombreCliente);
+            return -2;
+        }
+        else if(queryReturn == -2){
+            this.setUltimoError("Error inesperado en el procedimiento 'OBTENERCLIENTE' al tratar de buscar un dato");
+            return -2;
+        }
+        return queryReturn;
+    }
+    
+    public int obtenerMaterialID(String nombreMaterial){
+        if (!(this.isConectado = conectarBD(generarURL()))){
+            return -3;
+        }
+        int queryReturn;
+        try{
+            //se consulta el stored procedure
+            Connection con = this.getConexion();
+        
+            CallableStatement proc_stmt = con.prepareCall("{? = call OBTENERMATERIAL(?) }");
+            proc_stmt.registerOutParameter(1, java.sql.Types.INTEGER);
+            proc_stmt.setString(2, nombreMaterial);
+            
+            boolean rs = proc_stmt.execute();//regresar null si esta variable es falsa por que hay un error
+            
+            queryReturn = proc_stmt.getInt(1);
+            if(queryReturn < -2){
+                throw new Exception("Valor de retorno inesperado al ejecutar la instrucción 'OBTENERMATERIAL'");  
+            }
+        }
+        catch(Exception e){
+            this.setUltimoError(e.getMessage());
+            return -3;
+        }
+        if(queryReturn == -1){
+            this.setUltimoError("No existe el registro insertado al ejecutar 'OBTENERMATERIAL': " + nombreMaterial);
+            return -2;
+        }
+        else if(queryReturn == -2){
+            this.setUltimoError("Error inesperado en el procedimiento 'OBTENERMATERIAL' al tratar de buscar un dato");
+            return -2;
+        }
+        return queryReturn;
+    }
+    
+    public int obtenerPlantaId(String nombrePlanta){
+        if (!(this.isConectado = conectarBD(generarURL()))){
+            return -3;
+        }
+        int queryReturn;
+        try{
+            //se consulta el stored procedure
+            Connection con = this.getConexion();
+        
+            CallableStatement proc_stmt = con.prepareCall("{? = call OBTENERPLANTA(?) }");
+            proc_stmt.registerOutParameter(1, java.sql.Types.INTEGER);
+            proc_stmt.setString(2, nombrePlanta);
+            
+            boolean rs = proc_stmt.execute();//regresar null si esta variable es falsa por que hay un error
+            
+            queryReturn = proc_stmt.getInt(1);
+            if(queryReturn < -2){
+                throw new Exception("Valor de retorno inesperado al ejecutar la instrucción 'OBTENERPLANTA'");  
+            }
+        }
+        catch(Exception e){
+            this.setUltimoError(e.getMessage());
+            return -3;
+        }
+        if(queryReturn == -1){
+            this.setUltimoError("No existe el registro insertado al ejecutar 'OBTENERPLANTA': " + nombrePlanta);
+            return -2;
+        }
+        else if(queryReturn == -2){
+            this.setUltimoError("Error inesperado en el procedimiento 'OBTENERPLANTA' al tratar de buscar un dato");
+            return -2;
+        }
+        return queryReturn;
+    }
+    
+    public int obtenerUsuarioID(String username){
+        if (!(this.isConectado = conectarBD(generarURL()))){
+            return -3;
+        }
+        int queryReturn;
+        try{
+            //se consulta el stored procedure
+            Connection con = this.getConexion();
+        
+            CallableStatement proc_stmt = con.prepareCall("{? = call OBTENERUSUARIO(?) }");
+            proc_stmt.registerOutParameter(1, java.sql.Types.INTEGER);
+            proc_stmt.setString(2, username);
+            
+            boolean rs = proc_stmt.execute();//regresar null si esta variable es falsa por que hay un error
+            
+            queryReturn = proc_stmt.getInt(1);
+            if(queryReturn < -2){
+                throw new Exception("Valor de retorno inesperado al ejecutar la instrucción 'OBTENERUSUARIO'");  
+            }
+        }
+        catch(Exception e){
+            this.setUltimoError(e.getMessage());
+            return -3;
+        }
+        if(queryReturn == -1){
+            this.setUltimoError("No existe el registro insertado al ejecutar 'OBTENERUSUARIO': " + username);
+            return -1;
+        }
+        else if(queryReturn == -2){
+            this.setUltimoError("Error inesperado en el procedimiento 'OBTENERUSUARIO' al tratar de buscar un dato");
+            return -2;
+        }
+        return queryReturn;
+    }
+    
+    public Float obtenerPrecioClienteMaterial(String nombreCliente, String nombreMaterial){
+        Integer idCliente = obtenerClienteID(nombreCliente);
+        //System.out.println(nombreCliente + " = " + idCliente);
+        if(idCliente < 0){
+            return (float)-1.0;
+        }
+        Integer idMaterial = obtenerMaterialID(nombreMaterial);
+        //System.out.println(nombreMaterial + " = " + idMaterial);
+        
+        if(idMaterial < 0){
+            return (float)-2.0;
+        }
+        
+        String query = "SELECT P.PRECIO FROM PRECIO_CLIENTE_MATERIAL AS P WHERE P.CLIENTEID = "+idCliente+" AND P.MATERIALID = "+idMaterial;
+        String[] columnas = {"PRECIO"};
+        
+        LinkedList<LinkedList<String>> precio = select(query,columnas);
+        if(precio == null){
+            return (float)-3;
+        }
+        if(precio.size() < 1){
+            this.setUltimoError("Error inesperado al obtener los datos desde el query en el método 'obtenerPrecioClienteMaterial' de Java");
+            return (float) -4;
+        }
+       
+        Float resultado = (float)0.0;
+        try{
+            resultado = Float.parseFloat(precio.get(0).get(0));
+        }
+        catch(Exception e){
+            this.setUltimoError("Error al convertir el tipo de dato a Flotante en el método 'obtenerPrecioClienteMaterial' de Java");
+            return (float) -5;
+        }
+        
+        return resultado;
+    }
+    
+    public Integer insertarVenta(int clienteID, int materialID, String folioTransportista, String matriculaCamion, String nombreChofer,
+            int plantaID, int usuarioID, float costoOperativoPlanta, boolean esFacturado, float precioM3, float cantidadM3 ){
+        if (!(this.isConectado = conectarBD(generarURL()))){
+            return -3;
+        }
+        int queryReturn;
+        try{
+            //se consulta el stored procedure
+            Connection con = this.getConexion();
+        
+            CallableStatement proc_stmt = con.prepareCall("{? = call INSERTARVENTA(?,?,?,?,?,?,?,?,?,?,?) }");
+            proc_stmt.registerOutParameter(1, java.sql.Types.INTEGER);
+            proc_stmt.setInt(2, clienteID);
+            proc_stmt.setInt(3, materialID);
+            proc_stmt.setString(4, folioTransportista);
+            proc_stmt.setString(5, matriculaCamion);
+            proc_stmt.setString(6, nombreChofer);
+            proc_stmt.setInt(7, plantaID);
+            proc_stmt.setInt(8, usuarioID);
+            proc_stmt.setFloat(9, costoOperativoPlanta);
+            proc_stmt.setBoolean(10, esFacturado);
+            proc_stmt.setFloat(11, precioM3);
+            proc_stmt.setFloat(12, cantidadM3);
+            
+            
+            boolean rs = proc_stmt.execute();//regresar null si esta variable es falsa por que hay un error
+            
+            queryReturn = proc_stmt.getInt(1);
+            if(queryReturn < -1){
+                throw new Exception("Valor de retorno inesperado al ejecutar la instrucción 'OBTENERPLANTA'");  
+            }
+        }
+        catch(Exception e){
+            this.setUltimoError(e.getMessage());
+            return -2;
+        }
+        if(queryReturn == -1){
+            this.setUltimoError("Hubo un error al registrar la venta");
+            return -1;
+        }
+        
+        return queryReturn;
     }
 
     public Connection getConexion() {

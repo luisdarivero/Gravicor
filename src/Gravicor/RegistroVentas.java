@@ -5,6 +5,12 @@
  */
 package Gravicor;
 
+import java.util.LinkedList;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
+
 /**
  *
  * @author Daniel
@@ -21,6 +27,104 @@ public class RegistroVentas extends javax.swing.JFrame {
         this.setTitle("Registrar Ventas");
         
         
+        try{
+            SpinnerModel model =new SpinnerNumberModel(0, //initial value
+                                   0, //min
+                                   100, //max
+                                   1);
+            cantidadS.setModel(model);
+            //informacion general (folio venta y fecha)
+            String query = "SELECT convert(varchar, getdate(), 106) AS FECHA, MAX(VENTA.VENTAID) AS IDMAX FROM VENTA";
+            String[] columnas = {"FECHA","IDMAX"};
+            LinkedList<LinkedList<String>> datosGenerales = Globales.bdTemp.select(query,columnas);
+
+            if(datosGenerales == null || datosGenerales.size() <1){
+                throw new NoConectionDataBaseException("Error al conectar con la base de datos: "
+                                                            + Globales.baseDatos.getUltimoError());
+            }
+            
+            fechaTB.setText(datosGenerales.get(0).get(0));
+            numeroVentaL.setText(numeroVentaL.getText() + (Integer.parseInt(datosGenerales.get(1).get(0)) + 1));
+            
+            //llenar combo boxes----
+            query = "SELECT C.NOMBRECLIENTE FROM CLIENTE AS C";
+            String[] columnasCliente = {"NOMBRECLIENTE"};
+            LinkedList<LinkedList<String>> datosClientes = Globales.bdTemp.select(query,columnasCliente);
+            if(datosClientes == null || datosClientes.size() < 1){
+                throw new NoConectionDataBaseException("Error al conectar con la base de datos: "
+                                                            + Globales.baseDatos.getUltimoError());
+            }
+            String[] modeloDescripcion = new String[datosClientes.get(0).size()];
+            for(int i = 0; i<datosClientes.get(0).size(); i++){
+                modeloDescripcion[i] = datosClientes.get(0).get(i);
+            }
+            
+            DefaultComboBoxModel clientesModel = new DefaultComboBoxModel(modeloDescripcion);
+            clienteCB.setModel(clientesModel);
+            //--PARTE DE LOS MATERIALES
+            query = "SELECT M.DESCRIPCIONMATERIAL FROM MATERIAL AS M";
+            String[] columnasMaterial = {"DESCRIPCIONMATERIAL"};
+            LinkedList<LinkedList<String>> datosMaterial = Globales.bdTemp.select(query,columnasMaterial);
+            if(datosMaterial == null || datosMaterial.size() < 1){
+                throw new NoConectionDataBaseException("Error al conectar con la base de datos: "
+                                                            + Globales.baseDatos.getUltimoError());
+            }
+            String[] modeloMaterial = new String[datosMaterial.get(0).size()];
+            for(int i = 0; i<datosMaterial.get(0).size(); i++){
+                modeloMaterial[i] = datosMaterial.get(0).get(i);
+            }
+            
+            DefaultComboBoxModel materialModel = new DefaultComboBoxModel(modeloMaterial);
+            materialCB.setModel(materialModel);
+            
+            //--parte de las plantas
+            query = "SELECT P.NOMBREPLANTA FROM PLANTA AS P";
+            String[] columnasPlanta = {"NOMBREPLANTA"};
+            LinkedList<LinkedList<String>> datosPlanta = Globales.bdTemp.select(query,columnasPlanta);
+            if(datosPlanta == null || datosPlanta.size() < 1){
+                throw new NoConectionDataBaseException("Error al conectar con la base de datos: "
+                                                            + Globales.baseDatos.getUltimoError());
+            }
+            String[] modeloPlanta = new String[datosPlanta.get(0).size()];
+            for(int i = 0; i<datosPlanta.get(0).size(); i++){
+                modeloPlanta[i] = datosPlanta.get(0).get(i);
+            }
+            
+            DefaultComboBoxModel plantaModel = new DefaultComboBoxModel(modeloPlanta);
+            plantaCB.setModel(plantaModel);
+            
+        }
+        catch(NoConectionDataBaseException e){
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        
+    }
+    
+    private Float actualizarPrecio(){
+        String nombreCliente = (String)clienteCB.getSelectedItem();
+        String nombreMaterial = (String)materialCB.getSelectedItem();
+        
+        if(nombreCliente == null || nombreCliente.equals("")
+                || nombreMaterial == null || nombreMaterial.equals("")){
+            return (float)-1;
+        }
+        
+        int cantidadMaterial = (Integer) cantidadS.getValue();
+        
+        Float precio = Globales.bdTemp.obtenerPrecioClienteMaterial(nombreCliente, nombreMaterial);
+        Float resultado = precio;
+        
+        if(precio < 0){
+            JOptionPane.showMessageDialog(this, "Error al calcular el precio de la venta: " + Globales.bdTemp.getUltimoError(), 
+                    "Error al calcular el precio de la venta", JOptionPane.ERROR_MESSAGE);
+            return (float)-1;
+        }
+        
+        precio = precio * cantidadMaterial;
+        
+        montoTF.setText("$ " + precio.toString());
+        return resultado;
     }
 
     /**
@@ -37,14 +141,13 @@ public class RegistroVentas extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         clienteCB = new javax.swing.JComboBox<>();
         pagoCB = new javax.swing.JComboBox<>();
-        montoTF = new javax.swing.JTextField();
         materialCB = new javax.swing.JComboBox<>();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jComboBox5 = new javax.swing.JComboBox<>();
+        folioTransportistaTF = new javax.swing.JTextField();
+        nombreChoferTF = new javax.swing.JTextField();
+        matri = new javax.swing.JTextField();
+        plantaCB = new javax.swing.JComboBox<>();
         jButton2 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        numeroVentaL = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -55,7 +158,8 @@ public class RegistroVentas extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         fechaTB = new javax.swing.JTextField();
-        jSpinner1 = new javax.swing.JSpinner();
+        cantidadS = new javax.swing.JSpinner();
+        montoTF = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -71,6 +175,11 @@ public class RegistroVentas extends javax.swing.JFrame {
         });
 
         clienteCB.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
+        clienteCB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clienteCBActionPerformed(evt);
+            }
+        });
 
         pagoCB.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
         pagoCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-", "Efectivo" }));
@@ -80,9 +189,6 @@ public class RegistroVentas extends javax.swing.JFrame {
             }
         });
 
-        montoTF.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
-        montoTF.setEnabled(false);
-
         materialCB.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
         materialCB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -90,18 +196,18 @@ public class RegistroVentas extends javax.swing.JFrame {
             }
         });
 
-        jTextField3.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
+        folioTransportistaTF.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
+        folioTransportistaTF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
+                folioTransportistaTFActionPerformed(evt);
             }
         });
 
-        jTextField4.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
+        nombreChoferTF.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
 
-        jTextField5.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
+        matri.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
 
-        jComboBox5.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
+        plantaCB.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/ContinuarAzul.png"))); // NOI18N
         jButton2.setContentAreaFilled(false);
@@ -113,8 +219,8 @@ public class RegistroVentas extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Calibri", 1, 36)); // NOI18N
-        jLabel1.setText("Venta: #");
+        numeroVentaL.setFont(new java.awt.Font("Calibri", 1, 36)); // NOI18N
+        numeroVentaL.setText("Folio de Venta: #");
 
         jLabel2.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         jLabel2.setText("Cliente:");
@@ -135,7 +241,7 @@ public class RegistroVentas extends javax.swing.JFrame {
         jLabel8.setText("Folio Transportista:");
 
         jLabel9.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
-        jLabel9.setText("Matricula camión:");
+        jLabel9.setText("Matrícula camión:");
 
         jLabel10.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         jLabel10.setText("Nombre chofer:");
@@ -146,7 +252,16 @@ public class RegistroVentas extends javax.swing.JFrame {
         fechaTB.setEditable(false);
         fechaTB.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
-        jSpinner1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        cantidadS.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        cantidadS.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                cantidadSStateChanged(evt);
+            }
+        });
+
+        montoTF.setEditable(false);
+        montoTF.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
+        montoTF.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -154,9 +269,9 @@ public class RegistroVentas extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 275, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(240, 240, 240)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 169, Short.MAX_VALUE)
+                .addComponent(numeroVentaL, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(40, 40, 40)
                 .addComponent(fechaTB, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(90, 90, 90))
             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -178,14 +293,14 @@ public class RegistroVentas extends javax.swing.JFrame {
                                 .addGroup(jPanel2Layout.createSequentialGroup()
                                     .addComponent(jLabel4)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(montoTF, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(montoTF, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(jPanel2Layout.createSequentialGroup()
                                     .addComponent(jLabel7)
                                     .addGap(18, 18, 18)
                                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jComboBox5, 0, 204, Short.MAX_VALUE)
-                                        .addComponent(jTextField5)
-                                        .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(plantaCB, 0, 204, Short.MAX_VALUE)
+                                        .addComponent(matri)
+                                        .addComponent(cantidadS, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addGap(29, 29, 29)
@@ -193,8 +308,8 @@ public class RegistroVentas extends javax.swing.JFrame {
                         .addGap(78, 78, 78))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.LEADING))
+                            .addComponent(nombreChoferTF, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
+                            .addComponent(folioTransportistaTF, javax.swing.GroupLayout.Alignment.LEADING))
                         .addGap(28, 28, 28)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel9)
@@ -209,14 +324,16 @@ public class RegistroVentas extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(70, 70, 70))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(fechaTB, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))
-                        .addGap(75, 75, 75)))
+                        .addComponent(fechaTB, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(79, 79, 79))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(68, 68, 68)
+                                .addComponent(numeroVentaL)))
+                        .addGap(55, 55, 55)))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(clienteCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(pagoCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -227,24 +344,24 @@ public class RegistroVentas extends javax.swing.JFrame {
                     .addComponent(materialCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5)
                     .addComponent(jLabel7)
-                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cantidadS, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(68, 68, 68)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(folioTransportistaTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(matri, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(49, 49, 49)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nombreChoferTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10)
                     .addComponent(jLabel11)
-                    .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                    .addComponent(plantaCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(montoTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(19, 19, 19)
+                .addGap(24, 24, 24)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -260,8 +377,9 @@ public class RegistroVentas extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -285,28 +403,120 @@ public class RegistroVentas extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void pagoCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pagoCBActionPerformed
-        if(pagoCB.getSelectedItem().equals("-")){
-            montoTF.setEnabled(false);
-        }
-        else{
-            montoTF.setEnabled(true);
-        }
+        
     }//GEN-LAST:event_pagoCBActionPerformed
 
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+    private void folioTransportistaTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_folioTransportistaTFActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
+    }//GEN-LAST:event_folioTransportistaTFActionPerformed
 
     private void materialCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_materialCBActionPerformed
-       
+        actualizarPrecio();
     }//GEN-LAST:event_materialCBActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        GestionDeVentas ventas= new GestionDeVentas();
-            ventas.setVisible(true);
+        // validar todos los datos para meterlos al sistema
+        
+        try{
+            Float precioClienteMaterial = (float)0;
+            try{
+                precioClienteMaterial = actualizarPrecio();
+                if(precioClienteMaterial < 0){
+                    throw new Exception();
+                }
+            }
+            catch(Exception e){
+                throw new NoTypeRequiredException("Error al calcular el precio de la venta");
+            }
+            
+            int cantidadM3 = (int)cantidadS.getValue();
+            
+            if(cantidadM3 <1){
+                throw new NoTypeRequiredException("No hay un valor correcto designado para el campo 'Cantidad(M3)'");
+            }
+            if(folioTransportistaTF.getText().equals("") || folioTransportistaTF.getText().length() < 3 || 
+                    folioTransportistaTF.getText().length() > 50){
+                throw new NoTypeRequiredException("No hay un valor correcto designado para el campo 'Folio Transportista'");
+            }
+            if(matri.getText().equals("") || matri.getText().length() < 3 || matri.getText().length() > 50){
+                throw new NoTypeRequiredException("No hay un valor correcto designado para el campo 'Matrícula Camión'");
+            }
+            if(nombreChoferTF.getText().equals("") || nombreChoferTF.getText().length() < 4 || nombreChoferTF.getText().length() > 50){
+                throw new NoTypeRequiredException("No hay un valor correcto designado para el campo 'Nombre Chofer'");
+            }
+            
+            Integer idCliente = Globales.bdTemp.obtenerClienteID((String)clienteCB.getSelectedItem());
+            //System.out.println(nombreCliente + " = " + idCliente);
+            if(idCliente < 0){
+                throw new NoConectionDataBaseException("Error al conectar con la base de datos: "
+                + Globales.baseDatos.getUltimoError());
+            }
+            Integer idMaterial = Globales.bdTemp.obtenerMaterialID((String)materialCB.getSelectedItem());
+            //System.out.println(nombreMaterial + " = " + idMaterial);
+
+            if(idMaterial < 0){
+                throw new NoConectionDataBaseException("Error al conectar con la base de datos: "
+                + Globales.baseDatos.getUltimoError());
+            }
+            
+            Float monto = (float)0;
+            try{
+                monto = Float.parseFloat(montoTF.getText().replace("$", ""));
+                if(monto<0){
+                    throw new Exception("El monto calculado fue negativo");
+                }
+            }
+            catch(Exception e){
+                throw new NoTypeRequiredException("No se ha calculado correctamente el campo 'Monto': " + e.getMessage());
+            }
+            
+            Integer idPlanta = Globales.bdTemp.obtenerPlantaId((String)plantaCB.getSelectedItem());
+            if(idPlanta <0){
+                throw new NoConectionDataBaseException("Error al conectar con la base de datos: "
+                + Globales.baseDatos.getUltimoError());
+            }
+            String tipoPago = (String)pagoCB.getSelectedItem();
+            boolean esFacturado = false;
+            if(tipoPago.equals("Efectivo")){
+                esFacturado = true;
+                System.out.println("esEfectivo");
+            }
+            //aqui se terminan de validar los imputs y se realiza el insert
+            
+            int validacion = Globales.bdTemp.insertarVenta(idCliente, idMaterial, folioTransportistaTF.getText().toLowerCase(), 
+                    matri.getText().toLowerCase(), nombreChoferTF.getText().toLowerCase(), idPlanta, 
+                    Globales.bdTemp.obtenerUsuarioID(Globales.currentUser), 0, esFacturado, precioClienteMaterial, cantidadM3);
+            
+            if(validacion != 1){
+                throw new NoConectionDataBaseException("Error al conectar con la base de datos: "
+                + Globales.baseDatos.getUltimoError());
+            }
+            
+            JOptionPane.showMessageDialog(this,"El registro se ha guardado con éxito");
+            
+            RegistroVentas nuevaVenta= new RegistroVentas();
+            nuevaVenta.setVisible(true);
             this.dispose();
+            
+        }
+        catch(NoTypeRequiredException e){
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error de formato", JOptionPane.ERROR_MESSAGE);
+        }
+        catch(NoConectionDataBaseException e){
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+        }
+        
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void clienteCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clienteCBActionPerformed
+        // TODO add your handling code here:
+        actualizarPrecio();
+    }//GEN-LAST:event_clienteCBActionPerformed
+
+    private void cantidadSStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_cantidadSStateChanged
+        // TODO add your handling code here:
+         actualizarPrecio();
+    }//GEN-LAST:event_cantidadSStateChanged
 
     /**
      * @param args the command line arguments
@@ -344,12 +554,12 @@ public class RegistroVentas extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JSpinner cantidadS;
     private javax.swing.JComboBox<String> clienteCB;
     private javax.swing.JTextField fechaTB;
+    private javax.swing.JTextField folioTransportistaTF;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox5;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
@@ -361,12 +571,12 @@ public class RegistroVentas extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
     private javax.swing.JComboBox<String> materialCB;
-    private javax.swing.JTextField montoTF;
+    private javax.swing.JTextField matri;
+    private javax.swing.JFormattedTextField montoTF;
+    private javax.swing.JTextField nombreChoferTF;
+    private javax.swing.JLabel numeroVentaL;
     private javax.swing.JComboBox<String> pagoCB;
+    private javax.swing.JComboBox<String> plantaCB;
     // End of variables declaration//GEN-END:variables
 }
