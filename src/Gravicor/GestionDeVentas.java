@@ -46,8 +46,12 @@ public class GestionDeVentas extends javax.swing.JFrame {
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/historialDelDia1.png"))); // NOI18N
         jButton1.setContentAreaFilled(false);
         jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton1.setEnabled(false);
         jButton1.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/historialDelDia2.png"))); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/RegistrarVentas1.png"))); // NOI18N
         jButton2.setContentAreaFilled(false);
@@ -179,6 +183,19 @@ public class GestionDeVentas extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        boolean bandera = Globales.bdTemp.conectarBD(Globales.bdTemp.generarURL());
+        if(bandera != false){
+            HistorialVentasDelDia ventas= new HistorialVentasDelDia();
+            ventas.setVisible(true);
+            this.dispose();
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

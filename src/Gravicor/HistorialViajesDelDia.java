@@ -19,6 +19,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class HistorialViajesDelDia extends javax.swing.JFrame {
     private MyGregorianCalendar diaHistorial = new MyGregorianCalendar();
+    private String minDate = "2-1-2018";
+    private String maxDate = "1-1-2018";
     /**
      * Creates new form HistorialViajesDelDia
      */
@@ -48,6 +50,7 @@ public class HistorialViajesDelDia extends javax.swing.JFrame {
             calendario.setMinSelectableDate(dia.getTime());
             
             actualizarPantalla(fecha.get(0).get(0));
+            maxDate = getStringDate(diaHistorial.getTime());
            
             
         }
@@ -65,7 +68,10 @@ public class HistorialViajesDelDia extends javax.swing.JFrame {
 "WHERE CAMION.IDCAMION = VIAJE.IDCAMION and VIAJE.ESACTIVO = 1 AND CAMION.IDTIPOCAMION = TIPOCAMION.IDTIPOCAMION AND convert(varchar, VIAJE.FECHA, 105) = '"+fecha+"'\n" +
 "GROUP BY VIAJE.IDCAMION, CAMION.IDCAMION, TIPOCAMION.DESCRIPCION, TIPOCAMION.CAPACIDAD";
             String[] columnas = {"IDCAMION","DESCRIPCION","CAPACIDAD","CONTEO", "SUBTOTALTONELADAS"};
-            Globales.bdTemp.insertarEnTabla(query, columnas, tabla);
+            boolean validacion = Globales.bdTemp.insertarEnTabla(query, columnas, tabla);
+            if(validacion == false){
+                throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.bdTemp.getUltimoError());
+            }
             
             query = "SELECT SUM(TIPOCAMION.CAPACIDAD) AS TOTALMC, SUM(TIPOCAMION.TONELADAS) AS TOTALTONELADAS \n" +
 "FROM VIAJE, CAMION, TIPOCAMION\n" +
@@ -292,16 +298,20 @@ public class HistorialViajesDelDia extends javax.swing.JFrame {
     }
     
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        String fecha = sdf.format(calendario.getDate());
-        String[] resultadoFecha = fecha.split("-");
-        diaHistorial = new MyGregorianCalendar();
-        diaHistorial.set(new Integer(resultadoFecha[2]),new Integer(resultadoFecha[1]) -1,new Integer(resultadoFecha[0]));
-        //System.out.println(sdf.format(diaHistorial.getTime()));
-        //diaHistorial.getTime()
-        limpiarTabla();
+        
         
         try{
+            if(!validateDate(minDate,maxDate, getStringDate(calendario.getDate()))){
+                throw new NoTypeRequiredException("La fecha seleccionada contiene un error, por favor corrigela");
+            }
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            String fecha = sdf.format(calendario.getDate());
+            String[] resultadoFecha = fecha.split("-");
+            diaHistorial = new MyGregorianCalendar();
+            diaHistorial.set(new Integer(resultadoFecha[2]),new Integer(resultadoFecha[1]) -1,new Integer(resultadoFecha[0]));
+            //System.out.println(sdf.format(diaHistorial.getTime()));
+            //diaHistorial.getTime()
+            limpiarTabla();
             actualizarPantalla(fecha);
         }
         catch(NoConectionDataBaseException e){
@@ -365,6 +375,72 @@ public class HistorialViajesDelDia extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    
+    private String getStringDate(Date date){
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        String fecha = "";
+        try{
+            fecha = sdf.format(date);
+        }
+        catch(Exception e){
+            return null;
+        }
+        
+        String[] resultadoFecha = fecha.split("-");
+        if(resultadoFecha.length != 3){
+            return null;
+        }
+        MyGregorianCalendar dia = new MyGregorianCalendar();
+        dia.set(new Integer(resultadoFecha[2]),new Integer(resultadoFecha[1]) -1,new Integer(resultadoFecha[0]));
+        
+        return fecha;
+    }
+    
+    private boolean validateDate(String fechaInicio, String fechaFinal, String fechaActual){
+        if(fechaInicio == null || fechaFinal == null || fechaActual == null){
+            
+            return false;
+        }
+        String[] rInicio = fechaInicio.split("-");
+        String[] rFinal = fechaFinal.split("-");
+        String[] rActual = fechaActual.split("-");
+        if(rInicio.length != 3 || rFinal.length != 3 || rActual.length != 3){
+            
+            return false;
+        }
+        
+        if(Integer.parseInt(rActual[2]) < Integer.parseInt(rInicio[2]) || Integer.parseInt(rActual[2]) > Integer.parseInt(rFinal[2])){
+            
+            return false;
+        }
+        
+        if(Integer.parseInt(rInicio[2]) == Integer.parseInt(rActual[2]) ){
+            if(Integer.parseInt(rInicio[1]) > Integer.parseInt(rActual[1]) ){
+                
+                return false;
+            }
+            else if(Integer.parseInt(rInicio[1]) == Integer.parseInt(rActual[1])){
+                if(Integer.parseInt(rInicio[0]) > Integer.parseInt(rActual[0])){
+                    
+                    return false;
+                }
+            }
+        }
+        
+        if(Integer.parseInt(rFinal[2]) == Integer.parseInt(rActual[2]) ){
+            if(Integer.parseInt(rFinal[1]) < Integer.parseInt(rActual[1]) ){
+                
+                return false;
+            }
+            else if(Integer.parseInt(rFinal[1]) == Integer.parseInt(rActual[1])){
+                if(Integer.parseInt(rFinal[0]) < Integer.parseInt(rActual[0])){
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
     /**
      * @param args the command line arguments
      */
