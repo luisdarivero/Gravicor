@@ -307,7 +307,7 @@ public class HistorialVentasDelDia extends javax.swing.JFrame {
         int numRows = dtm.getRowCount();
         //dtm.removeRow(0);
         dtm.setRowCount(0);
-        String[] columnas = {"","","","",""};
+        String[] columnas = {"","","","","","","",""};
         dtm.addRow(columnas);
     }
     

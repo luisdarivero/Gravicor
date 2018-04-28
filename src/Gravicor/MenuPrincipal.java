@@ -136,6 +136,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
         gastosg.setContentAreaFilled(false);
         gastosg.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         gastosg.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/gestion gastos generales2.png"))); // NOI18N
+        gastosg.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gastosgActionPerformed(evt);
+            }
+        });
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/logoGavicor.png"))); // NOI18N
 
@@ -277,6 +282,19 @@ public class MenuPrincipal extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_reportesBActionPerformed
+
+    private void gastosgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gastosgActionPerformed
+        // TODO add your handling code here:
+        boolean bandera = Globales.bdTemp.conectarBD(Globales.bdTemp.generarURL());
+        if(bandera != false){
+            GestionGastosGenerales gastosGenerales = new GestionGastosGenerales();
+            gastosGenerales.setVisible(true);
+            this.dispose();
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_gastosgActionPerformed
 
     /**
      * @param args the command line arguments
