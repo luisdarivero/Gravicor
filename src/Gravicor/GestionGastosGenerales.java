@@ -98,6 +98,7 @@ public class GestionGastosGenerales extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         mesCB = new javax.swing.JComboBox<>();
         anoCB = new javax.swing.JComboBox<>();
+        totalAcumuladoL = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -112,20 +113,21 @@ public class GestionGastosGenerales extends javax.swing.JFrame {
 
         tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID gasto", "Folio de pago", "Fecha de folio", "Número de factura", "Fecha de factura", "Equipo", "Proovedor"
+                "ID gasto", "Folio de pago", "Fecha de folio", "Número de factura", "Fecha de factura", "Total", "Equipo", "Proovedor"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        tabla.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tabla);
 
         jButton2.setText("Añadir");
@@ -136,8 +138,18 @@ public class GestionGastosGenerales extends javax.swing.JFrame {
         });
 
         jButton3.setText("Editar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Eliminar");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         mesCB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -150,6 +162,9 @@ public class GestionGastosGenerales extends javax.swing.JFrame {
                 anoCBActionPerformed(evt);
             }
         });
+
+        totalAcumuladoL.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        totalAcumuladoL.setText("Total acumulado: 0");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -164,18 +179,21 @@ public class GestionGastosGenerales extends javax.swing.JFrame {
                 .addComponent(jButton2)
                 .addGap(302, 302, 302))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(mesCB, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(55, 55, 55)
-                        .addComponent(anoCB, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(133, 133, 133)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 918, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(31, 31, 31)
+                .addComponent(jButton1)
+                .addGap(650, 650, 650)
+                .addComponent(mesCB, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(55, 55, 55)
+                .addComponent(anoCB, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(98, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 969, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(totalAcumuladoL, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(367, 367, 367))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -187,8 +205,10 @@ public class GestionGastosGenerales extends javax.swing.JFrame {
                         .addComponent(mesCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(anoCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(32, 32, 32)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34)
+                .addComponent(totalAcumuladoL)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
                     .addComponent(jButton3)
@@ -211,16 +231,38 @@ public class GestionGastosGenerales extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void actualizarTabla() throws NoConectionDataBaseException, NoTypeRequiredException{
-        String query = "SELECT G.GASTOGENERALID, G.IDFOLIOPAGO, G.FECHAFOLIOPAGO, G.FOLIOFACTURA,G.FECHAFACTURA, G.EQUIPO, G.PROVEEDOR\n" +
+        limpiarTabla();
+        String query = "SELECT G.GASTOGENERALID, G.IDFOLIOPAGO, G.FECHAFOLIOPAGO, G.FOLIOFACTURA,G.FECHAFACTURA,G.TOTAL, G.EQUIPO, G.PROVEEDOR\n" +
                     "FROM GASTOGENERAL AS G\n" +
                     "WHERE G.ESACTIVO = 1 AND month(G.FECHAFACTURA) = month('"+generarFechaAPedir()+"') and year(G.FECHAFACTURA) = year('"+generarFechaAPedir()+"')";
-        String[] columnasGastos = {"GASTOGENERALID", "IDFOLIOPAGO", "FECHAFOLIOPAGO", "FOLIOFACTURA","FECHAFACTURA", "EQUIPO", "PROVEEDOR"};
+        String[] columnasGastos = {"GASTOGENERALID", "IDFOLIOPAGO", "FECHAFOLIOPAGO", "FOLIOFACTURA","FECHAFACTURA","TOTAL", "EQUIPO", "PROVEEDOR"};
         boolean  bandera = Globales.bdTemp.insertarEnTabla( query,columnasGastos, tabla);
 
         if(bandera == false){
             throw new NoConectionDataBaseException("Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError());
 
         }
+        
+        query = "SELECT SUM(G.TOTAL) AS TOTAL\n" +
+                "FROM GASTOGENERAL AS G\n" +
+                "WHERE G.ESACTIVO = 1 AND month(G.FECHAFACTURA) = month('"+generarFechaAPedir()+"') and year(G.FECHAFACTURA) = year('"+generarFechaAPedir()+"')";
+        String[] columnasTotal = {"TOTAL"};
+        LinkedList<LinkedList<String>> total = Globales.bdTemp.select(query, columnasTotal);
+        if(total == null){
+            throw new NoConectionDataBaseException("Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError());
+        }
+        if(total.size() < 1){
+            throw new NoTypeRequiredException("Error inesperado, no se pudo obtener la suma total requerida");
+        }
+        Float resultadoTotal = (float) 0;
+        try{
+            resultadoTotal = Float.parseFloat(total.get(0).get(0));
+        }
+        catch(Exception e){
+            throw new NoTypeRequiredException("Error inesperado, no fue posible hacer la conversión a un numero flotante");
+        }
+        
+        totalAcumuladoL.setText("Total acumulado: " + resultadoTotal);
     }
     private String[] generarListaMeses(int mes){
         String[] listaMesesF = new String[mes];
@@ -339,6 +381,73 @@ public class GestionGastosGenerales extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        boolean bandera = Globales.bdTemp.conectarBD(Globales.bdTemp.generarURL());
+        if(bandera != false){
+            EditarGastoGeneral gastoGeneral= new EditarGastoGeneral();
+            Integer anoSiguientePantalla = 0;
+            Integer mesSiguientePantalla = 0;
+            try{
+                if(tabla.getSelectedRow() < 0){
+                    throw new Exception("No has seleccionado ningún gasto en la tabla para seleccionar");
+                }
+                Integer plantaID = Integer.parseInt((String) tabla.getModel().getValueAt(tabla.getSelectedRow(), 0));
+                anoSiguientePantalla = Integer.parseInt((String)anoCB.getSelectedItem());
+                mesSiguientePantalla = mesCB.getSelectedIndex() + 1;
+                
+                gastoGeneral.setAnoYMesYgasto(anoSiguientePantalla, mesSiguientePantalla, plantaID);
+                gastoGeneral.setAnoSelectedIndexPrev(anoCB.getSelectedIndex());
+                gastoGeneral.setVisible(true);
+                this.dispose();
+            }
+            catch(Exception e){
+                JOptionPane.showMessageDialog(this, "Error al conectarse con la siguiente pantalla: " + e, "Error inesperado", JOptionPane.ERROR_MESSAGE);
+            }
+            
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        if(tabla.getSelectedRow() < 0){
+            JOptionPane.showMessageDialog(this, "Por favor selecciona de la tabla el viaje que desea eliminar", "Error de selección", JOptionPane.ERROR_MESSAGE);
+        }
+        else{
+            String idGasto = (String)tabla.getModel().getValueAt(tabla.getSelectedRow(), 0);
+            Object[] options = {"SI",
+                    "NO"};
+            int n = JOptionPane.showOptionDialog(this, //si = 0, no = 1
+                "¿Estás seguro que deseas eliminar este registro?",
+                "¿Eliminar registro?",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,     //do not use a custom Icon
+                options,  //the titles of buttons
+                options[0]); //default button title
+            if(n == 0){
+                String query = "UPDATE GASTOGENERAL SET ESACTIVO = 0 WHERE GASTOGENERALID = " + idGasto;
+                try{
+                    boolean bandera = Globales.bdTemp.update(query);
+                    if(bandera == false){
+                        throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.bdTemp.getUltimoError());
+                    }
+                    
+                    actualizarTabla();
+                }
+                catch(NoConectionDataBaseException e){
+                    JOptionPane.showMessageDialog(this, e.getMessage(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+                }
+                catch(NoTypeRequiredException e){
+                    JOptionPane.showMessageDialog(this, e.getMessage(), "Error al guardar el registro", JOptionPane.WARNING_MESSAGE);
+                }
+            }
+            
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -384,6 +493,7 @@ public class GestionGastosGenerales extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JComboBox<String> mesCB;
     private javax.swing.JTable tabla;
+    private javax.swing.JLabel totalAcumuladoL;
     // End of variables declaration//GEN-END:variables
 
 }
