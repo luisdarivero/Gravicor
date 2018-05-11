@@ -3,11 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Daniel/Documents/NetBeansProjects/Gravicor/src/Gravicor/HistorialVentasDelDia.java</file>
             <file>file:/C:/Users/Daniel/Documents/NetBeansProjects/Gravicor/src/Gravicor/BD.java</file>
             <file>file:/C:/Users/Daniel/Documents/NetBeansProjects/Gravicor/src/Gravicor/MenuPrincipal.java</file>
-            <file>file:/C:/Users/Daniel/Documents/NetBeansProjects/Gravicor/src/Gravicor/GestionGastosGenerales.java</file>
-            <file>file:/C:/Users/Daniel/Documents/NetBeansProjects/Gravicor/src/Gravicor/AnadirGastoGeneral.java</file>
+            <file>file:/C:/Users/Daniel/Documents/NetBeansProjects/Gravicor/src/Gravicor/Globales.java</file>
+            <file>file:/C:/Users/Daniel/Documents/NetBeansProjects/Gravicor/src/Gravicor/Registro.java</file>
         </group>
     </open-files>
 </project-private>
