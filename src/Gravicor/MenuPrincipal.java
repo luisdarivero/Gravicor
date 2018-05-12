@@ -231,6 +231,19 @@ public class MenuPrincipal extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton8ActionPerformed
 
+    private void gastosgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gastosgActionPerformed
+        // TODO add your handling code here:
+        boolean bandera = Globales.baseDatos.conectarBD(Globales.baseDatos.generarURL());
+        if(bandera != false){
+            GestionGastosGenerales gastosGenerales = new GestionGastosGenerales();
+            gastosGenerales.setVisible(true);
+            this.dispose();
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.baseDatos.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_gastosgActionPerformed
+
     private void configuracionCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_configuracionCuentaActionPerformed
         boolean bandera = Globales.baseDatos.conectarBD(Globales.baseDatos.generarURL());
         if(bandera != false){
@@ -241,34 +254,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
         else{
             JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.baseDatos.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
         }
-        
+
     }//GEN-LAST:event_configuracionCuentaActionPerformed
-
-    private void gestionGrenaBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gestionGrenaBActionPerformed
-        //pantalla a gestion de piedra en greña
-        boolean bandera = Globales.baseDatos.conectarBD(Globales.baseDatos.generarURL());
-        if(bandera != false){
-            GestionDePiedra piedra= new GestionDePiedra();
-            piedra.setVisible(true);
-            this.dispose();
-        }
-        else{
-            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.baseDatos.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_gestionGrenaBActionPerformed
-
-    private void gestionVentasBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gestionVentasBActionPerformed
-        // TODO add your handling code here:
-        boolean bandera = Globales.baseDatos.conectarBD(Globales.baseDatos.generarURL());
-        if(bandera != false){
-            GestionDeVentas ventas= new GestionDeVentas();
-            ventas.setVisible(true);
-            this.dispose();
-        }
-        else{
-            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.baseDatos.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_gestionVentasBActionPerformed
 
     private void reportesBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportesBActionPerformed
         // TODO add your handling code here:
@@ -283,18 +270,31 @@ public class MenuPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_reportesBActionPerformed
 
-    private void gastosgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gastosgActionPerformed
+    private void gestionVentasBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gestionVentasBActionPerformed
         // TODO add your handling code here:
         boolean bandera = Globales.baseDatos.conectarBD(Globales.baseDatos.generarURL());
         if(bandera != false){
-            GestionGastosGenerales gastosGenerales = new GestionGastosGenerales();
-            gastosGenerales.setVisible(true);
+            GestionDeVentas ventas= new GestionDeVentas();
+            ventas.setVisible(true);
             this.dispose();
         }
         else{
             JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.baseDatos.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_gastosgActionPerformed
+    }//GEN-LAST:event_gestionVentasBActionPerformed
+
+    private void gestionGrenaBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gestionGrenaBActionPerformed
+        //pantalla a gestion de piedra en greña
+        boolean bandera = Globales.baseDatos.conectarBD(Globales.baseDatos.generarURL());
+        if(bandera != false){
+            GestionDePiedra piedra= new GestionDePiedra();
+            piedra.setVisible(true);
+            this.dispose();
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.baseDatos.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_gestionGrenaBActionPerformed
 
     /**
      * @param args the command line arguments

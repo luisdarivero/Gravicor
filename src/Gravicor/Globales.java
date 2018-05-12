@@ -19,11 +19,6 @@ public class Globales {
     public static BD baseDatos = null;
     //guarda el usuario que está dentro del sistema
     public static String currentUser = "luisdaniel";
-    //esta variable temporal de base de datos solo es para pruebas
-    
-    //public static String temp = "1";
-    
-    //public static String ultimaFecha = "25-02-2018";
     
     //funcion que verifica si una cadena de texto es un string valido
     public static boolean isValidEmailAddress(String email) {

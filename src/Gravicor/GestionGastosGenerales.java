@@ -164,7 +164,7 @@ public class GestionGastosGenerales extends javax.swing.JFrame {
         });
 
         totalAcumuladoL.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        totalAcumuladoL.setText("Total acumulado: 0");
+        totalAcumuladoL.setText("Total acumulado: $0");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -255,14 +255,20 @@ public class GestionGastosGenerales extends javax.swing.JFrame {
             throw new NoTypeRequiredException("Error inesperado, no se pudo obtener la suma total requerida");
         }
         Float resultadoTotal = (float) 0;
-        try{
-            resultadoTotal = Float.parseFloat(total.get(0).get(0));
+        if(total.get(0).get(0) == null){
+            
         }
-        catch(Exception e){
-            throw new NoTypeRequiredException("Error inesperado, no fue posible hacer la conversión a un numero flotante");
+        else{
+            try{
+            resultadoTotal = Float.parseFloat(total.get(0).get(0));
+            }
+            catch(Exception e){
+                throw new NoTypeRequiredException("Error inesperado, no fue posible hacer la conversión a un numero flotante");
+            }
         }
         
-        totalAcumuladoL.setText("Total acumulado: " + resultadoTotal);
+        
+        totalAcumuladoL.setText("Total acumulado: $" + resultadoTotal);
     }
     private String[] generarListaMeses(int mes){
         String[] listaMesesF = new String[mes];
