@@ -15,18 +15,17 @@ import javax.swing.table.DefaultTableModel;
  * @author Daniel
  */
 public class Globales {
-    public static BD baseDatos = null;//new BD("LAPTOP-LVSV7Q0O","1433","GRAVICOR","luisdarivero.s@gmail.com","adminJava");// null;
-    //esta variable temporal de base de datos solo es para pruebas
-    public static BD bdTemp =  new BD("LAPTOP-LVSV7Q0O","1433","GRAVICOR","luisdarivero.s@gmail.com","adminJava");
-    
+    //guarda la informacion de la base de datos que hace todas las peticiones
+    public static BD baseDatos = null;
+    //guarda el usuario que está dentro del sistema
     public static String currentUser = "luisdaniel";
+    //esta variable temporal de base de datos solo es para pruebas
     
-    public static String temp = "1";
+    //public static String temp = "1";
     
-    public static String ultimoCamion = "3";
+    //public static String ultimaFecha = "25-02-2018";
     
-    public static String ultimaFecha = "25-02-2018";
-    
+    //funcion que verifica si una cadena de texto es un string valido
     public static boolean isValidEmailAddress(String email) {
         boolean result = true;
         try {

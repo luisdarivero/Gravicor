@@ -33,9 +33,9 @@ public class HistorialVentasDelDia extends javax.swing.JFrame {
         try{
             String queryFecha = "SELECT convert(varchar, getdate(), 105) as FECHA";
             String[] columnasFecha = {"FECHA"};
-            LinkedList<LinkedList<String>> fecha = Globales.bdTemp.select(queryFecha, columnasFecha);
+            LinkedList<LinkedList<String>> fecha = Globales.baseDatos.select(queryFecha, columnasFecha);
             if(fecha == null){
-                throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.bdTemp.getUltimoError());
+                throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.baseDatos.getUltimoError());
             }
             if(fecha.size() <1 || fecha.get(0).size() < 1){
                 throw new NoTypeRequiredException("No se pudo conectar con la base de datos, error inesperado");
@@ -212,9 +212,9 @@ public class HistorialVentasDelDia extends javax.swing.JFrame {
             if(n == 0){
                 String query = "UPDATE VENTA SET ACTIVO = 0 WHERE VENTAID = " + idVenta;
                 try{
-                    boolean bandera = Globales.bdTemp.update(query);
+                    boolean bandera = Globales.baseDatos.update(query);
                     if(bandera == false){
-                        throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.bdTemp.getUltimoError());
+                        throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.baseDatos.getUltimoError());
                     }
                     limpiarTabla();
                     actualizarTabla(getStringDate(diaHistorial.getTime()));
@@ -318,10 +318,10 @@ public class HistorialVentasDelDia extends javax.swing.JFrame {
                     "WHERE V.CLIENTEID = C.CLIENTEID AND V.MATERIALID = M.MATERIALID AND V.ACTIVO = 1 AND convert(varchar, V.FECHAVENTA, 105) "
                 + "= convert(varchar, '"+getStringDate(diaHistorial.getTime())+"', 105) ";
         String[] columnas = {"VENTAID","FOLIOTRANSPORTISTA","HORA","NOMBRECLIENTE","DESCRIPCIONMATERIAL","CANTIDADM3","PRECIOM3"};
-        boolean validacion = Globales.bdTemp.insertarEnTabla(query, columnas, tabla);
+        boolean validacion = Globales.baseDatos.insertarEnTabla(query, columnas, tabla);
         
         if(validacion == false){
-                throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.bdTemp.getUltimoError());
+                throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.baseDatos.getUltimoError());
         }
         
         
@@ -364,14 +364,14 @@ public class HistorialVentasDelDia extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-        boolean bandera = Globales.bdTemp.conectarBD(Globales.bdTemp.generarURL());
+        boolean bandera = Globales.baseDatos.conectarBD(Globales.baseDatos.generarURL());
         if(bandera != false){
             GestionDeVentas ventas= new GestionDeVentas();
             ventas.setVisible(true);
             this.dispose();
         }
         else{
-            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.baseDatos.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 

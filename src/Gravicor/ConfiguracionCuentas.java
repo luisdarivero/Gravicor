@@ -29,10 +29,10 @@ public class ConfiguracionCuentas extends javax.swing.JFrame {
                             "from USUARIO";
             String[] columnas = {"IDUSUARIO", "USERNAME","NOMBRES", "APELLIDOS", "EMAIL", "ACTIVO"};
             
-            boolean  bandera = Globales.bdTemp.insertarEnTabla( query,columnas, tabla);
+            boolean  bandera = Globales.baseDatos.insertarEnTabla( query,columnas, tabla);
             
             if(bandera == false){
-                throw new NoConectionDataBaseException("Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError());
+                throw new NoConectionDataBaseException("Error al conectarse a la base de datos: " + Globales.baseDatos.getUltimoError());
                 
             }
             //tabla.getModel().setValueAt(lista[i][k], k, i);
@@ -185,26 +185,26 @@ public class ConfiguracionCuentas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        boolean bandera = Globales.bdTemp.conectarBD(Globales.bdTemp.generarURL());
+        boolean bandera = Globales.baseDatos.conectarBD(Globales.baseDatos.generarURL());
         if(bandera != false){
             MenuPrincipal menu = new MenuPrincipal();
             menu.setVisible(true);
             this.dispose();
         }
         else{
-            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.baseDatos.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        boolean bandera = Globales.bdTemp.conectarBD(Globales.bdTemp.generarURL());
+        boolean bandera = Globales.baseDatos.conectarBD(Globales.baseDatos.generarURL());
         if(bandera != false){
             AnadirUsuario nuevoU = new AnadirUsuario();
             nuevoU.setVisible(true);
             this.dispose();
         }
         else{
-            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.baseDatos.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -213,15 +213,17 @@ public class ConfiguracionCuentas extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Por favor selecciona de la tabla el usuario que deseas editar", "Error de selección", JOptionPane.ERROR_MESSAGE);
         }
         else{
-            Globales.temp = (String)tabla.getModel().getValueAt(tabla.getSelectedRow(), 0);
-            boolean bandera = Globales.bdTemp.conectarBD(Globales.bdTemp.generarURL());
+            
+            boolean bandera = Globales.baseDatos.conectarBD(Globales.baseDatos.generarURL());
             if(bandera != false){
-                EditarUsuario nuevoU = new EditarUsuario();
-                nuevoU.setVisible(true);
+                EditarUsuario editarU = new EditarUsuario();
+                editarU.setIdUsuario((String)tabla.getModel().getValueAt(tabla.getSelectedRow(), 0));
+                editarU.iniciarPantalla();
+                editarU.setVisible(true);
                 this.dispose();
             }
             else{
-                JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.baseDatos.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
             }
         }
         

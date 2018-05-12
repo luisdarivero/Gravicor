@@ -43,9 +43,9 @@ public class EditarCliente extends javax.swing.JFrame {
                 "WHERE CLIENTE.CLIENTEID = PRECIO_CLIENTE_MATERIAL.CLIENTEID AND CLIENTE.CLIENTEID = "+ clienteID.toString();
             String[] columnas = {"NOMBRECLIENTE","GRAVAUNMEDIO","GRAVATRESCUARTOS","ARENILLA"};
             
-            LinkedList<LinkedList<String>> infoCliente = Globales.bdTemp.select(query, columnas);
+            LinkedList<LinkedList<String>> infoCliente = Globales.baseDatos.select(query, columnas);
             if(infoCliente == null || infoCliente.size() < 1){
-                throw new NoConectionDataBaseException("Error de conexión a la base de datos: " + Globales.bdTemp.getUltimoError());
+                throw new NoConectionDataBaseException("Error de conexión a la base de datos: " + Globales.baseDatos.getUltimoError());
             }
             clienteTF.setText(infoCliente.get(0).get(0));
             gravamedioTF.setText(infoCliente.get(1).get(0));
@@ -228,10 +228,10 @@ public class EditarCliente extends javax.swing.JFrame {
             catch(Exception e){
                 throw new NoTypeRequiredException("Introduce un valor correcto para el precio de la arenilla (numérico)");
             }
-            boolean actualizarCliente = Globales.bdTemp.editarCliente(this.clienteID, Float.parseFloat(gravamedioTF.getText()),  Float.parseFloat(gravaTresCuartosTF.getText()),
+            boolean actualizarCliente = Globales.baseDatos.editarCliente(this.clienteID, Float.parseFloat(gravamedioTF.getText()),  Float.parseFloat(gravaTresCuartosTF.getText()),
                      Float.parseFloat(arenillaTF.getText()));
             if(!actualizarCliente){
-                throw new NoConectionDataBaseException("Error al actualizar el cliente: " + Globales.bdTemp.getUltimoError());
+                throw new NoConectionDataBaseException("Error al actualizar el cliente: " + Globales.baseDatos.getUltimoError());
             }
             else{
                 GestionarClientes clientes = new GestionarClientes();
@@ -251,14 +251,14 @@ public class EditarCliente extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        boolean bandera = Globales.bdTemp.conectarBD(Globales.bdTemp.generarURL());
+        boolean bandera = Globales.baseDatos.conectarBD(Globales.baseDatos.generarURL());
         if(bandera != false){
             GestionarClientes regresar = new GestionarClientes();
             regresar.setVisible(true);
             this.dispose();
         }
         else{
-            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.baseDatos.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 

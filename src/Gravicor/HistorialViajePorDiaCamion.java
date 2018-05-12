@@ -18,23 +18,39 @@ public class HistorialViajePorDiaCamion extends javax.swing.JFrame {
     /**
      * Creates new form HistorialViajePorDiaCamion
      */
+    
+    private String ultimaFecha = "1-1-2018";
+    private String ultimoCamion = "1";
+    
+    public void setUltimaFecha(String fecha){
+        this.ultimaFecha = fecha;
+    }
+    
+    public void setUltimoCamion(String camion){
+        this.ultimoCamion = camion;
+    }
+    
     public HistorialViajePorDiaCamion() {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setTitle("Editar Viajes");
-        fechaTB.setText(Globales.ultimaFecha);
+        iniciarPantalla();
+    }
+    
+    public void iniciarPantalla(){
+        fechaTB.setText(ultimaFecha);
         try{
             
             
             String query ="SELECT CAMION.IDCAMION, TIPOCAMION.DESCRIPCION, CAMION.OPERADOR \n" +
                     "FROM CAMION, TIPOCAMION\n" +
-                    "WHERE CAMION.IDCAMION = " +Globales.ultimoCamion + " AND CAMION.IDTIPOCAMION = TIPOCAMION.IDTIPOCAMION " ;
+                    "WHERE CAMION.IDCAMION = " +ultimoCamion + " AND CAMION.IDTIPOCAMION = TIPOCAMION.IDTIPOCAMION " ;
             String[] columnasDescripcionGeneral = {"IDCAMION", "DESCRIPCION", "OPERADOR" };
-            LinkedList<LinkedList<String>> datosCamion = Globales.bdTemp.select(query, columnasDescripcionGeneral);
+            LinkedList<LinkedList<String>> datosCamion = Globales.baseDatos.select(query, columnasDescripcionGeneral);
             
             if(datosCamion == null){
-                throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.bdTemp.getUltimoError());
+                throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.baseDatos.getUltimoError());
             }
             
             if(datosCamion.size() <1){
@@ -55,28 +71,26 @@ public class HistorialViajePorDiaCamion extends javax.swing.JFrame {
         catch(NoTypeRequiredException e){
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error al guardar el registro", JOptionPane.WARNING_MESSAGE);
         }
-        
-        
     }
     
     public void actualizarTabla() throws NoConectionDataBaseException, NoTypeRequiredException{
         String query = "Select  VIAJE.IDVIAJE, convert(varchar, viaje.FECHA, 106) as Fecha,  CONVERT(VARCHAR, VIAJE.HORA, 108) as Hora, TIPOCAMION.CAPACIDAD from VIAJE, CAMION, TIPOCAMION\n" +
-                            " WHERE VIAJE.IDCAMION = " +Globales.ultimoCamion + "  and VIAJE.ESACTIVO = 1 and viaje.IDCAMION = camion.IDCAMION and camion.IDTIPOCAMION = TIPOCAMION.IDTIPOCAMION and\n" +
-                            "convert(varchar, viaje.FECHA, 105) = '"+Globales.ultimaFecha+"'";
+                            " WHERE VIAJE.IDCAMION = " +ultimoCamion + "  and VIAJE.ESACTIVO = 1 and viaje.IDCAMION = camion.IDCAMION and camion.IDTIPOCAMION = TIPOCAMION.IDTIPOCAMION and\n" +
+                            "convert(varchar, viaje.FECHA, 105) = '"+ultimaFecha+"'";
             String[] columnas = {"IDVIAJE","Fecha","Hora", "CAPACIDAD"};
             
             
-            boolean  bandera = Globales.bdTemp.insertarEnTabla( query,columnas, tabla);
+            boolean  bandera = Globales.baseDatos.insertarEnTabla( query,columnas, tabla);
             if(bandera == false){
-                throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.bdTemp.getUltimoError());
+                throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.baseDatos.getUltimoError());
             }
             
-            query = "select COUNT(*) AS CONTEOVIAJES FROM VIAJE WHERE VIAJE.IDCAMION = " +Globales.ultimoCamion + " AND convert(varchar, viaje.FECHA, 105) = '"+Globales.ultimaFecha+"' and ESACTIVO = 1";
+            query = "select COUNT(*) AS CONTEOVIAJES FROM VIAJE WHERE VIAJE.IDCAMION = " +ultimoCamion + " AND convert(varchar, viaje.FECHA, 105) = '"+ultimaFecha+"' and ESACTIVO = 1";
             String[] columnasConteo = {"CONTEOVIAJES"};
-            LinkedList<LinkedList<String>> conteoViajes = Globales.bdTemp.select(query, columnasConteo);
+            LinkedList<LinkedList<String>> conteoViajes = Globales.baseDatos.select(query, columnasConteo);
             
             if(conteoViajes == null){
-                throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.bdTemp.getUltimoError());
+                throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.baseDatos.getUltimoError());
             }
             
             if(conteoViajes.size() <1){
@@ -323,9 +337,9 @@ public class HistorialViajePorDiaCamion extends javax.swing.JFrame {
             if(n == 0){
                 String query = "UPDATE VIAJE SET ESACTIVO = 0 WHERE IDVIAJE = " + idViaje;
                 try{
-                    boolean bandera = Globales.bdTemp.update(query);
+                    boolean bandera = Globales.baseDatos.update(query);
                     if(bandera == false){
-                        throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.bdTemp.getUltimoError());
+                        throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.baseDatos.getUltimoError());
                     }
                     limpiarTabla();
                     actualizarTabla();
@@ -365,14 +379,14 @@ public class HistorialViajePorDiaCamion extends javax.swing.JFrame {
             try{
                 String queryCamionActivo= "SELECT ACTIVO.DESCRIPCION\n" +
                                             "FROM CAMION, ACTIVO\n" +
-                                            "WHERE CAMION.ACTIVO = ACTIVO.IDACTIVO AND CAMION.IDCAMION = "+Globales.ultimoCamion+"";
+                                            "WHERE CAMION.ACTIVO = ACTIVO.IDACTIVO AND CAMION.IDCAMION = "+ultimoCamion+"";
 
                 String[] columnasCamionActivo = {"DESCRIPCION"};
 
-                LinkedList<LinkedList<String>> camionActivo = Globales.bdTemp.select(queryCamionActivo, columnasCamionActivo);
+                LinkedList<LinkedList<String>> camionActivo = Globales.baseDatos.select(queryCamionActivo, columnasCamionActivo);
 
                 if(camionActivo == null || camionActivo.get(0).size() == 0){
-                    throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.bdTemp.getUltimoError());
+                    throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.baseDatos.getUltimoError());
                 }
 
                 if(!camionActivo.get(0).get(0).equals(new String("ACTIVO"))){
@@ -382,22 +396,22 @@ public class HistorialViajePorDiaCamion extends javax.swing.JFrame {
                 String[] columnas = {"IDUSUARIO"};
 
 
-                LinkedList<LinkedList<String>> idUsuario = Globales.bdTemp.select(query, columnas);
+                LinkedList<LinkedList<String>> idUsuario = Globales.baseDatos.select(query, columnas);
                 if(idUsuario == null){
-                    throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.bdTemp.getUltimoError());
+                    throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.baseDatos.getUltimoError());
                 }
-                query = "INSERT INTO VIAJE (IDUSUARIO,IDCAMION,FECHA,HORA,ESACTIVO) VALUES ("+idUsuario.get(0).get(0)+","+Globales.ultimoCamion+", '"+Globales.ultimaFecha+"', "
+                query = "INSERT INTO VIAJE (IDUSUARIO,IDCAMION,FECHA,HORA,ESACTIVO) VALUES ("+idUsuario.get(0).get(0)+","+ultimoCamion+", '"+ultimaFecha+"', "
                         + "'00:01', 1)";
                 try{
                     for(int i = 0; i< numeroViajes; i++){
-                        boolean confirmacion = Globales.bdTemp.insert(query);
+                        boolean confirmacion = Globales.baseDatos.insert(query);
                         if(confirmacion == false){
-                            throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.bdTemp.getUltimoError());
+                            throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.baseDatos.getUltimoError());
                         }
                     }
                 }
                 catch(NoConectionDataBaseException e){
-                    throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.bdTemp.getUltimoError());
+                    throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.baseDatos.getUltimoError());
                 }
                 catch(Exception e){
                     throw new NoTypeRequiredException("Error inesperado al registrar los viajes, por favor contacta al administrador");
@@ -428,6 +442,7 @@ public class HistorialViajePorDiaCamion extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         HistorialViajesDelDia viajesDia= new HistorialViajesDelDia();
+        viajesDia.setFechaInicial(this.ultimaFecha);
         viajesDia.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed

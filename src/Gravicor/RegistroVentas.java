@@ -36,7 +36,7 @@ public class RegistroVentas extends javax.swing.JFrame {
             //informacion general (folio venta y fecha)
             String query = "SELECT convert(varchar, getdate(), 106) AS FECHA, MAX(VENTA.VENTAID) AS IDMAX FROM VENTA";
             String[] columnas = {"FECHA","IDMAX"};
-            LinkedList<LinkedList<String>> datosGenerales = Globales.bdTemp.select(query,columnas);
+            LinkedList<LinkedList<String>> datosGenerales = Globales.baseDatos.select(query,columnas);
 
             if(datosGenerales == null || datosGenerales.size() <1){
                 throw new NoConectionDataBaseException("Error al conectar con la base de datos: "
@@ -49,7 +49,7 @@ public class RegistroVentas extends javax.swing.JFrame {
             //llenar combo boxes----
             query = "SELECT C.NOMBRECLIENTE FROM CLIENTE AS C";
             String[] columnasCliente = {"NOMBRECLIENTE"};
-            LinkedList<LinkedList<String>> datosClientes = Globales.bdTemp.select(query,columnasCliente);
+            LinkedList<LinkedList<String>> datosClientes = Globales.baseDatos.select(query,columnasCliente);
             if(datosClientes == null || datosClientes.size() < 1){
                 throw new NoConectionDataBaseException("Error al conectar con la base de datos: "
                                                             + Globales.baseDatos.getUltimoError());
@@ -64,7 +64,7 @@ public class RegistroVentas extends javax.swing.JFrame {
             //--PARTE DE LOS MATERIALES
             query = "SELECT M.DESCRIPCIONMATERIAL FROM MATERIAL AS M";
             String[] columnasMaterial = {"DESCRIPCIONMATERIAL"};
-            LinkedList<LinkedList<String>> datosMaterial = Globales.bdTemp.select(query,columnasMaterial);
+            LinkedList<LinkedList<String>> datosMaterial = Globales.baseDatos.select(query,columnasMaterial);
             if(datosMaterial == null || datosMaterial.size() < 1){
                 throw new NoConectionDataBaseException("Error al conectar con la base de datos: "
                                                             + Globales.baseDatos.getUltimoError());
@@ -80,7 +80,7 @@ public class RegistroVentas extends javax.swing.JFrame {
             //--parte de las plantas
             query = "SELECT P.NOMBREPLANTA FROM PLANTA AS P";
             String[] columnasPlanta = {"NOMBREPLANTA"};
-            LinkedList<LinkedList<String>> datosPlanta = Globales.bdTemp.select(query,columnasPlanta);
+            LinkedList<LinkedList<String>> datosPlanta = Globales.baseDatos.select(query,columnasPlanta);
             if(datosPlanta == null || datosPlanta.size() < 1){
                 throw new NoConectionDataBaseException("Error al conectar con la base de datos: "
                                                             + Globales.baseDatos.getUltimoError());
@@ -112,11 +112,11 @@ public class RegistroVentas extends javax.swing.JFrame {
         
         int cantidadMaterial = (Integer) cantidadS.getValue();
         
-        Float precio = Globales.bdTemp.obtenerPrecioClienteMaterial(nombreCliente, nombreMaterial);
+        Float precio = Globales.baseDatos.obtenerPrecioClienteMaterial(nombreCliente, nombreMaterial);
         Float resultado = precio;
         
         if(precio < 0){
-            JOptionPane.showMessageDialog(this, "Error al calcular el precio de la venta: " + Globales.bdTemp.getUltimoError(), 
+            JOptionPane.showMessageDialog(this, "Error al calcular el precio de la venta: " + Globales.baseDatos.getUltimoError(), 
                     "Error al calcular el precio de la venta", JOptionPane.ERROR_MESSAGE);
             return (float)-1;
         }
@@ -445,13 +445,13 @@ public class RegistroVentas extends javax.swing.JFrame {
                 throw new NoTypeRequiredException("No hay un valor correcto designado para el campo 'Nombre Chofer'");
             }
             
-            Integer idCliente = Globales.bdTemp.obtenerClienteID((String)clienteCB.getSelectedItem());
+            Integer idCliente = Globales.baseDatos.obtenerClienteID((String)clienteCB.getSelectedItem());
             //System.out.println(nombreCliente + " = " + idCliente);
             if(idCliente < 0){
                 throw new NoConectionDataBaseException("Error al conectar con la base de datos: "
                 + Globales.baseDatos.getUltimoError());
             }
-            Integer idMaterial = Globales.bdTemp.obtenerMaterialID((String)materialCB.getSelectedItem());
+            Integer idMaterial = Globales.baseDatos.obtenerMaterialID((String)materialCB.getSelectedItem());
             //System.out.println(nombreMaterial + " = " + idMaterial);
 
             if(idMaterial < 0){
@@ -470,7 +470,7 @@ public class RegistroVentas extends javax.swing.JFrame {
                 throw new NoTypeRequiredException("No se ha calculado correctamente el campo 'Monto': " + e.getMessage());
             }
             
-            Integer idPlanta = Globales.bdTemp.obtenerPlantaId((String)plantaCB.getSelectedItem());
+            Integer idPlanta = Globales.baseDatos.obtenerPlantaId((String)plantaCB.getSelectedItem());
             if(idPlanta <0){
                 throw new NoConectionDataBaseException("Error al conectar con la base de datos: "
                 + Globales.baseDatos.getUltimoError());
@@ -483,9 +483,9 @@ public class RegistroVentas extends javax.swing.JFrame {
             }
             //aqui se terminan de validar los imputs y se realiza el insert
             
-            int validacion = Globales.bdTemp.insertarVenta(idCliente, idMaterial, folioTransportistaTF.getText().toLowerCase(), 
+            int validacion = Globales.baseDatos.insertarVenta(idCliente, idMaterial, folioTransportistaTF.getText().toLowerCase(), 
                     matri.getText().toLowerCase(), nombreChoferTF.getText().toLowerCase(), idPlanta, 
-                    Globales.bdTemp.obtenerUsuarioID(Globales.currentUser), 0, esFacturado, precioClienteMaterial, cantidadM3);
+                    Globales.baseDatos.obtenerUsuarioID(Globales.currentUser), 0, esFacturado, precioClienteMaterial, cantidadM3);
             
             if(validacion != 1){
                 throw new NoConectionDataBaseException("Error al conectar con la base de datos: "

@@ -140,7 +140,7 @@ public class RegistrarViajes extends javax.swing.JFrame {
             
             String query = "select CAMION.IDCAMION from CAMION where CAMION.IDCAMION = " + codigoDeBarrasInt;
             String[] columnas = {"IDCAMION"};
-            LinkedList<LinkedList<String>> usuarioValido = Globales.bdTemp.select(query, columnas);
+            LinkedList<LinkedList<String>> usuarioValido = Globales.baseDatos.select(query, columnas);
             
             if(usuarioValido.get(0).size() == 0 || usuarioValido == null){
                 throw new NoTypeRequiredException("El código ingresado no es valido, por favor introducelo de nuevo");
@@ -151,10 +151,10 @@ public class RegistrarViajes extends javax.swing.JFrame {
             
             String[] columnasCamionActivo = {"DESCRIPCION"};
             
-            LinkedList<LinkedList<String>> camionActivo = Globales.bdTemp.select(queryCamionActivo, columnasCamionActivo);
+            LinkedList<LinkedList<String>> camionActivo = Globales.baseDatos.select(queryCamionActivo, columnasCamionActivo);
             
             if(camionActivo == null || camionActivo.get(0).size() == 0){
-                throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.bdTemp.getUltimoError());
+                throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.baseDatos.getUltimoError());
             }
             
             if(!camionActivo.get(0).get(0).equals(new String("ACTIVO"))){
@@ -165,20 +165,20 @@ public class RegistrarViajes extends javax.swing.JFrame {
             query = "Select CONVERT(VARCHAR, VIAJE.HORA, 108) as Hora from viaje where VIAJE.IDCAMION = " + codigoDeBarrasInt + " and viaje.FECHA = convert(varchar, getDate(), 106)"; 
             columnas[0] = "Hora";
              
-            LinkedList<LinkedList<String>> viajesDeHoy = Globales.bdTemp.select(query, columnas);
+            LinkedList<LinkedList<String>> viajesDeHoy = Globales.baseDatos.select(query, columnas);
             //System.out.println("viajes de hoy: " + viajesDeHoy);
             if(viajesDeHoy == null){
                 
-                throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.bdTemp.getUltimoError());
+                throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.baseDatos.getUltimoError());
             }
             //revisar el numero de viajes que tiene y si cumple seguir:
             if(viajesDeHoy.get(0).size() >= 1){
                 //funcion para calcular si ya se puede hacer el siguiente registro
                 query = "SELECT CONVERT(VARCHAR, GETDATE(), 108) as HoraActual";
                 columnas[0] = "HoraActual";
-                LinkedList<LinkedList<String>> horaActual = Globales.bdTemp.select(query, columnas);
+                LinkedList<LinkedList<String>> horaActual = Globales.baseDatos.select(query, columnas);
                 if(horaActual == null){
-                    throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.bdTemp.getUltimoError());
+                    throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.baseDatos.getUltimoError());
                 }
                 String[] componentesHoraActual = horaActual.get(0).get(0).split(":");
                 String[] componentesUltimoRegistro = viajesDeHoy.get(0).get(viajesDeHoy.get(0).size()-1).split(":");
@@ -226,25 +226,27 @@ public class RegistrarViajes extends javax.swing.JFrame {
             columnas[0] = "IDUSUARIO";
 
 
-            LinkedList<LinkedList<String>> idUsuario = Globales.bdTemp.select(query, columnas);
+            LinkedList<LinkedList<String>> idUsuario = Globales.baseDatos.select(query, columnas);
             if(idUsuario == null){
-                throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.bdTemp.getUltimoError());
+                throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.baseDatos.getUltimoError());
             }
 
             query = "INSERT INTO VIAJE (IDUSUARIO,IDCAMION,FECHA,HORA,ESACTIVO) VALUES ("+idUsuario.get(0).get(0)+","+codigoDeBarrasInt+", GETDATE(), GETdATE(), 1)";
 
-            boolean confirmacion = Globales.bdTemp.insert(query);
+            boolean confirmacion = Globales.baseDatos.insert(query);
             if(confirmacion){
                 registroTF.setText("");
                 //pasar a la siguiente pantalla
                 
-                Globales.ultimoCamion = codigoDeBarrasInt.toString();
+                
                 RegistroDeViajeCompletado registro= new RegistroDeViajeCompletado();
+                registro.setUltimoCamion(codigoDeBarrasInt.toString());
+                registro.iniciarPantalla();
                 registro.setVisible(true);
                 this.dispose();
             }
             else{
-                throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.bdTemp.getUltimoError());
+                throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.baseDatos.getUltimoError());
             }
         }
         catch(NoConectionDataBaseException e){
@@ -276,10 +278,10 @@ public class RegistrarViajes extends javax.swing.JFrame {
             }
             else{
                 String[] columnas = {"CONTRASENA"};
-                LinkedList<LinkedList<String>> resultado = Globales.bdTemp.select("select CONTRASENA FROM USUARIO WHERE USUARIO.USERNAME = '"+Globales.currentUser+"'", columnas);
+                LinkedList<LinkedList<String>> resultado = Globales.baseDatos.select("select CONTRASENA FROM USUARIO WHERE USUARIO.USERNAME = '"+Globales.currentUser+"'", columnas);
                 if(resultado==null){
                     throw new NoConectionDataBaseException("Error al conectar con la base de datos: "
-                        + Globales.bdTemp.getUltimoError());
+                        + Globales.baseDatos.getUltimoError());
                 }
                 String textoEncriptadoConMD5=DigestUtils.md5Hex(new String(pwd.getPassword()));
                 if(resultado.get(0).size() > 0){

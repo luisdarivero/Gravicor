@@ -180,19 +180,19 @@ public class AnadirCliente extends javax.swing.JFrame {
                 throw new NoTypeRequiredException("Introduce un valor correcto para el precio de la arenilla (numérico)");
             }
             
-            boolean validacion = Globales.bdTemp.insertarCliente(clienteTF.getText().toLowerCase(), gravaMedio, gravaTresCuartos, arenilla);
+            boolean validacion = Globales.baseDatos.insertarCliente(clienteTF.getText().toLowerCase(), gravaMedio, gravaTresCuartos, arenilla);
             if(!validacion){
-                throw new NoConectionDataBaseException("Error al añadir el cliente: " + Globales.bdTemp.getUltimoError());
+                throw new NoConectionDataBaseException("Error al añadir el cliente: " + Globales.baseDatos.getUltimoError());
             }
             
-            boolean bandera = Globales.bdTemp.conectarBD(Globales.bdTemp.generarURL());
+            boolean bandera = Globales.baseDatos.conectarBD(Globales.baseDatos.generarURL());
             if(bandera != false){
                 GestionarClientes clientes = new GestionarClientes();
                 clientes.setVisible(true);
                 this.dispose();
             }
             else{
-                JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.baseDatos.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
             }
         }
         catch(NoTypeRequiredException e){
@@ -205,14 +205,14 @@ public class AnadirCliente extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        boolean bandera = Globales.bdTemp.conectarBD(Globales.bdTemp.generarURL());
+        boolean bandera = Globales.baseDatos.conectarBD(Globales.baseDatos.generarURL());
         if(bandera != false){
             GestionarClientes regresar = new GestionarClientes();
             regresar.setVisible(true);
             this.dispose();
         }
         else{
-            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.baseDatos.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 

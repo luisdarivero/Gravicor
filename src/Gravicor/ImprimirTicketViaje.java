@@ -21,7 +21,7 @@ public class ImprimirTicketViaje extends javax.swing.JFrame {
     String operadorCamion,
     String numeroDeViajes) {
         initComponents();
-        boolean  bandera = Globales.bdTemp.insertarEnTabla( queryViajes,columnasViajes, tabla);
+        boolean  bandera = Globales.baseDatos.insertarEnTabla( queryViajes,columnasViajes, tabla);
         camionLB.setText(IDcamion);
         tipoLB.setText(tipoCamion);
         viajesTotalesLB.setText(numeroDeViajes);

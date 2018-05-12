@@ -27,13 +27,13 @@ public class GestionDeCamiones extends javax.swing.JFrame {
             String query = "select camion.IDCAMION, CAMION.OPERADOR, TIPOCAMION.DESCRIPCION, CAMION.COLOR, ACTIVO.DESCRIPCION as DESCRIPCIONACTIVO from camion, activo, TIPOCAMION \n" +
 "where camion.IDTIPOCAMION = TIPOCAMION.IDTIPOCAMION and camion.activo = activo.IDACTIVO";
             String[] columnas = {"IDCAMION", "OPERADOR", "DESCRIPCION", "COLOR", "DESCRIPCIONACTIVO"};
-            LinkedList<LinkedList<String>> camiones = Globales.bdTemp.select(query, columnas);
+            LinkedList<LinkedList<String>> camiones = Globales.baseDatos.select(query, columnas);
             
             if(camiones == null){
-                throw new NoConectionDataBaseException("No fue posible conectar con la base de datos: " + Globales.bdTemp.getUltimoError());
+                throw new NoConectionDataBaseException("No fue posible conectar con la base de datos: " + Globales.baseDatos.getUltimoError());
             }
             
-            Globales.bdTemp.insertarEnTabla(query, columnas, tabla);
+            Globales.baseDatos.insertarEnTabla(query, columnas, tabla);
             
         }
         catch(NoConectionDataBaseException e){
@@ -179,14 +179,14 @@ public class GestionDeCamiones extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         
-        boolean bandera = Globales.bdTemp.conectarBD(Globales.bdTemp.generarURL());
+        boolean bandera = Globales.baseDatos.conectarBD(Globales.baseDatos.generarURL());
         if(bandera != false){
             AnadirCamion nuevoCamion= new AnadirCamion();
             nuevoCamion.setVisible(true);
             this.dispose();
         }
         else{
-            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.baseDatos.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -196,17 +196,17 @@ public class GestionDeCamiones extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Por favor selecciona de la tabla el usuario que deseas editar", "Error de selección", JOptionPane.ERROR_MESSAGE);
         }
         else{
-            Globales.temp = (String)tabla.getModel().getValueAt(tabla.getSelectedRow(), 0);
-            //System.out.println(Globales.temp);
             
-            boolean bandera = Globales.bdTemp.conectarBD(Globales.bdTemp.generarURL());
+            boolean bandera = Globales.baseDatos.conectarBD(Globales.baseDatos.generarURL());
             if(bandera != false){
                 EditarCamion editarCamion = new EditarCamion();
+                editarCamion.setUltimoCamion((String)tabla.getModel().getValueAt(tabla.getSelectedRow(), 0));
+                editarCamion.iniciarPantalla();
                 editarCamion.setVisible(true);
                 this.dispose();
             }
             else{
-                JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.baseDatos.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_jButton2ActionPerformed

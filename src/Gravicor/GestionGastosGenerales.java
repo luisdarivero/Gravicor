@@ -32,9 +32,9 @@ public class GestionGastosGenerales extends javax.swing.JFrame {
         try{
             String query = "SELECT convert(varchar, getdate(), 105) as FECHA";
             String[] columnas = {"FECHA"};
-            LinkedList<LinkedList<String>> fecha = Globales.bdTemp.select(query, columnas);
+            LinkedList<LinkedList<String>> fecha = Globales.baseDatos.select(query, columnas);
             if(fecha == null){
-                throw new NoConectionDataBaseException("Error al conectarse con la base de datos: " + Globales.bdTemp.getUltimoError());
+                throw new NoConectionDataBaseException("Error al conectarse con la base de datos: " + Globales.baseDatos.getUltimoError());
             }
             if(fecha.size() <1){
                 throw new NoConectionDataBaseException("Error al conectarse con la base de datos: No se encontraron datos de la fecha actual");
@@ -236,10 +236,10 @@ public class GestionGastosGenerales extends javax.swing.JFrame {
                     "FROM GASTOGENERAL AS G\n" +
                     "WHERE G.ESACTIVO = 1 AND month(G.FECHAFACTURA) = month('"+generarFechaAPedir()+"') and year(G.FECHAFACTURA) = year('"+generarFechaAPedir()+"')";
         String[] columnasGastos = {"GASTOGENERALID", "IDFOLIOPAGO", "FECHAFOLIOPAGO", "FOLIOFACTURA","FECHAFACTURA","TOTAL", "EQUIPO", "PROVEEDOR"};
-        boolean  bandera = Globales.bdTemp.insertarEnTabla( query,columnasGastos, tabla);
+        boolean  bandera = Globales.baseDatos.insertarEnTabla( query,columnasGastos, tabla);
 
         if(bandera == false){
-            throw new NoConectionDataBaseException("Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError());
+            throw new NoConectionDataBaseException("Error al conectarse a la base de datos: " + Globales.baseDatos.getUltimoError());
 
         }
         
@@ -247,9 +247,9 @@ public class GestionGastosGenerales extends javax.swing.JFrame {
                 "FROM GASTOGENERAL AS G\n" +
                 "WHERE G.ESACTIVO = 1 AND month(G.FECHAFACTURA) = month('"+generarFechaAPedir()+"') and year(G.FECHAFACTURA) = year('"+generarFechaAPedir()+"')";
         String[] columnasTotal = {"TOTAL"};
-        LinkedList<LinkedList<String>> total = Globales.bdTemp.select(query, columnasTotal);
+        LinkedList<LinkedList<String>> total = Globales.baseDatos.select(query, columnasTotal);
         if(total == null){
-            throw new NoConectionDataBaseException("Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError());
+            throw new NoConectionDataBaseException("Error al conectarse a la base de datos: " + Globales.baseDatos.getUltimoError());
         }
         if(total.size() < 1){
             throw new NoTypeRequiredException("Error inesperado, no se pudo obtener la suma total requerida");
@@ -290,14 +290,14 @@ public class GestionGastosGenerales extends javax.swing.JFrame {
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        boolean bandera = Globales.bdTemp.conectarBD(Globales.bdTemp.generarURL());
+        boolean bandera = Globales.baseDatos.conectarBD(Globales.baseDatos.generarURL());
         if(bandera != false){
             MenuPrincipal menu = new MenuPrincipal();
             menu.setVisible(true);
             this.dispose();
         }
         else{
-            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.baseDatos.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -357,7 +357,7 @@ public class GestionGastosGenerales extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        boolean bandera = Globales.bdTemp.conectarBD(Globales.bdTemp.generarURL());
+        boolean bandera = Globales.baseDatos.conectarBD(Globales.baseDatos.generarURL());
         if(bandera != false){
             AnadirGastoGeneral gastoGeneral= new AnadirGastoGeneral();
             Integer anoSiguientePantalla = 0;
@@ -377,13 +377,13 @@ public class GestionGastosGenerales extends javax.swing.JFrame {
             
         }
         else{
-            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.baseDatos.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        boolean bandera = Globales.bdTemp.conectarBD(Globales.bdTemp.generarURL());
+        boolean bandera = Globales.baseDatos.conectarBD(Globales.baseDatos.generarURL());
         if(bandera != false){
             EditarGastoGeneral gastoGeneral= new EditarGastoGeneral();
             Integer anoSiguientePantalla = 0;
@@ -407,7 +407,7 @@ public class GestionGastosGenerales extends javax.swing.JFrame {
             
         }
         else{
-            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.baseDatos.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -430,9 +430,9 @@ public class GestionGastosGenerales extends javax.swing.JFrame {
             if(n == 0){
                 String query = "UPDATE GASTOGENERAL SET ESACTIVO = 0 WHERE GASTOGENERALID = " + idGasto;
                 try{
-                    boolean bandera = Globales.bdTemp.update(query);
+                    boolean bandera = Globales.baseDatos.update(query);
                     if(bandera == false){
-                        throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.bdTemp.getUltimoError());
+                        throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.baseDatos.getUltimoError());
                     }
                     
                     actualizarTabla();

@@ -316,14 +316,14 @@ public class AnadirUsuario extends javax.swing.JFrame {
     }//GEN-LAST:event_ventasBActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        boolean bandera = Globales.bdTemp.conectarBD(Globales.bdTemp.generarURL());
+        boolean bandera = Globales.baseDatos.conectarBD(Globales.baseDatos.generarURL());
         if(bandera != false){
             ConfiguracionCuentas cuentas = new ConfiguracionCuentas();
             cuentas.setVisible(true);
             this.dispose();
         }
         else{
-            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.baseDatos.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -350,7 +350,7 @@ public class AnadirUsuario extends javax.swing.JFrame {
                 throw new NoTypeRequiredException("Existe un error en el formato del campo 'Usuario', por favor corrígelo");
             }
             String[] columnas = {"IDUSUARIO"};
-            LinkedList<LinkedList<String>> usuarios = Globales.bdTemp.select("select IDUSUARIO FROM USUARIO WHERE USUARIO.USERNAME = '" +usuarioT.getText().toLowerCase() +"'", columnas);
+            LinkedList<LinkedList<String>> usuarios = Globales.baseDatos.select("select IDUSUARIO FROM USUARIO WHERE USUARIO.USERNAME = '" +usuarioT.getText().toLowerCase() +"'", columnas);
             if(usuarios.get(0).size()>0){
                 throw new NoTypeRequiredException("Existe un error en el formato del campo 'Usuario', el usuario "
                         + "que intentas añadir ya existe, por favor elige otro");
@@ -378,14 +378,14 @@ public class AnadirUsuario extends javax.swing.JFrame {
 " values('" +emailT.getText().toLowerCase() + "', '"+ original +"', '"+nombresT.getText().toLowerCase()+"','"+apellidosT.getText().toLowerCase()+"'"
                     + ", "+l[0]+" ,"+l[1]+","+l[2]+","+l[3]+","+l[4]+","+l[5]+","+l[6]+","+l[7]+ ",'" + usuarioT.getText().toLowerCase() +"')";
             
-            boolean res = Globales.bdTemp.insert(query);
+            boolean res = Globales.baseDatos.insert(query);
             if(res){
                 ConfiguracionCuentas cuentas = new ConfiguracionCuentas();
                 cuentas.setVisible(true);
                 this.dispose();
             }
             else{
-                throw new NoConectionDataBaseException("Error al conectar con la base de datos: "  + Globales.bdTemp.getUltimoError());
+                throw new NoConectionDataBaseException("Error al conectar con la base de datos: "  + Globales.baseDatos.getUltimoError());
             }
         }
         catch(NoTypeRequiredException e){

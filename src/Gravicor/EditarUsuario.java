@@ -21,17 +21,19 @@ public class EditarUsuario extends javax.swing.JFrame {
     /**
      * Creates new form AnadirUsuario
      */
-    public EditarUsuario() {
-        initComponents();
-        this.setLocationRelativeTo(null);
-        this.setResizable(false);
-        this.setTitle("Añadir Usuario");
-        activoCB.setSelected(true);
-        String query = "select * from usuario where usuario.IDUSUARIO = " + Globales.temp;
+    
+    private String idUsuario = "1";
+    
+    public void setIdUsuario(String usuario){
+        this.idUsuario = usuario;
+    }
+    
+    public void iniciarPantalla(){
+        String query = "select * from usuario where usuario.IDUSUARIO = " + idUsuario;
         String[] Columnas = {"IDUSUARIO" ,"EMAIL", "CONTRASENA", "NOMBRES", "APELLIDOS", "GESTIONPIEDRAGRENA", "GESTIONVENTAS","REPORTES","COBRANZA","TESORERIA","GESTIONGASTOSGENERALES","CONFIGURACIONCUENTAS","ACTIVO","USERNAME"};
         
         try{
-            LinkedList<LinkedList<String>> resultado = Globales.bdTemp.select(query, Columnas);
+            LinkedList<LinkedList<String>> resultado = Globales.baseDatos.select(query, Columnas);
             if(resultado == null){
                 throw new NoConectionDataBaseException("No fue posible conectarse a la base de datos");
             }
@@ -64,24 +66,33 @@ public class EditarUsuario extends javax.swing.JFrame {
                 activoCB.setSelected(false);
             }
             if(activoCB.isSelected()){
-            //JRadioButton[] botones = {piedraB, ventasB, reportesB, cobranzaB, tesoreriaB, gastosB, cuentasB};
-            for(int i= 0; i< botones.length; i++){
-                botones[i].setEnabled(true);
+                //JRadioButton[] botones = {piedraB, ventasB, reportesB, cobranzaB, tesoreriaB, gastosB, cuentasB};
+                for(int i= 0; i< botones.length; i++){
+                    botones[i].setEnabled(true);
+                }
+                permisosL.setEnabled(true);
             }
-            permisosL.setEnabled(true);
-        }
-        else{
-            //JRadioButton[] botones = {piedraB, ventasB, reportesB, cobranzaB, tesoreriaB, gastosB, cuentasB};
-            for(int i= 0; i< botones.length; i++){
-                botones[i].setEnabled(false);
+            else{
+                //JRadioButton[] botones = {piedraB, ventasB, reportesB, cobranzaB, tesoreriaB, gastosB, cuentasB};
+                for(int i= 0; i< botones.length; i++){
+                    botones[i].setEnabled(false);
+                }
+                permisosL.setEnabled(false);
+
             }
-            permisosL.setEnabled(false);
-            
-        }
         }
         catch(NoConectionDataBaseException e){
             JOptionPane.showMessageDialog(this, e.getMessage() ,"Error de conexión",  JOptionPane.ERROR_MESSAGE);
         }
+    }
+    
+    public EditarUsuario() {
+        initComponents();
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+        this.setTitle("Añadir Usuario");
+        activoCB.setSelected(true);
+        
     }
 
     /**
@@ -386,14 +397,14 @@ public class EditarUsuario extends javax.swing.JFrame {
     }//GEN-LAST:event_ventasBActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        boolean bandera = Globales.bdTemp.conectarBD(Globales.bdTemp.generarURL());
+        boolean bandera = Globales.baseDatos.conectarBD(Globales.baseDatos.generarURL());
         if(bandera != false){
             ConfiguracionCuentas cuentas = new ConfiguracionCuentas();
             cuentas.setVisible(true);
             this.dispose();
         }
         else{
-            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.baseDatos.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -451,7 +462,7 @@ public class EditarUsuario extends javax.swing.JFrame {
 
 
 
-                 query = "update usuario set " + u[0] + u[1] + u[2] + u[3] + u[4] + u[5] + u[6] + u[7] + u[8] + u[9] + u[10] + u[11] + " where usuario.IDUSUARIO = " + Globales.temp;
+                 query = "update usuario set " + u[0] + u[1] + u[2] + u[3] + u[4] + u[5] + u[6] + u[7] + u[8] + u[9] + u[10] + u[11] + " where usuario.IDUSUARIO = " + idUsuario;
                 //System.out.println(query);
             }
             else{
@@ -470,10 +481,10 @@ public class EditarUsuario extends javax.swing.JFrame {
 
 
 
-                 query = "update usuario set " + u[0] + u[1] + u[2] + u[3] + u[4] + u[5] + u[6] + u[7] + u[8] + u[9] + u[10] + u[11] + " where usuario.IDUSUARIO = " + Globales.temp;
+                 query = "update usuario set " + u[0] + u[1] + u[2] + u[3] + u[4] + u[5] + u[6] + u[7] + u[8] + u[9] + u[10] + u[11] + " where usuario.IDUSUARIO = " + idUsuario;
                 //System.out.println(query);
             }
-            boolean res = Globales.bdTemp.update(query);//Globales.bdTemp.insert(query);
+            boolean res = Globales.baseDatos.update(query);//Globales.bdTemp.insert(query);
             if(res){
                 
                 ConfiguracionCuentas cuentas = new ConfiguracionCuentas();
@@ -481,7 +492,7 @@ public class EditarUsuario extends javax.swing.JFrame {
                 this.dispose();
             }
             else{
-                throw new NoConectionDataBaseException("Error al conectar con la base de datos: " + Globales.bdTemp.getUltimoError());
+                throw new NoConectionDataBaseException("Error al conectar con la base de datos: " + Globales.baseDatos.getUltimoError());
             }
         }
         catch(NoTypeRequiredException e){

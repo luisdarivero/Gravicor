@@ -28,10 +28,10 @@ public class EditarPlanta extends javax.swing.JFrame {
             String query = "SELECT P.PLANTAID, P.NOMBREPLANTA, T.DESCRIPCION FROM PLANTA AS P, TIPOPLANTA AS T \n" +
                             "WHERE P.PLANTAID = "+this.plantaAEditar+" AND P.TIPOPLANTAID = T.TIPOPLANTAID";
             String[] columnas = {"PLANTAID", "NOMBREPLANTA", "DESCRIPCION"};
-            LinkedList<LinkedList<String>> infoPlanta = Globales.bdTemp.select(query, columnas);
+            LinkedList<LinkedList<String>> infoPlanta = Globales.baseDatos.select(query, columnas);
             
             if(infoPlanta == null || infoPlanta.size() < 1){
-                throw new NoConectionDataBaseException("Error al conectar con la base de datos: " +  Globales.bdTemp.getUltimoError());
+                throw new NoConectionDataBaseException("Error al conectar con la base de datos: " +  Globales.baseDatos.getUltimoError());
             }
             
             idPlantaTB.setText(infoPlanta.get(0).get(0));
@@ -58,9 +58,9 @@ public class EditarPlanta extends javax.swing.JFrame {
                         "FROM TIPOPLANTA";
             String[] columnasDescripcion = {"DESCRIPCION"};
             
-            LinkedList<LinkedList<String>> descripcionPlantas = Globales.bdTemp.select(query, columnasDescripcion);
+            LinkedList<LinkedList<String>> descripcionPlantas = Globales.baseDatos.select(query, columnasDescripcion);
             if(descripcionPlantas == null || descripcionPlantas.size() < 1){
-                throw new NoConectionDataBaseException("Error al conectar con la base de datos: " +  Globales.bdTemp.getUltimoError());
+                throw new NoConectionDataBaseException("Error al conectar con la base de datos: " +  Globales.baseDatos.getUltimoError());
             }
             
             String[] modeloDescripcion = new String[descripcionPlantas.get(0).size()];
@@ -210,9 +210,9 @@ public class EditarPlanta extends javax.swing.JFrame {
                                 "FROM TIPOPLANTA\n" +
                                 "WHERE TIPOPLANTA.DESCRIPCION = '"+ (String)tipoCB.getSelectedItem()+"'";
             String[] columnas = {"TIPOPLANTAID"};
-            LinkedList<LinkedList<String>> idTipoPlanta = Globales.bdTemp.select(query, columnas);
+            LinkedList<LinkedList<String>> idTipoPlanta = Globales.baseDatos.select(query, columnas);
             if(idTipoPlanta == null || idTipoPlanta.size() < 1){
-                throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.bdTemp.getUltimoError());
+                throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.baseDatos.getUltimoError());
             }
             Integer idTipoPlantaInt = Integer.parseInt(idTipoPlanta.get(0).get(0));
             
@@ -220,14 +220,14 @@ public class EditarPlanta extends javax.swing.JFrame {
                     "SET NOMBREPLANTA = '"+nombreTF.getText().toLowerCase()+"', TIPOPLANTAID = "+idTipoPlantaInt+"\n" +
                     "WHERE PLANTAID = "+this.plantaAEditar+" ";
             
-            boolean res = Globales.bdTemp.update(query);
+            boolean res = Globales.baseDatos.update(query);
             if(res){
                 GestionDePlantas gestionPlantas = new GestionDePlantas();
                 gestionPlantas.setVisible(true);
                 this.dispose();
             }
             else{
-                throw new NoConectionDataBaseException("Error al conectar con la base de datos: "  + Globales.bdTemp.getUltimoError());
+                throw new NoConectionDataBaseException("Error al conectar con la base de datos: "  + Globales.baseDatos.getUltimoError());
             }
         }
         catch(NoConectionDataBaseException e){

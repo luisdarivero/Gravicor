@@ -27,9 +27,9 @@ public class AnadirCamion extends javax.swing.JFrame {
         try{
             String query = "select TIPOCAMION.DESCRIPCION from tipoCamion ";
             String[] columnas = {"DESCRIPCION"};
-            LinkedList<LinkedList<String>> DescripcionCamiones = Globales.bdTemp.select(query, columnas);
+            LinkedList<LinkedList<String>> DescripcionCamiones = Globales.baseDatos.select(query, columnas);
             if(DescripcionCamiones == null){
-                throw new NoConectionDataBaseException("Error al conectarse con la base de datos: " + Globales.bdTemp.getUltimoError());
+                throw new NoConectionDataBaseException("Error al conectarse con la base de datos: " + Globales.baseDatos.getUltimoError());
             }
             String[] modeloDescripcion = new String[DescripcionCamiones.get(0).size()];
             for(int i = 0; i<DescripcionCamiones.get(0).size(); i++){
@@ -214,10 +214,10 @@ public class AnadirCamion extends javax.swing.JFrame {
             }
             String query = "SELECT IDCAMION FROM CAMION WHERE CAMION.IDCAMION = "+Integer.toString(revisar)+"";
             String[] columnas = {"IDCAMION"};
-            LinkedList<LinkedList<String>> idCamion = Globales.bdTemp.select(query, columnas);
+            LinkedList<LinkedList<String>> idCamion = Globales.baseDatos.select(query, columnas);
             //System.out.println(idCamion);
             if(idCamion == null){
-                throw new NoConectionDataBaseException("Error al conectar con la base de datos: " + Globales.bdTemp.getUltimoError());
+                throw new NoConectionDataBaseException("Error al conectar con la base de datos: " + Globales.baseDatos.getUltimoError());
             }
             //El número comercial seleccionado ya existe, por favor ingresa otro
             if(idCamion.get(0).size() >0){
@@ -234,20 +234,20 @@ public class AnadirCamion extends javax.swing.JFrame {
             
             query = "select tipocamion.IDTIPOCAMION from tipocamion where tipocamion.descripcion = '"+ descripcionCB.getSelectedItem()+"'";
             columnas[0] = "IDTIPOCAMION";
-            LinkedList<LinkedList<String>> idTipoCamion = Globales.bdTemp.select(query, columnas);
+            LinkedList<LinkedList<String>> idTipoCamion = Globales.baseDatos.select(query, columnas);
             if(idTipoCamion == null || idTipoCamion.get(0).size()==0){
-                throw new NoConectionDataBaseException("Error al conectarse con la base de datos: " + Globales.bdTemp.getUltimoError());
+                throw new NoConectionDataBaseException("Error al conectarse con la base de datos: " + Globales.baseDatos.getUltimoError());
             }
             query = "insert into CAMION (IDCAMION, OPERADOR, IDTIPOCAMION, COLOR, ACTIVO) VALUES ("+Integer.toString(revisar)+""
                             + ", '"+operadorTB.getText().toLowerCase()+"', "+idTipoCamion.get(0).get(0)+",'"+colorTB.getText().toLowerCase()+"',  1)";
-            boolean bandera = Globales.bdTemp.insert(query);
+            boolean bandera = Globales.baseDatos.insert(query);
             if(bandera){
                 GestionDeCamiones camiones= new GestionDeCamiones();
             camiones.setVisible(true);
             this.dispose();
             }
             else{
-                throw new NoConectionDataBaseException("Error al conectarse con la base de datos: " + Globales.bdTemp.getUltimoError());
+                throw new NoConectionDataBaseException("Error al conectarse con la base de datos: " + Globales.baseDatos.getUltimoError());
             }
         }
         

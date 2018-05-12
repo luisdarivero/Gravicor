@@ -18,18 +18,20 @@ public class EditarCamion extends javax.swing.JFrame {
     /**
      * Creates new form AnadirCamion
      */
-    public EditarCamion() {
-        initComponents();
-        this.setLocationRelativeTo(null);
-        this.setResizable(false);
-        this.setTitle("Añadir Camion");
-        
+    
+    private String ultimoCamion = "1";
+    
+    public void setUltimoCamion(String camion){
+        this.ultimoCamion = camion;
+    }
+    
+    public void iniciarPantalla(){
         try{
             String query = "select TIPOCAMION.DESCRIPCION from tipoCamion";
             String[] columnas = {"DESCRIPCION"};
-            LinkedList<LinkedList<String>> DescripcionCamiones = Globales.bdTemp.select(query, columnas);
+            LinkedList<LinkedList<String>> DescripcionCamiones = Globales.baseDatos.select(query, columnas);
             if(DescripcionCamiones == null){
-                throw new NoConectionDataBaseException("Error al conectarse con la base de datos: " + Globales.bdTemp.getUltimoError());
+                throw new NoConectionDataBaseException("Error al conectarse con la base de datos: " + Globales.baseDatos.getUltimoError());
             }
             String[] modeloDescripcion = new String[DescripcionCamiones.get(0).size()];
             for(int i = 0; i<DescripcionCamiones.get(0).size(); i++){
@@ -42,13 +44,13 @@ public class EditarCamion extends javax.swing.JFrame {
             //INGRESAR LOS DATOS DEL CAMION SELECCIONADO
             
             query = "SELECT IDCAMION, OPERADOR, TIPOCAMION.DESCRIPCION, COLOR, ACTIVO FROM CAMION, TIPOCAMION WHERE"
-                    + " CAMION.IDCAMION = "+Globales.temp+" AND CAMION.IDTIPOCAMION = TIPOCAMION.IDTIPOCAMION";
+                    + " CAMION.IDCAMION = "+ultimoCamion+" AND CAMION.IDTIPOCAMION = TIPOCAMION.IDTIPOCAMION";
             String[] columnasCamion = {"IDCAMION", "OPERADOR", "DESCRIPCION", "COLOR", "ACTIVO"};
             
-            LinkedList<LinkedList<String>> datosCamion = Globales.bdTemp.select(query, columnasCamion);
+            LinkedList<LinkedList<String>> datosCamion = Globales.baseDatos.select(query, columnasCamion);
             
             if(datosCamion == null || datosCamion.size() == 0){
-                throw new NoConectionDataBaseException("Error al conectarse con la base de datos: " + Globales.bdTemp.getUltimoError());
+                throw new NoConectionDataBaseException("Error al conectarse con la base de datos: " + Globales.baseDatos.getUltimoError());
             }
             
             numeroComercialTB.setText(datosCamion.get(0).get(0));
@@ -66,6 +68,15 @@ public class EditarCamion extends javax.swing.JFrame {
         catch(NoConectionDataBaseException e){
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
         }
+    }
+    
+    public EditarCamion() {
+        initComponents();
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+        this.setTitle("Añadir Camion");
+        
+        
     }
 
     /**
@@ -270,23 +281,23 @@ public class EditarCamion extends javax.swing.JFrame {
             
             String query = "select tipocamion.IDTIPOCAMION from tipocamion where tipocamion.descripcion = '"+ descripcionCB.getSelectedItem()+"'";
             String[] columnas = {"IDTIPOCAMION"};
-            LinkedList<LinkedList<String>> idTipoCamion = Globales.bdTemp.select(query, columnas);
+            LinkedList<LinkedList<String>> idTipoCamion = Globales.baseDatos.select(query, columnas);
             if(idTipoCamion == null || idTipoCamion.get(0).size()==0){
-                throw new NoConectionDataBaseException("Error al conectarse con la base de datos: " + Globales.bdTemp.getUltimoError());
+                throw new NoConectionDataBaseException("Error al conectarse con la base de datos: " + Globales.baseDatos.getUltimoError());
             }
             query = "UPDATE CAMION SET OPERADOR = '"+operadorTB.getText().toLowerCase()+"', IDTIPOCAMION = "+idTipoCamion.get(0).get(0)+", COLOR = '"+colorTB.getText().toLowerCase()+"', ACTIVO = "+camionActivo+" "
                     + "WHERE CAMION.IDCAMION = "+revisar+"";
             
             //query = "insert into CAMION (IDCAMION, OPERADOR, IDTIPOCAMION, COLOR, ACTIVO) VALUES ("+Integer.toString(revisar)+""
                             //+ ", '"+operadorTB.getText().toLowerCase()+"', "+idTipoCamion.get(0).get(0)+",'"+colorTB.getText().toLowerCase()+"',  1)";
-            boolean bandera = Globales.bdTemp.update(query);
+            boolean bandera = Globales.baseDatos.update(query);
             if(bandera){
                 GestionDeCamiones camiones= new GestionDeCamiones();
                 camiones.setVisible(true);
             this.dispose();
             }
             else{
-                throw new NoConectionDataBaseException("Error al conectarse con la base de datos: " + Globales.bdTemp.getUltimoError());
+                throw new NoConectionDataBaseException("Error al conectarse con la base de datos: " + Globales.baseDatos.getUltimoError());
             }
         }
         

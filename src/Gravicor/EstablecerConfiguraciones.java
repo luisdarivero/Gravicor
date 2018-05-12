@@ -175,14 +175,14 @@ public class EstablecerConfiguraciones extends javax.swing.JFrame {
             if(!config.modificarConfiguraciones(keys, values)){
                 throw new NoTypeRequiredException("Error inesperado al guardar los datos");
             }
-            boolean bandera = Globales.bdTemp.conectarBD(Globales.bdTemp.generarURL());
+            boolean bandera = Globales.baseDatos.conectarBD(Globales.baseDatos.generarURL());
             if(bandera != false){
                 GestionDePiedra pantallaConfiguracion= new GestionDePiedra();
                 pantallaConfiguracion.setVisible(true);
                 this.dispose();
             }
             else{
-                JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.baseDatos.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
             }
         }
         catch(NoTypeRequiredException e){
@@ -195,14 +195,14 @@ public class EstablecerConfiguraciones extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        boolean bandera = Globales.bdTemp.conectarBD(Globales.bdTemp.generarURL());
+        boolean bandera = Globales.baseDatos.conectarBD(Globales.baseDatos.generarURL());
         if(bandera != false){
             GestionDePiedra pantallaConfiguracion= new GestionDePiedra();
             pantallaConfiguracion.setVisible(true);
             this.dispose();
         }
         else{
-            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.baseDatos.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

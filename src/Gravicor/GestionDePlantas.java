@@ -27,10 +27,10 @@ public class GestionDePlantas extends javax.swing.JFrame {
                             "WHERE PLANTA.TIPOPLANTAID = TIPOPLANTA.TIPOPLANTAID";
             String[] columnas = {"PLANTAID","NOMBREPLANTA","DESCRIPCION"};
             
-            boolean  bandera = Globales.bdTemp.insertarEnTabla( query,columnas, tabla);
+            boolean  bandera = Globales.baseDatos.insertarEnTabla( query,columnas, tabla);
             
             if(bandera == false){
-                throw new NoConectionDataBaseException("Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError());
+                throw new NoConectionDataBaseException("Error al conectarse a la base de datos: " + Globales.baseDatos.getUltimoError());
                 
             }
             
@@ -150,27 +150,27 @@ public class GestionDePlantas extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        boolean bandera = Globales.bdTemp.conectarBD(Globales.bdTemp.generarURL());
+        boolean bandera = Globales.baseDatos.conectarBD(Globales.baseDatos.generarURL());
         if(bandera != false){
             GestionDeVentas ventas= new GestionDeVentas();
             ventas.setVisible(true);
             this.dispose();
         }
         else{
-            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.baseDatos.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        boolean bandera = Globales.bdTemp.conectarBD(Globales.bdTemp.generarURL());
+        boolean bandera = Globales.baseDatos.conectarBD(Globales.baseDatos.generarURL());
         if(bandera != false){
             AnadirPlanta nuevaPlanta = new AnadirPlanta();
             nuevaPlanta.setVisible(true);
             this.dispose();
         }
         else{
-            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.baseDatos.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -183,7 +183,7 @@ public class GestionDePlantas extends javax.swing.JFrame {
         else{
             Integer plantaID = Integer.parseInt((String) tabla.getModel().getValueAt(tabla.getSelectedRow(), 0));
             
-            boolean bandera = Globales.bdTemp.conectarBD(Globales.bdTemp.generarURL());
+            boolean bandera = Globales.baseDatos.conectarBD(Globales.baseDatos.generarURL());
             if(bandera != false){
                 EditarPlanta editarPlanta = new EditarPlanta();
                 editarPlanta.setPlantaAEditar(plantaID);
@@ -191,7 +191,7 @@ public class GestionDePlantas extends javax.swing.JFrame {
                 this.dispose();
             }
             else{
-                JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.baseDatos.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
             }
         }
         

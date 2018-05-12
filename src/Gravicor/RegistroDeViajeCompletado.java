@@ -33,18 +33,18 @@ public class RegistroDeViajeCompletado extends javax.swing.JFrame {
     boolean terminarConteo = false;
     
     
+    private String ultimoCamion = "1";
     
+    public void setUltimoCamion(String camion){
+        this.ultimoCamion = camion;
+    }
     
-    public RegistroDeViajeCompletado() {
-        initComponents();
-        this.setLocationRelativeTo(null);
-        this.setResizable(false);
-        this.setTitle("Registro completo");
+    public void iniciarPantalla(){
         //codigo para saber si ya se imprimio un ticket en el día por un camion
         try{
-            String queryTickets = "select IDIMPRESION from impresion where CAMIONID = "+Globales.ultimoCamion+" and  convert(varchar, DIA, 106) = convert(varchar, GETDATE(), 106)";
+            String queryTickets = "select IDIMPRESION from impresion where CAMIONID = "+ultimoCamion+" and  convert(varchar, DIA, 106) = convert(varchar, GETDATE(), 106)";
             String [] columnasTickets = {"IDIMPRESION"};
-            LinkedList<LinkedList<String>> infoTickets = Globales.bdTemp.select(queryTickets, columnasTickets);
+            LinkedList<LinkedList<String>> infoTickets = Globales.baseDatos.select(queryTickets, columnasTickets);
             if(infoTickets == null || infoTickets.get(0).size() >= 1){
                 throw new NoConectionDataBaseException();
             }
@@ -54,31 +54,31 @@ public class RegistroDeViajeCompletado extends javax.swing.JFrame {
         }
         try{
             String query = "Select  convert(varchar, viaje.FECHA, 106) as Fecha,  CONVERT(VARCHAR, VIAJE.HORA, 108) as Hora, TIPOCAMION.CAPACIDAD from VIAJE, CAMION, TIPOCAMION\n" +
-                            " WHERE VIAJE.IDCAMION = " +Globales.ultimoCamion + "  and VIAJE.ESACTIVO = 1 and viaje.IDCAMION = camion.IDCAMION and camion.IDTIPOCAMION = TIPOCAMION.IDTIPOCAMION and\n" +
+                            " WHERE VIAJE.IDCAMION = " +ultimoCamion + "  and VIAJE.ESACTIVO = 1 and viaje.IDCAMION = camion.IDCAMION and camion.IDTIPOCAMION = TIPOCAMION.IDTIPOCAMION and\n" +
                             "convert(varchar, viaje.FECHA, 106) = convert(varchar, GETDATE(), 106)";
             String[] columnas = {"Fecha","Hora", "CAPACIDAD"};
             
             queryViajes = query;
             columnasViajes = columnas;
             
-            boolean  bandera = Globales.bdTemp.insertarEnTabla( query,columnas, tabla);
+            boolean  bandera = Globales.baseDatos.insertarEnTabla( query,columnas, tabla);
             
             if(!bandera){
-                throw new NoConectionDataBaseException("Tu registro fue guardado pero por el momento no se puede mostrar la tabla: " + Globales.bdTemp.getUltimoError());
+                throw new NoConectionDataBaseException("Tu registro fue guardado pero por el momento no se puede mostrar la tabla: " + Globales.baseDatos.getUltimoError());
             }
             
             query ="SELECT CAMION.IDCAMION, TIPOCAMION.DESCRIPCION, CAMION.OPERADOR \n" +
                     "FROM CAMION, TIPOCAMION\n" +
-                    "WHERE CAMION.IDCAMION = " +Globales.ultimoCamion + " AND CAMION.IDTIPOCAMION = TIPOCAMION.IDTIPOCAMION " ;
+                    "WHERE CAMION.IDCAMION = " +ultimoCamion + " AND CAMION.IDTIPOCAMION = TIPOCAMION.IDTIPOCAMION " ;
             String[] columnasDescripcionGeneral = {"IDCAMION", "DESCRIPCION", "OPERADOR" };
-            LinkedList<LinkedList<String>> datosCamion = Globales.bdTemp.select(query, columnasDescripcionGeneral);
+            LinkedList<LinkedList<String>> datosCamion = Globales.baseDatos.select(query, columnasDescripcionGeneral);
             
-            query = "select COUNT(*) AS CONTEOVIAJES FROM VIAJE WHERE VIAJE.IDCAMION = " +Globales.ultimoCamion + " AND convert(varchar, viaje.FECHA, 106) = convert(varchar, GETDATE(), 106) and VIAJE.ESACTIVO = 1";
+            query = "select COUNT(*) AS CONTEOVIAJES FROM VIAJE WHERE VIAJE.IDCAMION = " +ultimoCamion + " AND convert(varchar, viaje.FECHA, 106) = convert(varchar, GETDATE(), 106) and VIAJE.ESACTIVO = 1";
             String[] columnasConteo = {"CONTEOVIAJES"};
-            LinkedList<LinkedList<String>> conteoViajes = Globales.bdTemp.select(query, columnasConteo);
+            LinkedList<LinkedList<String>> conteoViajes = Globales.baseDatos.select(query, columnasConteo);
             
             if(datosCamion == null || conteoViajes==null){
-                throw new NoConectionDataBaseException("Tu registro fue guardado pero por el momento no se puede mostrar la información de los registros: " + Globales.bdTemp.getUltimoError());
+                throw new NoConectionDataBaseException("Tu registro fue guardado pero por el momento no se puede mostrar la información de los registros: " + Globales.baseDatos.getUltimoError());
             }
             else if(datosCamion.size() == 0 || conteoViajes.size() ==0 ||datosCamion.get(0).size() == 0 || conteoViajes.get(0).size()==0){
                 throw new NoConectionDataBaseException("Tu registro fue guardado pero por el momento no se puede desplegar la información de los registros");
@@ -102,6 +102,15 @@ public class RegistroDeViajeCompletado extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
         }
         conteoCambioDePantalla();
+    }
+    
+    
+    public RegistroDeViajeCompletado() {
+        initComponents();
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+        this.setTitle("Registro completo");
+        
     }
     
     public  void conteoCambioDePantalla(){
@@ -342,9 +351,9 @@ public class RegistroDeViajeCompletado extends javax.swing.JFrame {
                                                                     numeroDeViajes);
             ticket.setVisible(true);
             try{
-                String queryTickets = "INSERT INTO IMPRESION (DIA,HORA,CAMIONID) VALUES (GETDATE(), GETdATE(), "+Globales.ultimoCamion+")";
+                String queryTickets = "INSERT INTO IMPRESION (DIA,HORA,CAMIONID) VALUES (GETDATE(), GETdATE(), "+ultimoCamion+")";
                 
-                Globales.bdTemp.insert(queryTickets);
+                Globales.baseDatos.insert(queryTickets);
                 
             }
             catch(Exception e){
