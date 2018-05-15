@@ -27,6 +27,7 @@ public class ConfiguracionConexionDB {
         this.configuraciones.put("DireccionIP", "LAPTOP-LVSV7Q0O");
         this.configuraciones.put("Usuario", "luisdarivero.s@gmail.com");
         this.configuraciones.put("Contrasena", "adminJava");
+        this.configuraciones.put("NombreImpresora", "Star TSP650 Cutter (TSP654)");
         if(!recuperarDatos()){
             escribirDatos();
         }

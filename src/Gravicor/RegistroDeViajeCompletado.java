@@ -20,14 +20,18 @@ public class RegistroDeViajeCompletado extends javax.swing.JFrame {
     /**
      * Creates new form NoSirve
      */
-    
+    String fecha = null;
+    String[] listaHorasViajes;
     String queryViajes = null;
     String[] columnasViajes = null;
     String IDcamion = null;
     String tipoCamion = null;
     String operadorCamion = null;
     String numeroDeViajes = null;
+    String totalM3 = null;
+    String totalTon = null;
     ConfiguracionPrograma configuraciones = new ConfiguracionPrograma();
+    ConfiguracionConexionDB configuracionesImpresora = new ConfiguracionConexionDB();
     Integer conteoSiguientePantalla = configuraciones.getValueWithHash("TiempoEsperaConfirmacionViaje");;
     boolean seguirContando = true;
     boolean terminarConteo = false;
@@ -45,12 +49,16 @@ public class RegistroDeViajeCompletado extends javax.swing.JFrame {
             String queryTickets = "select IDIMPRESION from impresion where CAMIONID = "+ultimoCamion+" and  convert(varchar, DIA, 106) = convert(varchar, GETDATE(), 106)";
             String [] columnasTickets = {"IDIMPRESION"};
             LinkedList<LinkedList<String>> infoTickets = Globales.baseDatos.select(queryTickets, columnasTickets);
-            if(infoTickets == null || infoTickets.get(0).size() >= 1){
+            if(infoTickets == null || infoTickets.get(0).size() >= configuraciones.getValueWithHash("ImpresionesMaximasPorOperadorAlDia")){
                 throw new NoConectionDataBaseException();
             }
+            
         }
         catch(NoConectionDataBaseException e){
-            jButton2.setEnabled(false);
+            terminarJornadaB.setEnabled(false);
+        }
+        catch(Exception  e){
+            terminarJornadaB.setEnabled(false);
         }
         try{
             String query = "Select  convert(varchar, viaje.FECHA, 106) as Fecha,  CONVERT(VARCHAR, VIAJE.HORA, 108) as Hora, TIPOCAMION.CAPACIDAD from VIAJE, CAMION, TIPOCAMION\n" +
@@ -66,6 +74,34 @@ public class RegistroDeViajeCompletado extends javax.swing.JFrame {
             if(!bandera){
                 throw new NoConectionDataBaseException("Tu registro fue guardado pero por el momento no se puede mostrar la tabla: " + Globales.baseDatos.getUltimoError());
             }
+            
+            //esta parte es para guardar la info del ticket
+            LinkedList<LinkedList<String>> datosViajes = Globales.baseDatos.select(query, columnas);
+            if(datosViajes == null || datosViajes.get(0).size() < 1){
+                throw new NoConectionDataBaseException("No se pudo obtener la información de tus viajes: " + Globales.baseDatos.getUltimoError());
+            }
+            this.fecha = datosViajes.get(0).get(0);
+            this.listaHorasViajes = new String[datosViajes.get(1).size()];
+            for(int i = 0; i< listaHorasViajes.length; i++){
+                listaHorasViajes[i] = datosViajes.get(1).get(i);
+            }
+            
+            query = "SELECT SUM(TIPOCAMION.CAPACIDAD) AS M3, SUM(TIPOCAMION.TONELADAS) AS TONELADAS\n" +
+                    "FROM VIAJE, CAMION, TIPOCAMION\n" +
+                    "WHERE VIAJE.IDCAMION = CAMION.IDCAMION AND CAMION.IDTIPOCAMION = TIPOCAMION.IDTIPOCAMION\n" +
+                    "AND VIAJE.IDCAMION = "+this.ultimoCamion+" AND VIAJE.ESACTIVO = 1 AND \n" +
+                    "convert(varchar, VIAJE.FECHA, 106) = convert(varchar, GETDATE(), 106)";
+            String[] columnasTotales = {"M3","TONELADAS"};
+            LinkedList<LinkedList<String>> datosTotales = Globales.baseDatos.select(query, columnasTotales);
+            if(datosTotales == null){
+                throw new NoConectionDataBaseException("No se pudo obtener la información de tus viajes: " + Globales.baseDatos.getUltimoError());
+            }
+            if(datosTotales.get(0).size() < 1){
+                throw new NoConectionDataBaseException("No se pudo obtener la información de tus viajes: no hay totales para mostrar");
+            }
+            this.totalM3 = datosTotales.get(0).getFirst();
+            this.totalTon = datosTotales.get(1).getFirst();
+            //termina parte para guardar info del ticcket
             
             query ="SELECT CAMION.IDCAMION, TIPOCAMION.DESCRIPCION, CAMION.OPERADOR \n" +
                     "FROM CAMION, TIPOCAMION\n" +
@@ -99,6 +135,7 @@ public class RegistroDeViajeCompletado extends javax.swing.JFrame {
             
         }
         catch(NoConectionDataBaseException e){
+            terminarJornadaB.setEnabled(false);
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
         }
         conteoCambioDePantalla();
@@ -162,7 +199,7 @@ public class RegistroDeViajeCompletado extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         operadorCamionLB = new javax.swing.JLabel();
         continuarB = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        terminarJornadaB = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -225,13 +262,13 @@ public class RegistroDeViajeCompletado extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/terminarJornada.png"))); // NOI18N
-        jButton2.setContentAreaFilled(false);
-        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton2.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/terminarJornada2.png"))); // NOI18N
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        terminarJornadaB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/terminarJornada.png"))); // NOI18N
+        terminarJornadaB.setContentAreaFilled(false);
+        terminarJornadaB.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        terminarJornadaB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/terminarJornada2.png"))); // NOI18N
+        terminarJornadaB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                terminarJornadaBActionPerformed(evt);
             }
         });
 
@@ -250,7 +287,7 @@ public class RegistroDeViajeCompletado extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGap(26, 26, 26)
-                                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(terminarJornadaB, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(jLabel2)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -298,7 +335,7 @@ public class RegistroDeViajeCompletado extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(48, 48, 48)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(terminarJornadaB, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(continuarB, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(52, Short.MAX_VALUE))
         );
@@ -325,7 +362,7 @@ public class RegistroDeViajeCompletado extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_continuarBActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void terminarJornadaBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_terminarJornadaBActionPerformed
         seguirContando = false;
         
         
@@ -343,30 +380,39 @@ public class RegistroDeViajeCompletado extends javax.swing.JFrame {
         
         
         if(n == 0){
-            ImprimirTicketViaje ticket = new ImprimirTicketViaje(queryViajes,
+            /*ImprimirTicketViaje ticket = new ImprimirTicketViaje(queryViajes,
                                                                     columnasViajes,
                                                                     IDcamion,
                                                                     tipoCamion,
                                                                     operadorCamion,
-                                                                    numeroDeViajes);
-            ticket.setVisible(true);
+                                                                    numeroDeViajes);*/
+            //ticket.setVisible(true);
             try{
+                PrintTiket myTiket = new PrintTiket(configuracionesImpresora.getValueWithHash("NombreImpresora"));
+                String infoTicket = myTiket.getTicketRegistroViajeCmpletado(this.fecha, IDcamion, tipoCamion, 
+                        operadorCamion, listaHorasViajes, numeroDeViajes, this.totalM3, this.totalTon);
+                boolean bandera = myTiket.printMyTicket(infoTicket);
+                
+                if(!bandera){
+                    
+                }
+                
                 String queryTickets = "INSERT INTO IMPRESION (DIA,HORA,CAMIONID) VALUES (GETDATE(), GETdATE(), "+ultimoCamion+")";
                 
                 Globales.baseDatos.insert(queryTickets);
-                
+                JOptionPane.showMessageDialog(this, "Felicidades, por favor recoje tu ticket");
+                continuarBActionPerformed(null);
             }
             catch(Exception e){
-                
+                JOptionPane.showMessageDialog(this, "Error al imprimir el ticket, por favor revisa la configuración de la impresora");
             }
-            JOptionPane.showMessageDialog(this, "Felicidades, por favor recoje tu ticket");
-            continuarBActionPerformed(null);
+            
         }
         else{
             seguirContando = true;
             conteoSiguientePantalla += 5;
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_terminarJornadaBActionPerformed
 
     /**
      * @param args the command line arguments
@@ -407,7 +453,6 @@ public class RegistroDeViajeCompletado extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel camionLB;
     private javax.swing.JButton continuarB;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -417,6 +462,7 @@ public class RegistroDeViajeCompletado extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel operadorCamionLB;
     private javax.swing.JTable tabla;
+    private javax.swing.JButton terminarJornadaB;
     private javax.swing.JLabel tipoCamionLB;
     private javax.swing.JLabel viajesLB;
     // End of variables declaration//GEN-END:variables

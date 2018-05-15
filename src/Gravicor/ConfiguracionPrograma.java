@@ -23,9 +23,10 @@ public class ConfiguracionPrograma {
     public final String FICHERO = "./Configuraciones/Configuraciones.config";
     
     public ConfiguracionPrograma(){
-        //configura valores por default
-        this.configuraciones.put("TiempoEsperaSiguienteViaje", 3);
+        //configura valores por default, solo valores enteros
+        this.configuraciones.put("TiempoEsperaSiguienteViaje", 20);
         this.configuraciones.put("TiempoEsperaConfirmacionViaje", 12);
+        this.configuraciones.put("ImpresionesMaximasPorOperadorAlDia", 3);
         if(!recuperarDatos()){
             escribirDatos();
         }

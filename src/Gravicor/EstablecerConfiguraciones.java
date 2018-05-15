@@ -26,6 +26,7 @@ public class EstablecerConfiguraciones extends javax.swing.JFrame {
         
         try{
             ConfiguracionPrograma config = new ConfiguracionPrograma();
+            ConfiguracionConexionDB configString = new ConfiguracionConexionDB();
             SpinnerModel model =
             new SpinnerNumberModel(0, //initial value
                                    0, //min
@@ -36,11 +37,19 @@ public class EstablecerConfiguraciones extends javax.swing.JFrame {
                                    0, //min
                                    100, //max
                                    1);  
+            SpinnerModel modelTres =
+            new SpinnerNumberModel(0, //initial value
+                                   0, //min
+                                   10, //max
+                                   1); 
             spinnerViajes.setModel(model);
             spinnerVentanasEmergentes.setModel(modelDos);
+            spinnerImpresionesMax.setModel(modelTres);
             
             spinnerViajes.setValue(config.getValueWithHash("TiempoEsperaSiguienteViaje"));
             spinnerVentanasEmergentes.setValue(config.getValueWithHash("TiempoEsperaConfirmacionViaje"));
+            spinnerImpresionesMax.setValue(config.getValueWithHash("ImpresionesMaximasPorOperadorAlDia"));
+            nombreImpresoraTF.setText(configString.getValueWithHash("NombreImpresora"));
         }
         catch(Exception e){
             JOptionPane.showMessageDialog(this, "No fue posible recuperar los datos de configuración", "Error al cargar datos", JOptionPane.WARNING_MESSAGE);
@@ -64,6 +73,10 @@ public class EstablecerConfiguraciones extends javax.swing.JFrame {
         spinnerViajes = new javax.swing.JSpinner();
         spinnerVentanasEmergentes = new javax.swing.JSpinner();
         jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        spinnerImpresionesMax = new javax.swing.JSpinner();
+        nombreImpresoraTF = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -102,6 +115,10 @@ public class EstablecerConfiguraciones extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Calibri", 0, 20)); // NOI18N
         jLabel3.setText("Duración de ventanas emergentes: ");
 
+        jLabel4.setText("Impresión máxima de tickets por operador:");
+
+        jLabel5.setText("Nombre de impresora:");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -109,22 +126,31 @@ public class EstablecerConfiguraciones extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(117, 117, 117)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(81, 81, 81)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(43, 43, 43)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel1)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel3))
-                                .addGap(57, 57, 57)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(jLabel2)
+                                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addGap(57, 57, 57))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(162, 162, 162)))
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(spinnerViajes, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
-                                    .addComponent(spinnerVentanasEmergentes))))))
+                                    .addComponent(spinnerVentanasEmergentes)
+                                    .addComponent(spinnerImpresionesMax)))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(117, 117, 117)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(81, 81, 81)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(nombreImpresoraTF, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(115, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -140,7 +166,15 @@ public class EstablecerConfiguraciones extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(spinnerVentanasEmergentes, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 185, Short.MAX_VALUE)
+                .addGap(36, 36, 36)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(spinnerImpresionesMax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(nombreImpresoraTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
@@ -165,16 +199,32 @@ public class EstablecerConfiguraciones extends javax.swing.JFrame {
         // TODO add your handling code here:
         try{
             if(new Integer((Integer)spinnerViajes.getValue()) > 100 || new Integer((Integer)spinnerViajes.getValue()) < 0){
-                if(new Integer((Integer)spinnerVentanasEmergentes.getValue()) > 100 || new Integer((Integer)spinnerVentanasEmergentes.getValue()) < 0){
+                throw new NoTypeRequiredException("Los datos ingresados no son validos");
+            }
+            
+            if(new Integer((Integer)spinnerVentanasEmergentes.getValue()) > 100 || new Integer((Integer)spinnerVentanasEmergentes.getValue()) < 0){
                     throw new NoTypeRequiredException("Los datos ingresados no son validos");
                 }
+            
+            if(new Integer((Integer)spinnerImpresionesMax.getValue()) > 10 || 
+                    new Integer((Integer)spinnerImpresionesMax.getValue()) < 0){
+                throw new NoTypeRequiredException("Los datos ingresados no son validos");
             }
             ConfiguracionPrograma config = new ConfiguracionPrograma();
-            String[] keys = {"TiempoEsperaSiguienteViaje","TiempoEsperaConfirmacionViaje"};
-            Integer[] values = {(Integer)spinnerViajes.getValue(),(Integer)spinnerVentanasEmergentes.getValue()};
+            ConfiguracionConexionDB configString = new ConfiguracionConexionDB();
+            
+            String[] keys = {"TiempoEsperaSiguienteViaje","TiempoEsperaConfirmacionViaje", "ImpresionesMaximasPorOperadorAlDia"};
+            Integer[] values = {(Integer)spinnerViajes.getValue(),(Integer)spinnerVentanasEmergentes.getValue(), (Integer)spinnerImpresionesMax.getValue()};
             if(!config.modificarConfiguraciones(keys, values)){
                 throw new NoTypeRequiredException("Error inesperado al guardar los datos");
             }
+            
+            String[] keysImpresora = {"NombreImpresora"};
+            String[] valuesImpresora = {nombreImpresoraTF.getText()};
+            if(!configString.modificarConfiguraciones(keysImpresora, valuesImpresora)){
+                throw new NoTypeRequiredException("Error inesperado al guardar los datos");
+            }
+            
             boolean bandera = Globales.baseDatos.conectarBD(Globales.baseDatos.generarURL());
             if(bandera != false){
                 GestionDePiedra pantallaConfiguracion= new GestionDePiedra();
@@ -247,7 +297,11 @@ public class EstablecerConfiguraciones extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JTextField nombreImpresoraTF;
+    private javax.swing.JSpinner spinnerImpresionesMax;
     private javax.swing.JSpinner spinnerVentanasEmergentes;
     private javax.swing.JSpinner spinnerViajes;
     // End of variables declaration//GEN-END:variables
