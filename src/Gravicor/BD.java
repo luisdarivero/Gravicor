@@ -414,7 +414,7 @@ public class BD {
     }
     
     public Integer insertarVenta(int clienteID, int materialID, String folioTransportista, String matriculaCamion, String nombreChofer,
-            int plantaID, int usuarioID, float costoOperativoPlanta, boolean esFacturado, float precioM3, float cantidadM3 ){
+            int plantaID, int usuarioID, float costoOperativoPlanta, boolean esFacturado, float precioM3, float cantidadM3, String folioPlanta ){
         if (!(this.isConectado = conectarBD(generarURL()))){
             return -3;
         }
@@ -423,7 +423,7 @@ public class BD {
             //se consulta el stored procedure
             Connection con = this.getConexion();
         
-            CallableStatement proc_stmt = con.prepareCall("{? = call INSERTARVENTA(?,?,?,?,?,?,?,?,?,?,?) }");
+            CallableStatement proc_stmt = con.prepareCall("{? = call INSERTARVENTA(?,?,?,?,?,?,?,?,?,?,?,?) }");
             proc_stmt.registerOutParameter(1, java.sql.Types.INTEGER);
             proc_stmt.setInt(2, clienteID);
             proc_stmt.setInt(3, materialID);
@@ -436,6 +436,7 @@ public class BD {
             proc_stmt.setBoolean(10, esFacturado);
             proc_stmt.setFloat(11, precioM3);
             proc_stmt.setFloat(12, cantidadM3);
+            proc_stmt.setString(13, folioPlanta);
             
             
             boolean rs = proc_stmt.execute();//regresar null si esta variable es falsa por que hay un error

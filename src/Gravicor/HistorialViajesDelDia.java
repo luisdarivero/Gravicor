@@ -21,6 +21,9 @@ public class HistorialViajesDelDia extends javax.swing.JFrame {
     private MyGregorianCalendar diaHistorial = new MyGregorianCalendar();
     private String minDate = "2-1-2018";
     private String maxDate = "1-1-2018";
+    
+    private String m3totales = "0";
+    private String tonTotales = "0";
     /**
      * Creates new form HistorialViajesDelDia
      */
@@ -89,6 +92,9 @@ public class HistorialViajesDelDia extends javax.swing.JFrame {
             
             totalMC.setText(totales.get(0).get(0));
             totalTon.setText(totales.get(1).get(0));
+            
+            m3totales = totales.get(0).get(0);
+            tonTotales = totales.get(1).get(0);
     }
 
     /**
@@ -159,6 +165,11 @@ public class HistorialViajesDelDia extends javax.swing.JFrame {
         jButton1.setContentAreaFilled(false);
         jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton1.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/realizarCorteDelDia2.png"))); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/back-icon.png"))); // NOI18N
         jButton2.setContentAreaFilled(false);
@@ -394,6 +405,44 @@ public class HistorialViajesDelDia extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error al guardar el registro", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // Codigo que imprime un ticket
+        try{
+            String nombreImpresora = new ConfiguracionConexionDB().getValueWithHash("NombreImpresora");
+            PrintTiket myTiket = new PrintTiket(nombreImpresora);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            String fecha = sdf.format(diaHistorial.getTime());
+            
+            //query
+            String query = "SELECT CAMION.IDCAMION,TIPOCAMION.DESCRIPCION,TIPOCAMION.CAPACIDAD, COUNT(*) AS CONTEO, SUM(TIPOCAMION.TONELADAS) AS SUBTOTALTONELADAS\n" +
+                            "FROM CAMION, VIAJE, TIPOCAMION\n" +
+                            "WHERE CAMION.IDCAMION = VIAJE.IDCAMION and VIAJE.ESACTIVO = 1 AND CAMION.IDTIPOCAMION = TIPOCAMION.IDTIPOCAMION AND convert(varchar, VIAJE.FECHA, 105) = '"+fecha+"'\n" +
+                            "GROUP BY VIAJE.IDCAMION, CAMION.IDCAMION, TIPOCAMION.DESCRIPCION, TIPOCAMION.CAPACIDAD";
+            String[] columnas = {"IDCAMION","DESCRIPCION","CAPACIDAD","CONTEO", "SUBTOTALTONELADAS"};
+            
+            LinkedList<LinkedList<String>> infoViajes = Globales.baseDatos.select(query, columnas);
+            if(infoViajes == null){
+                throw new NoTypeRequiredException("Error al conectarse con la base de datos, " + Globales.baseDatos.getUltimoError());
+            }
+            
+            if(infoViajes.get(0).size() < 1){
+                throw new NoTypeRequiredException("No hay datos para mostrar en el día");
+            }
+            
+            String textoTicket = myTiket.getTicketHistorialViajesDia(fecha, this.m3totales, 
+                                                                        this.tonTotales, infoViajes);
+            boolean validacion = myTiket.printMyTicket(textoTicket);
+            
+            if(!validacion){
+                throw new NoTypeRequiredException("Por favor revisa que la impresora esté conectada y funcionando correctamente");
+            }
+            JOptionPane.showMessageDialog(this, "Felicidades, por favor recoje tu ticket");
+        }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error al imprimir el ticket:", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     
     private String getStringDate(Date date){

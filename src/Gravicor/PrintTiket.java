@@ -9,13 +9,17 @@ package Gravicor;
  *
  * @author Gravicor
  */
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.print.Book;
 import java.awt.print.PageFormat;
+import java.awt.print.Paper;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
  
 import javax.print.Doc;
@@ -33,13 +37,27 @@ import javax.print.attribute.PrintRequestAttributeSet;
  */
 public class PrintTiket implements Printable{
     private String printerName;
+    private fontType myFont= fontType.NORMAL;
+    private String encabezado = "";
+    
     
     public PrintTiket(){
         printerName = "";
     }
     
+    public enum fontType {
+        NORMAL,
+        CONENCABEZADO
+    }
+
+    
     public PrintTiket(String printerName){
         this.printerName = printerName;
+    }
+    
+    public PrintTiket(String printerName, String encabezado, fontType nuevo){
+        this.printerName = printerName;
+        setMyFont(encabezado, nuevo);
     }
     //metodo que te regresa las impresoras disponibles
    public List<String> getPrinters(){
@@ -57,6 +75,73 @@ public class PrintTiket implements Printable{
 
         return printerList;
     }
+   
+   public String getTicketRegistroVentas(String folioVenta, String fecha, String cliente,
+                                            String tipoPago, String material, String cantidad,
+                                            String folioTransportista, String matricula, String nombreChofer,
+                                            String plantaProductora, String precio){
+       String resultado = "";
+       
+       resultado += "Folio de venta: {{folioVenta}}\n";
+       resultado += "Fecha: {{fecha}}\n";
+       
+       resultado += "========================================\n";
+       
+       resultado += "Cliente: {{cliente}}\n";
+       resultado += "Tipo de pago: {{tipoPago}}\n";
+       resultado += "Material: {{material}}\n";
+       resultado += "Cantidad en metros cubicos: {{cantidad}}\n";
+       resultado += "Folio transportista: {{folioTransportista}}\n";
+       resultado += "Matricula de camion: {{matricula}}\n";
+       resultado += "Nombre de chofer: {{nombreChofer}}\n";
+       resultado += "Planta productora: {{plantaProductora}}\n";
+       
+       resultado += "========================================\n";
+       
+       resultado += "Precio total: {{precio}}\n";
+       
+       resultado = resultado.replace("{{folioVenta}}", folioVenta);
+       resultado = resultado.replace("{{fecha}}", fecha);
+       resultado = resultado.replace("{{cliente}}", cliente);
+       resultado = resultado.replace("{{tipoPago}}", tipoPago);
+       resultado = resultado.replace("{{material}}", material);
+       resultado = resultado.replace("{{cantidad}}", cantidad);
+       resultado = resultado.replace("{{folioTransportista}}", folioTransportista);
+       resultado = resultado.replace("{{matricula}}", matricula);
+       resultado = resultado.replace("{{nombreChofer}}", nombreChofer);
+       resultado = resultado.replace("{{plantaProductora}}", plantaProductora);
+       resultado = resultado.replace("{{precio}}", precio);
+       
+       return resultado;
+   }
+   
+   public String getTicketHistorialViajesDia(String fecha, String m3, String toneladas,
+                                                LinkedList<LinkedList<String>> viajes){
+       
+       String resultado = "";
+       
+       resultado += "Historial de viajes del dia - {{fecha}}\n";
+       resultado += "Metros cuadrados totales: {{m3}}\n";
+       resultado += "Toneladas totales: {{toneladas}}\n";
+       
+       resultado += "========================================\n";
+       
+       for(int i = 0 ; i < viajes.get(0).size(); i++){
+           resultado += "Camion #" + viajes.get(0).get(i) + " (" + viajes.get(1).get(i) + "):\n";
+           resultado += "    Viajes: " + viajes.get(3).get(i) + ", M3: ";
+           int numViajes = Integer.parseInt(viajes.get(3).get(i));
+           int capacidad = Integer.parseInt(viajes.get(2).get(i));
+           Integer metrosC = numViajes * capacidad;
+           resultado += metrosC.toString() + ", Toneladas: " + Integer.parseInt(viajes.get(4).get(i)) 
+                    + "\n";
+       }
+       
+       resultado = resultado.replace("{{fecha}}", fecha);
+       resultado = resultado.replace("{{m3}}", m3);
+       resultado = resultado.replace("{{toneladas}}", toneladas);
+       
+       return resultado;
+   }
    
    public String getTicketRegistroViajeCmpletado(String dia, String camion, String tipoCamion,
                                                     String operador, String[] viajes,
@@ -90,10 +175,29 @@ public class PrintTiket implements Printable{
        
        return resultado;
    }
+   public void setMyFont(String encabezado, fontType nuevo){
+       this.encabezado = encabezado;
+       this.myFont = nuevo;
+   }
    
-   //solo implementa la interfaz de printable pero no se ocupa
+   
+   
+   //implementa la interfaz de printable
    @Override
-    public int print(Graphics g, PageFormat pf, int pageIndex) throws PrinterException{      
+    public int print(Graphics g, PageFormat pf, int pageIndex) throws PrinterException{   
+        
+        if(this.myFont == fontType.CONENCABEZADO){
+            Graphics2D g2d = (Graphics2D) g;
+            Font titleFont = new Font("Serif", Font.PLAIN, 38);
+            g2d.setFont(titleFont);
+            g2d.translate(10.0, 10.0);
+            
+            //System.out.println(pf.getImageableX());
+            //System.out.println(pf.getImageableY());
+            g2d.drawString(this.encabezado, 40, 22);
+            
+        }
+        
         return Printable.PAGE_EXISTS;    
     } 
     
@@ -160,6 +264,21 @@ public class PrintTiket implements Printable{
         return null;
     }
     
+    public boolean printMyVentaTicket(String folioVenta){
+        
+        
+        try{
+            printString(this.printerName, folioVenta);
+            cutPaper();
+        }
+        catch(Exception e){
+            return false;
+        }
+        
+        
+        return true;
+    }
+    
     public boolean printMyTicket(String ticketInfo){
         DocFlavor flavor = DocFlavor.BYTE_ARRAY.AUTOSENSE;
         PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
@@ -224,7 +343,8 @@ public class PrintTiket implements Printable{
             
             Book bk = new Book();   
             //bk.
-            bk.append(new PrintTiket(), job.defaultPage(), 1);      
+            //bk.append(new PrintTiket(this.printerName, this.encabezado, this.myFont), job.defaultPage(), 1);   
+            bk.append(new PrintTiket(this.printerName, this.encabezado, this.myFont), getMinimumMarginPageFormat(job), 1);   
             // Pass the book to the PrinterJob      
             job.setPageable(bk);      
             // Put up the dialog box      
@@ -233,6 +353,16 @@ public class PrintTiket implements Printable{
             catch (Exception e) {return false;}   
             return true;
         }
+    
+    private PageFormat getMinimumMarginPageFormat(PrinterJob printJob) {
+        PageFormat pf0 = printJob.defaultPage();
+        PageFormat pf1 = (PageFormat) pf0.clone();
+        Paper p = pf0.getPaper();
+        p.setImageableArea(0, 0,pf0.getWidth(), pf0.getHeight());
+        pf1.setPaper(p);
+        PageFormat pf2 = printJob.validatePage(pf1);
+        return pf2;     
+    }
     
 }
 

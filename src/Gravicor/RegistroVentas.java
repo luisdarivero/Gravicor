@@ -160,6 +160,8 @@ public class RegistroVentas extends javax.swing.JFrame {
         fechaTB = new javax.swing.JTextField();
         cantidadS = new javax.swing.JSpinner();
         montoTF = new javax.swing.JFormattedTextField();
+        jLabel1 = new javax.swing.JLabel();
+        folioPlantaTF = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -263,6 +265,8 @@ public class RegistroVentas extends javax.swing.JFrame {
         montoTF.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
         montoTF.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
+        jLabel1.setText("Folio planta productora:");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -280,14 +284,21 @@ public class RegistroVentas extends javax.swing.JFrame {
                     .addComponent(jLabel5)
                     .addComponent(jLabel2)
                     .addComponent(jLabel8)
-                    .addComponent(jLabel10))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel1)
+                        .addComponent(jLabel10)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(clienteCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(materialCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(clienteCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(materialCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(folioPlantaTF)
+                                .addGap(70, 70, 70)))
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addGroup(jPanel2Layout.createSequentialGroup()
@@ -357,10 +368,12 @@ public class RegistroVentas extends javax.swing.JFrame {
                     .addComponent(jLabel10)
                     .addComponent(jLabel11)
                     .addComponent(plantaCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(montoTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(montoTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1)
+                    .addComponent(folioPlantaTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(24, 24, 24)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -479,20 +492,47 @@ public class RegistroVentas extends javax.swing.JFrame {
             boolean esFacturado = false;
             if(tipoPago.equals("Efectivo")){
                 esFacturado = true;
-                System.out.println("esEfectivo");
+                //System.out.println("esEfectivo");
             }
             //aqui se terminan de validar los imputs y se realiza el insert
             
             int validacion = Globales.baseDatos.insertarVenta(idCliente, idMaterial, folioTransportistaTF.getText().toLowerCase(), 
                     matri.getText().toLowerCase(), nombreChoferTF.getText().toLowerCase(), idPlanta, 
-                    Globales.baseDatos.obtenerUsuarioID(Globales.currentUser), 0, esFacturado, precioClienteMaterial, cantidadM3);
+                    Globales.baseDatos.obtenerUsuarioID(Globales.currentUser), 0, esFacturado, precioClienteMaterial, cantidadM3,
+                    folioPlantaTF.getText().toLowerCase());
             
-            if(validacion != 1){
+            if(validacion < 1){
                 throw new NoConectionDataBaseException("Error al conectar con la base de datos: "
                 + Globales.baseDatos.getUltimoError());
             }
             
             JOptionPane.showMessageDialog(this,"El registro se ha guardado con éxito");
+            
+            String nombreImpresora = new ConfiguracionConexionDB().getValueWithHash("NombreImpresora");
+            
+            PrintTiket myTiket = new PrintTiket(nombreImpresora,
+                    (new Integer(validacion)).toString(), PrintTiket.fontType.CONENCABEZADO);
+            
+            String textoTicket = myTiket.getTicketRegistroVentas((new Integer(validacion)).toString(), 
+                    fechaTB.getText(), (String)clienteCB.getSelectedItem(), tipoPago, 
+                    (String)materialCB.getSelectedItem(), (new Integer(cantidadM3)).toString(), 
+                    folioTransportistaTF.getText().toLowerCase(), matri.getText().toLowerCase(), 
+                    nombreChoferTF.getText().toLowerCase(), (String)plantaCB.getSelectedItem(), 
+                    montoTF.getText());
+            
+            boolean validacionImpresion;
+            
+            validacionImpresion = myTiket.printMyTicket(textoTicket);
+            
+            if(!validacionImpresion){
+                throw new NoTypeRequiredException("Error al imprimir el ticket, por favor revisa que la impresora está conectada y  funcionando");
+            }
+            validacionImpresion =  myTiket.printMyTicket(textoTicket);//se imprime doble
+            if(!validacionImpresion){
+                throw new NoTypeRequiredException("Error al imprimir el ticket, por favor revisa que la impresora está conectada y  funcionando");
+            }
+            
+            
             
             RegistroVentas nuevaVenta= new RegistroVentas();
             nuevaVenta.setVisible(true);
@@ -504,6 +544,9 @@ public class RegistroVentas extends javax.swing.JFrame {
         }
         catch(NoConectionDataBaseException e){
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+        }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error inesperado del sistema", JOptionPane.ERROR_MESSAGE);
         }
         
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -557,9 +600,11 @@ public class RegistroVentas extends javax.swing.JFrame {
     private javax.swing.JSpinner cantidadS;
     private javax.swing.JComboBox<String> clienteCB;
     private javax.swing.JTextField fechaTB;
+    private javax.swing.JTextField folioPlantaTF;
     private javax.swing.JTextField folioTransportistaTF;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
