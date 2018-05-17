@@ -17,9 +17,9 @@ import javax.swing.table.DefaultTableModel;
 public class Globales {
     public static BD baseDatos = null;//new BD("LAPTOP-LVSV7Q0O","1433","GRAVICOR","luisdarivero.s@gmail.com","adminJava");// null;
     //esta variable temporal de base de datos solo es para pruebas
-    public static BD bdTemp =  new BD("LAPTOP-LVSV7Q0O","1433","GRAVICOR","luisdarivero.s@gmail.com","adminJava");
+    public static BD bdTemp = new BD("DESKTOP-T749VHG","63526","GRAVICOR","mario.lagunes95@gmail.com","mariolagunes");
     
-    public static String currentUser = "luisdaniel";
+    public static String currentUser = "Mariobeast";
     
     public static String temp = "1";
     

@@ -199,7 +199,7 @@ public class Registro extends javax.swing.JFrame {
             }
             String textoEncriptadoConMD5=DigestUtils.md5Hex(new String(contrasenaTextField.getPassword()));
             String user = usuarioTextField.getText();
-            Globales.baseDatos = new BD("LAPTOP-LVSV7Q0O","1433","GRAVICOR","luisdarivero.s@gmail.com","adminJava");
+            Globales.baseDatos = new BD("DESKTOP-T749VHG","63526","GRAVICOR","mario.lagunes95@gmail.com","mariolagunes");
             if(Globales.baseDatos.isIsConectado() == true){
                 //comprobar el usuario y contraseña
                 String[] columnas = {"CONTRASENA"};

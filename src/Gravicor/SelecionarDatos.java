@@ -5,6 +5,7 @@
  */
 package Gravicor;
 
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import javax.swing.JOptionPane;
@@ -15,6 +16,7 @@ import javax.swing.JOptionPane;
  */
 public class SelecionarDatos extends javax.swing.JFrame {
     private MyGregorianCalendar diaHistorial = new MyGregorianCalendar();
+    private LinkedList<LinkedList<String>> fecha;
     /**
      * Creates new form SelecionarDatos
      */
@@ -23,10 +25,11 @@ public class SelecionarDatos extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setTitle("Gestión de piedra en greña");
-        try{
+        
+        /*try{
             String queryFecha = "SELECT convert(varchar, getdate(), 105) as FECHA";
             String[] columnasFecha = {"FECHA"};
-            LinkedList<LinkedList<String>> fecha = Globales.bdTemp.select(queryFecha, columnasFecha);
+            fecha = Globales.bdTemp.select(queryFecha, columnasFecha);
             if(fecha == null){
                 throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.bdTemp.getUltimoError());
             }
@@ -41,6 +44,7 @@ public class SelecionarDatos extends javax.swing.JFrame {
             jDateChooser1.setDate(diaHistorial.getTime());
             dia.set(2018,0,1);
             jDateChooser1.setMinSelectableDate(dia.getTime());
+            System.out.println(fecha);
             
             
            
@@ -51,7 +55,7 @@ public class SelecionarDatos extends javax.swing.JFrame {
         }
         catch(NoTypeRequiredException e){
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error al guardar el registro", JOptionPane.WARNING_MESSAGE);
-        }
+        }*/
     }
 
     /**
@@ -63,16 +67,14 @@ public class SelecionarDatos extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
-        jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        mesCmb = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        anioTxt = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jDateChooser1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-
-        jLabel1.setText("Fecha");
 
         jButton1.setText("Generar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -88,36 +90,60 @@ public class SelecionarDatos extends javax.swing.JFrame {
             }
         });
 
+        mesCmb.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" }));
+        mesCmb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mesCmbActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Mes:");
+
+        jLabel1.setText("Año:");
+
+        anioTxt.setText("2018");
+        anioTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                anioTxtActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(0, 471, Short.MAX_VALUE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(208, 208, 208))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(72, 72, 72)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(319, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(216, 216, 216)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(mesCmb, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(73, 73, 73)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(anioTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(65, 65, 65)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 155, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(mesCmb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel1)
+                    .addComponent(anioTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 135, Short.MAX_VALUE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(136, 136, 136))
         );
@@ -127,12 +153,107 @@ public class SelecionarDatos extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        JOptionPane.showMessageDialog(this, "El reporte va aquí: ", "El reporte va aquí", JOptionPane.ERROR_MESSAGE);
+        
+        boolean bandera = Globales.bdTemp.conectarBD(Globales.bdTemp.generarURL());
+        int anioReal = Integer.parseInt(anioTxt.getText());
+        int anioAct = Integer.parseInt(anioTxt.getText());
+        int mesReal = convertirMes(mesCmb.getModel().getSelectedItem().toString());
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int mes = cal.get(Calendar.MONTH);
+        int mesSiguiente;
+        if(bandera != false){
+            if(anioReal > year){
+                JOptionPane.showMessageDialog(this, "Por favor, escoge un año menor o acutal.");
+            }
+            else if(anioReal < 2000){
+                JOptionPane.showMessageDialog(this, "Por favor, escoge un año mayor a el 2000.");
+            }
+            //else if(mesReal > mes){
+              //  JOptionPane.showMessageDialog(this, "Escoge un mes anterior.");
+            //}
+            else{
+                if(mesReal == 12){
+                    mesSiguiente = 1;
+                    anioReal += 1;
+                }else{
+                    mesSiguiente = mesReal + 1;
+                }
+                try{
+                    String query = "SELECT NOMBRECHOFER, PRECIOM3, CANTIDADM3 FROM VENTA, MATERIAL WHERE MATERIAL.DESCRIPCIONMATERIAL = 'Arenilla' AND FECHAVENTA >= '01-" 
+                            + mesCmb.getModel().getSelectedItem().toString() + "-" + anioAct + "' AND FECHAVENTA < '01-" + mesSiguiente + "-" + anioReal + "';" ;
+                    System.out.println(query);
+                    String[] Columnas = {"NOMBRECHOFER", "PRECIOM3", "CANTIDADM3"};
+                    LinkedList<LinkedList<String>> resultado = Globales.bdTemp.select(query, Columnas);
+                    if(resultado.get(0).size() == 0){
+                        JOptionPane.showMessageDialog(null,"No hay datos para generar reporte en ese mes.");
+                    }
+                    else{
+                       GenerarPDF g = new GenerarPDF();
+                        //g.generarPDF(mesReal, mesCmb.getModel().getSelectedItem().toString(), anioTxt.getText(),"Reporte de Ingresos por la Venta de Arenilla",fecha,resultado ,"Esto es lo de abajo perro", "/Users/Mario Prueba/Documents/Mis cosas/Gravicor Reporte Ejemplos/LogoGravicor.png", "/Users/Mario Prueba/Documents/Mis cosas/Gravicor Reporte Ejemplos/cuartoReporte.pdf");
+                        JOptionPane.showMessageDialog(null,"PDF creado correctamente."); 
+                    }
+                    
+                }catch(Exception e){
+                    JOptionPane.showMessageDialog(null,"No hay datos para generar reporte en ese mes.");
+                }
+            }
+            //Generador g = new Generador();
+            //g.setVisible(true);
+            //this.dispose();
+            
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private int convertirMes(String mes){
+        int mesNum = 0;
+        switch(mes){
+            case "Enero":
+                mesNum = 1;
+                break;
+            case "Febrero":
+                mesNum = 2;
+                break;
+            case "Marzo":
+                mesNum = 3;
+                break;
+            case "Abril":
+                mesNum = 4;
+                break;
+            case "Mayo":
+                mesNum = 5;
+                break;
+            case "Junio":
+                mesNum = 6;
+                break;
+            case "Julio":
+                mesNum = 7;
+                break;
+            case "Agosto":
+                mesNum = 8;
+                break;
+            case "Septiembre":
+                mesNum = 9;
+                break;
+            case "Octubre":
+                mesNum = 10;
+                break;
+            case "Noviembre":
+                mesNum = 11;
+                break;
+            case "Diciembre":
+                mesNum = 12;
+                break;
+        }
+        return mesNum;
+    }
+    
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-         boolean bandera = Globales.bdTemp.conectarBD(Globales.bdTemp.generarURL());
+        boolean bandera = Globales.bdTemp.conectarBD(Globales.bdTemp.generarURL());
         if(bandera != false){
             ReporteEstadisticas pantRep= new ReporteEstadisticas();
             pantRep.setVisible(true);
@@ -142,6 +263,14 @@ public class SelecionarDatos extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.bdTemp.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void mesCmbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mesCmbActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mesCmbActionPerformed
+
+    private void anioTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anioTxtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_anioTxtActionPerformed
 
     /**
      * @param args the command line arguments
@@ -179,9 +308,11 @@ public class SelecionarDatos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField anioTxt;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JComboBox<String> mesCmb;
     // End of variables declaration//GEN-END:variables
 }
