@@ -80,73 +80,74 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBackground(new java.awt.Color(249, 255, 255));
 
-        gestionGrenaB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/gestion piedra en greña 1.png"))); // NOI18N
+        gestionGrenaB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/gestionPiedraGrena.png"))); // NOI18N
         gestionGrenaB.setContentAreaFilled(false);
         gestionGrenaB.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        gestionGrenaB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/gestion piedra en greña 2.png"))); // NOI18N
+        gestionGrenaB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/gestionPiedraGren2.png"))); // NOI18N
         gestionGrenaB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 gestionGrenaBActionPerformed(evt);
             }
         });
 
-        gestionVentasB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/gestion de ventas1.png"))); // NOI18N
+        gestionVentasB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/gestionDeVentas.png"))); // NOI18N
         gestionVentasB.setContentAreaFilled(false);
         gestionVentasB.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        gestionVentasB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/gestion de ventas2.png"))); // NOI18N
+        gestionVentasB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/gestionDeVentas2.png"))); // NOI18N
         gestionVentasB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 gestionVentasBActionPerformed(evt);
             }
         });
 
-        reportesB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/reportes y estadisticas 1.png"))); // NOI18N
+        reportesB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/reportesYEstadisticas.png"))); // NOI18N
         reportesB.setContentAreaFilled(false);
         reportesB.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        reportesB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/reportes y estadisticas 2.png"))); // NOI18N
+        reportesB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/reportesYEstadisticas2.png"))); // NOI18N
         reportesB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 reportesBActionPerformed(evt);
             }
         });
 
-        cobranzaB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/cobranza 1.png"))); // NOI18N
+        cobranzaB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/cobranza.png"))); // NOI18N
         cobranzaB.setContentAreaFilled(false);
         cobranzaB.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        cobranzaB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/cobranza 2.png"))); // NOI18N
+        cobranzaB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/cobranza2.png"))); // NOI18N
 
-        configuracionCuenta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/configuracion de cuentas 1.png"))); // NOI18N
+        configuracionCuenta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/configuracionCuentas.png"))); // NOI18N
         configuracionCuenta.setContentAreaFilled(false);
         configuracionCuenta.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        configuracionCuenta.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/configuracion de cuentas 2.png"))); // NOI18N
+        configuracionCuenta.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/configuracionCuentas2.png"))); // NOI18N
         configuracionCuenta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 configuracionCuentaActionPerformed(evt);
             }
         });
 
-        tesoreriaB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/tesoreria 1.png"))); // NOI18N
+        tesoreriaB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/inventarios.png"))); // NOI18N
         tesoreriaB.setContentAreaFilled(false);
         tesoreriaB.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        tesoreriaB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/tesoreria 2.png"))); // NOI18N
+        tesoreriaB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/inventarios2.png"))); // NOI18N
 
-        gastosg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/gestion gastos generales.png"))); // NOI18N
+        gastosg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/gestionGastosGenerales.png"))); // NOI18N
         gastosg.setContentAreaFilled(false);
         gastosg.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        gastosg.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/gestion gastos generales2.png"))); // NOI18N
+        gastosg.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/gestionGastosGenerales2.png"))); // NOI18N
         gastosg.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 gastosgActionPerformed(evt);
             }
         });
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/logoGavicor.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/encabezadoLogoGravicor.png"))); // NOI18N
 
-        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/salir logo.png"))); // NOI18N
+        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/salir.png"))); // NOI18N
         jButton8.setContentAreaFilled(false);
         jButton8.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton8.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/salir2.png"))); // NOI18N
         jButton8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton8ActionPerformed(evt);
@@ -158,57 +159,58 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(31, 31, 31)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(reportesB, javax.swing.GroupLayout.PREFERRED_SIZE, 604, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(configuracionCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 601, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(gestionGrenaB, javax.swing.GroupLayout.PREFERRED_SIZE, 604, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(gestionVentasB, javax.swing.GroupLayout.PREFERRED_SIZE, 603, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(66, 66, 66)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(tesoreriaB, javax.swing.GroupLayout.PREFERRED_SIZE, 605, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(gastosg, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                            .addGap(421, 421, 421)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGap(421, 421, 421)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(cobranzaB, javax.swing.GroupLayout.PREFERRED_SIZE, 602, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 595, Short.MAX_VALUE)
-                        .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(51, 51, 51)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(gestionVentasB, javax.swing.GroupLayout.PREFERRED_SIZE, 499, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(gestionGrenaB, javax.swing.GroupLayout.PREFERRED_SIZE, 514, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(reportesB, javax.swing.GroupLayout.PREFERRED_SIZE, 501, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(15, 15, 15)))
+                        .addGap(116, 116, 116)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(gastosg, javax.swing.GroupLayout.PREFERRED_SIZE, 515, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tesoreriaB, javax.swing.GroupLayout.PREFERRED_SIZE, 503, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(configuracionCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 502, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 28, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(332, 332, 332)
+                .addComponent(cobranzaB, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(227, 227, 227))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
+                .addGap(12, 12, 12)
                 .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(gestionGrenaB)
+                    .addComponent(tesoreriaB))
                 .addGap(32, 32, 32)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(gestionGrenaB, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(38, 38, 38)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(gestionVentasB, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(gastosg, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                        .addGap(40, 40, 40)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(reportesB, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(configuracionCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(tesoreriaB, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(gastosg)
+                    .addComponent(gestionVentasB, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(17, 17, 17)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addComponent(cobranzaB, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
-                        .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(1, 1, 1)
+                        .addComponent(reportesB))
+                    .addComponent(configuracionCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addComponent(cobranzaB)
+                .addGap(1, 1, 1)
+                .addComponent(jButton8))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

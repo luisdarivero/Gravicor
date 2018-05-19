@@ -116,6 +116,7 @@ public class Registro extends javax.swing.JFrame {
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/Assets/logoGavicor.png"))); // NOI18N
 
         usuarioTextField.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        usuarioTextField.setText("luisdaniel");
         usuarioTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 usuarioTextFieldActionPerformed(evt);
@@ -129,6 +130,7 @@ public class Registro extends javax.swing.JFrame {
         jLabel4.setText("Contraseña:");
 
         contrasenaTextField.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        contrasenaTextField.setText("adminJava");
         contrasenaTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 contrasenaTextFieldActionPerformed(evt);

@@ -121,7 +121,7 @@ public class PrintTiket implements Printable{
        String resultado = "";
        
        resultado += "Historial de viajes del dia - {{fecha}}\n";
-       resultado += "Metros cuadrados totales: {{m3}}\n";
+       resultado += "Metros cubicos totales: {{m3}}\n";
        resultado += "Toneladas totales: {{toneladas}}\n";
        
        resultado += "========================================\n";
