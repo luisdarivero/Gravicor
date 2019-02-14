@@ -116,6 +116,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
         cobranzaB.setContentAreaFilled(false);
         cobranzaB.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         cobranzaB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/cobranza2.png"))); // NOI18N
+        cobranzaB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cobranzaBActionPerformed(evt);
+            }
+        });
 
         configuracionCuenta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/configuracionCuentas.png"))); // NOI18N
         configuracionCuenta.setContentAreaFilled(false);
@@ -297,6 +302,18 @@ public class MenuPrincipal extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.baseDatos.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_gestionGrenaBActionPerformed
+
+    private void cobranzaBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cobranzaBActionPerformed
+        boolean bandera = Globales.baseDatos.conectarBD(Globales.baseDatos.generarURL());
+        if(bandera != false){
+            Cobranza reportes = new Cobranza();
+            reportes.setVisible(true);
+            this.dispose();
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.baseDatos.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_cobranzaBActionPerformed
 
     /**
      * @param args the command line arguments
