@@ -100,6 +100,8 @@ public class FacturarVentas extends javax.swing.JFrame {
         String[] columnas = {"VENTAID", "NOMBRECLIENTE", "NOMBREPLANTA","PRECIOM3", "CANTIDADM3", "PRECIOFINAL"};
       
         try{
+            //pone el encabezado de la referencia
+            this.referenciaTB.setText(this.datos.get(this.indexOfDatos));
             //se revisa si el dato es un entero
             //Se consulta la base de datos para los ID de ventas 
             if(isNumeric(dato)){
@@ -188,28 +190,47 @@ public class FacturarVentas extends javax.swing.JFrame {
     }
     //---------termina codigo para añadir una nueva fila
     
-    //---------Codigo para identificar las opciones que están seleccionadas
-    public Integer[] getSelectedOptions(JTable tabla){
+    //---------Codigo para regresar los datos de la primera fila seleccionada
+    public Object[] getSelectedOptions(JTable tabla){//regresa una lista de objects, el primer argumento es un String, el segundo un integer y el tercero un Float
         //se crea la lista que se va a regresar
-        Integer[] lista = new Integer[tabla.getRowCount()];
-        for(int i=0;i< lista.length; i++){
-            lista[i] = 0;
-        }
+        Object[] lista = new Object[3];
+        
         //Se revisan todas las opciones
         for(int i=0;i<tabla.getRowCount();i++){
             Boolean checked=Boolean.valueOf(tabla.getValueAt(i, 0).toString());
-            String col=tabla.getValueAt(i, 1).toString();
-            //DISPLAY
             if(checked){
-              lista[i] = 1;
+              String id = tabla.getValueAt(i,2).toString();
+              Integer cantidad = new Integer(tabla.getValueAt(i,6).toString());
+              Float precio = new Float(tabla.getValueAt(i,5).toString());
+              lista[0] = id; lista[1] = cantidad; lista[2] = precio; // se asignan los valores que se van a regresar en orden
+              return lista;
             }
+            
           }
-        for(Integer x: lista){
-            System.out.println(x);
-        }
-        return lista;
+        
+        return null;
     }
     //---------Codigo para identificar las opciones que están seleccionadas
+    
+    //---------codigo que regresa el numero de checkboxes que estan seleccionados dentro de una lista
+    
+    private int getCountSelectedOptions(JTable tabla){
+        //se crea el contador
+        int contador = 0;
+        
+        for(int i=0;i<tabla.getRowCount();i++){
+            Boolean checked=Boolean.valueOf(tabla.getValueAt(i, 0).toString());
+            
+            //aumenta el contador si encuentra un checkbox habilitado
+            if(checked){
+              contador ++;
+            }
+          }
+        
+        return contador;
+    }
+    
+    //---------termina codigo que regresa el numero de checkboxes que estan seleccionados dentro de una lista
     
     //---------codigo para hacer una tabla con checkbox al inicio
     public JTable checkBoxTable(String[] titulosColumnas,Integer[] coordenadas){
@@ -267,7 +288,7 @@ public class FacturarVentas extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
+        facturarB = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         siguienteB = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
@@ -281,10 +302,13 @@ public class FacturarVentas extends javax.swing.JFrame {
         totalNuevoRegistroTB = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         totalFacturaTB = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        referenciaTB = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("Facturar");
+        facturarB.setText("Facturar");
+        facturarB.setEnabled(false);
 
         jButton2.setText("Cancelar");
 
@@ -325,10 +349,10 @@ public class FacturarVentas extends javax.swing.JFrame {
             }
         });
         spinnerPrecio.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 spinnerPrecioInputMethodTextChanged(evt);
-            }
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         spinnerPrecio.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
@@ -357,6 +381,10 @@ public class FacturarVentas extends javax.swing.JFrame {
 
         totalFacturaTB.setText("0.0");
 
+        jLabel5.setText("Referencia:");
+
+        referenciaTB.setText("###");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -369,7 +397,7 @@ public class FacturarVentas extends javax.swing.JFrame {
                         .addGap(82, 82, 82)
                         .addComponent(jButton2)
                         .addGap(161, 161, 161)
-                        .addComponent(jButton1)
+                        .addComponent(facturarB)
                         .addGap(76, 76, 76)
                         .addComponent(siguienteB))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
@@ -392,27 +420,32 @@ public class FacturarVentas extends javax.swing.JFrame {
                                 .addGap(0, 0, Short.MAX_VALUE)))))
                 .addGap(136, 136, 136))
             .addGroup(layout.createSequentialGroup()
+                .addGap(73, 73, 73)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(73, 73, 73)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(registroNuevoCB)
-                            .addComponent(registrosBDCB)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(284, 284, 284)
-                        .addComponent(jLabel4)
-                        .addGap(28, 28, 28)
-                        .addComponent(totalFacturaTB, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(registroNuevoCB)
+                    .addComponent(registrosBDCB))
+                .addContainerGap(665, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(121, 121, 121)
+                .addComponent(jLabel5)
+                .addGap(18, 18, 18)
+                .addComponent(referenciaTB, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel4)
+                .addGap(28, 28, 28)
+                .addComponent(totalFacturaTB, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(204, 204, 204))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(33, 33, 33)
+                .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(totalFacturaTB))
-                .addGap(33, 33, 33)
+                    .addComponent(totalFacturaTB)
+                    .addComponent(jLabel5)
+                    .addComponent(referenciaTB))
+                .addGap(35, 35, 35)
                 .addComponent(registrosBDCB)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 182, Short.MAX_VALUE)
                 .addComponent(registroNuevoCB)
@@ -428,7 +461,7 @@ public class FacturarVentas extends javax.swing.JFrame {
                     .addComponent(totalNuevoRegistroTB))
                 .addGap(57, 57, 57)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(facturarB)
                     .addComponent(jButton2)
                     .addComponent(siguienteB)
                     .addComponent(jButton4))
@@ -443,7 +476,42 @@ public class FacturarVentas extends javax.swing.JFrame {
         try{
             
             if(registrosBDCB.isSelected()){
+                
                 //esta seleccionado el cuadro de venta normal
+                if(getCountSelectedOptions(this.table) < 1){
+                    throw new NoTypeRequiredException("Debes seleccionar por lo menos una venta para continuar");
+                }
+                else if(getCountSelectedOptions(this.table) > 1){
+                    throw new NoTypeRequiredException("Debes seleccionar una sola venta para continuar");
+                }
+                //se obtienen los datos de la venta: venta ID y monto
+                Object[] listaDatos = getSelectedOptions(this.table);
+                if(listaDatos == null){
+                    throw new NoTypeRequiredException("Error desconocido al recuperar los datos de las tablas");
+                }
+                this.ventasID[indexOfDatos] = (String) listaDatos[0];
+                Float precioTemp = (Float) listaDatos[2];
+                this.precios [indexOfDatos] = precioTemp;
+                Integer cantidadesTemp = (Integer) listaDatos[1];
+                this.cantidades[indexOfDatos] = cantidadesTemp;
+                this.totalFactura[indexOfDatos] = new Double(precioTemp * cantidadesTemp);
+                organizarPantalla(this.table);
+                calcularTotalFactura(this.totalFactura);
+                //se cancela el boton de siguiente si es necesario
+                if(this.indexOfDatos >= this.datos.size()-1){//se asume que nunca se llegara a un error por que el boton se apaga
+                    siguienteB.setEnabled(false);
+                    this.spinnerCantidad.setEnabled(false);
+                    this.spinnerPrecio.setEnabled(false);
+                    this.referenciaTB.setText("----");
+                    this.facturarB.setEnabled(true);
+                    //aquí se corre el codigo para cancelar todos los botones  y pasar a facturar
+                }
+                else{
+                    //se calcula la nueva tabla
+                    this.indexOfDatos++;
+                    generarDatosTabla(this.indexOfDatos, this.datos, this.table);
+                }
+                
             }
             else if(registroNuevoCB.isSelected()){
                 //debe considerar que los datos de ingreso no son correctos
@@ -451,6 +519,7 @@ public class FacturarVentas extends javax.swing.JFrame {
                     throw new NoTypeRequiredException("No has especificado el valor de la factura");
                 }
                 //esta seleccionada la opcion de venta nueva
+                this.ventasID[indexOfDatos] = "";
                 this.precios [indexOfDatos] = (float)spinnerPrecio.getValue();
                 this.cantidades[indexOfDatos] = (int)spinnerCantidad.getValue();
                 this.totalFactura[indexOfDatos] = new Double(((float) spinnerPrecio.getValue() * new Float(((int)spinnerCantidad.getValue()))));
@@ -458,13 +527,19 @@ public class FacturarVentas extends javax.swing.JFrame {
                 calcularTotalFactura(this.totalFactura);
                 //bloquea el botón de siguiente si es el ultimo elemento
                 
-                if(this.indexOfDatos >= this.datos.size()-2){//se asume que nunca se llegara a un error por que el boton se apaga
+                if(this.indexOfDatos >= this.datos.size()-1){//se asume que nunca se llegara a un error por que el boton se apaga
                     siguienteB.setEnabled(false);
+                    this.spinnerCantidad.setEnabled(false);
+                    this.spinnerPrecio.setEnabled(false);
+                    this.referenciaTB.setText("----");
+                    this.facturarB.setEnabled(true);
+                }
+                else{
+                    //se calcula la nueva tabla
+                    this.indexOfDatos++;
+                    generarDatosTabla(this.indexOfDatos, this.datos, this.table);
                 }
                 
-                //se calcula la nueva tabla
-                this.indexOfDatos++;
-                generarDatosTabla(this.indexOfDatos, this.datos, this.table);
                 
             }
             else{
@@ -473,7 +548,7 @@ public class FacturarVentas extends javax.swing.JFrame {
             }
         }
         catch(NoTypeRequiredException e){
-            JOptionPane.showMessageDialog(this, "Debes seleccionar un valores diferentes de cero para el precio por M3 y para la cantidad en M3" , "Datos incompletos", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, e.getMessage() , "Datos ingresados erroneos", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_siguienteBActionPerformed
     
@@ -574,13 +649,15 @@ public class FacturarVentas extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton facturarB;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel referenciaTB;
     private javax.swing.JCheckBox registroNuevoCB;
     private javax.swing.JCheckBox registrosBDCB;
     private javax.swing.JButton siguienteB;
