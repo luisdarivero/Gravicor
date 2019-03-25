@@ -5,13 +5,16 @@
  */
 package Gravicor;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import java.time.temporal.TemporalQueries;
 import java.util.LinkedList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SpinnerModel;
@@ -40,7 +43,9 @@ public class FacturarVentas extends javax.swing.JFrame {
     
     public FacturarVentas() {
         initComponents();
-        
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+        this.setTitle("Facturar Ventas");
     }
     
     /*
@@ -56,11 +61,8 @@ public class FacturarVentas extends javax.swing.JFrame {
     public void programInnit(){
         try{
             String[] titulosColumnas = {"Seleccionar","Referencia","Venta ID","Cliente","Planta","Precio M3","Cantidad M3","Precio Final"};
-            Integer[] coordenadasTabla = {70,120,800,220};
+            Integer[] coordenadasTabla = {110,250,850,270};
             this.table= checkBoxTable(titulosColumnas,coordenadasTabla);
-            String[] temp = {"hola","hola"};
-            insertartarEnTabla(table, temp);
-            insertartarEnTabla(table, temp);
             generarDatosTabla(this.indexOfDatos, this.datos, this.table);
             //se inicializan las listas
             this.ventasID = new String[this.datos.size()];
@@ -238,11 +240,17 @@ public class FacturarVentas extends javax.swing.JFrame {
       getContentPane().setLayout(null);
       //ADD SCROLLPANE
       JScrollPane scroll=new JScrollPane();
+      
       scroll.setBounds(coordenadas[0],coordenadas[1],coordenadas[2],coordenadas[3]);//tiene que ser de mínimo 4 datos
       getContentPane().add(scroll);
       //THE TABLE
       JTable table=new JTable();
+      
+      scroll.setSize(900, 150);//es lo que realmente asigna el tamaño de la tabla
       scroll.setViewportView(table);
+      
+      jPanelColor.add(scroll);
+  
       //THE MODEL OF OUR TABLE
       DefaultTableModel model=new DefaultTableModel()
       {
@@ -274,7 +282,7 @@ public class FacturarVentas extends javax.swing.JFrame {
       for(String titulo: titulosColumnas){
           model.addColumn(titulo);
       }
-     
+      
       return table;
     }
     //---------Termina codigo para hacer una table con checkbox
@@ -288,71 +296,76 @@ public class FacturarVentas extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        facturarB = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        siguienteB = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        jPanelColor = new javax.swing.JPanel();
         registrosBDCB = new javax.swing.JCheckBox();
+        referenciaTB = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        totalFacturaTB = new javax.swing.JLabel();
         registroNuevoCB = new javax.swing.JCheckBox();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         spinnerPrecio = new javax.swing.JSpinner();
+        jLabel2 = new javax.swing.JLabel();
         spinnerCantidad = new javax.swing.JSpinner();
         jLabel3 = new javax.swing.JLabel();
         totalNuevoRegistroTB = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        totalFacturaTB = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        referenciaTB = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+        facturarB = new javax.swing.JButton();
+        siguienteB = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        facturarB.setText("Facturar");
-        facturarB.setEnabled(false);
+        jPanelColor.setBackground(new java.awt.Color(249, 255, 255));
 
-        jButton2.setText("Cancelar");
-
-        siguienteB.setText("Siguiente");
-        siguienteB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                siguienteBActionPerformed(evt);
-            }
-        });
-
-        jButton4.setText("Anterior");
-        jButton4.setEnabled(false);
-
+        registrosBDCB.setFont(new java.awt.Font("Calibri", 0, 22)); // NOI18N
         registrosBDCB.setSelected(true);
         registrosBDCB.setText("Registros de la base de datos");
+        registrosBDCB.setContentAreaFilled(false);
         registrosBDCB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 registrosBDCBActionPerformed(evt);
             }
         });
 
+        referenciaTB.setFont(new java.awt.Font("Calibri", 1, 22)); // NOI18N
+        referenciaTB.setText("###");
+
+        jLabel5.setFont(new java.awt.Font("Calibri", 1, 22)); // NOI18N
+        jLabel5.setText("Referencia:");
+
+        jLabel4.setFont(new java.awt.Font("Calibri", 1, 22)); // NOI18N
+        jLabel4.setText("Total de factura:");
+
+        totalFacturaTB.setFont(new java.awt.Font("Calibri", 1, 22)); // NOI18N
+        totalFacturaTB.setText("0.0");
+
+        registroNuevoCB.setFont(new java.awt.Font("Calibri", 0, 22)); // NOI18N
         registroNuevoCB.setText("Crear registro nuevo");
+        registroNuevoCB.setContentAreaFilled(false);
         registroNuevoCB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 registroNuevoCBActionPerformed(evt);
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Calibri", 0, 22)); // NOI18N
         jLabel1.setText("Precio por M3:");
 
-        jLabel2.setText("Cantidad de M3:");
-
+        spinnerPrecio.setFont(new java.awt.Font("Calibri", 0, 22)); // NOI18N
         spinnerPrecio.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.0f), Float.valueOf(0.0f), Float.valueOf(10000.0f), Float.valueOf(0.1f)));
         spinnerPrecio.setToolTipText("");
+        spinnerPrecio.setEnabled(false);
         spinnerPrecio.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 spinnerPrecioStateChanged(evt);
             }
         });
         spinnerPrecio.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 spinnerPrecioInputMethodTextChanged(evt);
+            }
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         spinnerPrecio.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
@@ -361,7 +374,12 @@ public class FacturarVentas extends javax.swing.JFrame {
             }
         });
 
+        jLabel2.setFont(new java.awt.Font("Calibri", 0, 22)); // NOI18N
+        jLabel2.setText("Cantidad de M3:");
+
+        spinnerCantidad.setFont(new java.awt.Font("Calibri", 0, 22)); // NOI18N
         spinnerCantidad.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
+        spinnerCantidad.setEnabled(false);
         spinnerCantidad.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 spinnerCantidadStateChanged(evt);
@@ -373,99 +391,138 @@ public class FacturarVentas extends javax.swing.JFrame {
             }
         });
 
+        jLabel3.setFont(new java.awt.Font("Calibri", 1, 22)); // NOI18N
         jLabel3.setText("Total nuevo registro:");
 
+        totalNuevoRegistroTB.setFont(new java.awt.Font("Calibri", 1, 22)); // NOI18N
         totalNuevoRegistroTB.setText("0.0");
 
-        jLabel4.setText("Total de factura:");
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/cancelar.png"))); // NOI18N
+        jButton2.setContentAreaFilled(false);
+        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton2.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/cancelar2.png"))); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
-        totalFacturaTB.setText("0.0");
+        facturarB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/facturar1.png"))); // NOI18N
+        facturarB.setContentAreaFilled(false);
+        facturarB.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        facturarB.setEnabled(false);
+        facturarB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/facturar2.png"))); // NOI18N
 
-        jLabel5.setText("Referencia:");
+        siguienteB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/siguiente1.png"))); // NOI18N
+        siguienteB.setContentAreaFilled(false);
+        siguienteB.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        siguienteB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/siguiente2.png"))); // NOI18N
+        siguienteB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                siguienteBActionPerformed(evt);
+            }
+        });
 
-        referenciaTB.setText("###");
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/encabezadoLogoGravicor.png"))); // NOI18N
+
+        javax.swing.GroupLayout jPanelColorLayout = new javax.swing.GroupLayout(jPanelColor);
+        jPanelColor.setLayout(jPanelColorLayout);
+        jPanelColorLayout.setHorizontalGroup(
+            jPanelColorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelColorLayout.createSequentialGroup()
+                .addGroup(jPanelColorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanelColorLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(55, 55, 55)
+                        .addComponent(facturarB, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(51, 51, 51)
+                        .addComponent(siguienteB, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelColorLayout.createSequentialGroup()
+                        .addGap(0, 66, Short.MAX_VALUE)
+                        .addGroup(jPanelColorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanelColorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanelColorLayout.createSequentialGroup()
+                                    .addGap(147, 147, 147)
+                                    .addComponent(jLabel1)
+                                    .addGap(27, 27, 27)
+                                    .addComponent(spinnerPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(147, 147, 147)
+                                    .addComponent(jLabel2)
+                                    .addGap(31, 31, 31)
+                                    .addComponent(spinnerCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(registroNuevoCB)
+                                .addGroup(jPanelColorLayout.createSequentialGroup()
+                                    .addGap(359, 359, 359)
+                                    .addComponent(jLabel3)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(totalNuevoRegistroTB, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanelColorLayout.createSequentialGroup()
+                                .addComponent(registrosBDCB)
+                                .addGap(684, 684, 684)))))
+                .addGap(0, 74, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelColorLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel6)
+                .addGap(163, 163, 163))
+            .addGroup(jPanelColorLayout.createSequentialGroup()
+                .addGap(215, 215, 215)
+                .addComponent(jLabel5)
+                .addGap(48, 48, 48)
+                .addComponent(referenciaTB, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(93, 93, 93)
+                .addComponent(jLabel4)
+                .addGap(18, 18, 18)
+                .addComponent(totalFacturaTB, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanelColorLayout.setVerticalGroup(
+            jPanelColorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelColorLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addGroup(jPanelColorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(referenciaTB)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel4)
+                    .addComponent(totalFacturaTB))
+                .addGap(18, 18, 18)
+                .addComponent(registrosBDCB)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 158, Short.MAX_VALUE)
+                .addComponent(registroNuevoCB)
+                .addGap(18, 18, 18)
+                .addGroup(jPanelColorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelColorLayout.createSequentialGroup()
+                        .addGroup(jPanelColorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(spinnerPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(43, 43, 43))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelColorLayout.createSequentialGroup()
+                        .addGroup(jPanelColorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(spinnerCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(42, 42, 42)))
+                .addGroup(jPanelColorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(totalNuevoRegistroTB))
+                .addGap(48, 48, 48)
+                .addGroup(jPanelColorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(facturarB)
+                    .addComponent(jButton2)
+                    .addComponent(siguienteB))
+                .addGap(47, 47, 47))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton4)
-                        .addGap(82, 82, 82)
-                        .addComponent(jButton2)
-                        .addGap(161, 161, 161)
-                        .addComponent(facturarB)
-                        .addGap(76, 76, 76)
-                        .addComponent(siguienteB))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(121, 121, 121)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(33, 33, 33)
-                                .addComponent(spinnerPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(150, 150, 150)
-                                .addComponent(jLabel2)
-                                .addGap(36, 36, 36)
-                                .addComponent(spinnerCantidad, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(43, 43, 43)
-                                .addComponent(totalNuevoRegistroTB, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)))))
-                .addGap(136, 136, 136))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(73, 73, 73)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(registroNuevoCB)
-                    .addComponent(registrosBDCB))
-                .addContainerGap(665, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(121, 121, 121)
-                .addComponent(jLabel5)
-                .addGap(18, 18, 18)
-                .addComponent(referenciaTB, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel4)
-                .addGap(28, 28, 28)
-                .addComponent(totalFacturaTB, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(204, 204, 204))
+            .addComponent(jPanelColor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(totalFacturaTB)
-                    .addComponent(jLabel5)
-                    .addComponent(referenciaTB))
-                .addGap(35, 35, 35)
-                .addComponent(registrosBDCB)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 182, Short.MAX_VALUE)
-                .addComponent(registroNuevoCB)
-                .addGap(50, 50, 50)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(spinnerPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(spinnerCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(33, 33, 33)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(totalNuevoRegistroTB))
-                .addGap(57, 57, 57)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(facturarB)
-                    .addComponent(jButton2)
-                    .addComponent(siguienteB)
-                    .addComponent(jButton4))
-                .addGap(26, 26, 26))
+            .addComponent(jPanelColor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -505,6 +562,10 @@ public class FacturarVentas extends javax.swing.JFrame {
                     this.referenciaTB.setText("----");
                     this.facturarB.setEnabled(true);
                     //aquí se corre el codigo para cancelar todos los botones  y pasar a facturar
+                    registrosBDCB.setEnabled(false);
+                    registroNuevoCB.setEnabled(false);
+                    this.table.setEnabled(false);
+                    
                 }
                 else{
                     //se calcula la nueva tabla
@@ -533,6 +594,9 @@ public class FacturarVentas extends javax.swing.JFrame {
                     this.spinnerPrecio.setEnabled(false);
                     this.referenciaTB.setText("----");
                     this.facturarB.setEnabled(true);
+                    registrosBDCB.setEnabled(false);
+                    registroNuevoCB.setEnabled(false);
+                    this.table.setEnabled(false);
                 }
                 else{
                     //se calcula la nueva tabla
@@ -559,7 +623,9 @@ public class FacturarVentas extends javax.swing.JFrame {
                 inicio += x;
             }
         }
-        totalFacturaTB.setText(inicio.toString());
+        DecimalFormat df = new DecimalFormat("#.00");
+        
+        totalFacturaTB.setText(df.format(inicio));
     }
     private void organizarPantalla(JTable tabla){
         limpiarTabla(tabla);
@@ -568,19 +634,27 @@ public class FacturarVentas extends javax.swing.JFrame {
         totalNuevoRegistroTB.setText("0.0");
         registrosBDCB.setSelected(true);
         registroNuevoCB.setSelected(false);
+        this.table.setEnabled(true);
+        this.spinnerCantidad.setEnabled(false);
+        this.spinnerPrecio.setEnabled(false);
     }
     private void registrosBDCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrosBDCBActionPerformed
         // TODO add your handling code here:
         if(registrosBDCB.isSelected() == true){
             registroNuevoCB.setSelected(false);
+            this.table.setEnabled(true);
+            this.spinnerCantidad.setEnabled(false);
+            this.spinnerPrecio.setEnabled(false);
+        }
+        else{
+            registrosBDCB.setSelected(true);
         }
     }//GEN-LAST:event_registrosBDCBActionPerformed
 
     private void spinnerPrecioStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spinnerPrecioStateChanged
         // TODO add your handling code here:
+        spinnerCantidadStateChanged(null);
         
-        Float total = (float)spinnerPrecio.getValue() * new Float(((int)spinnerCantidad.getValue()));
-        totalNuevoRegistroTB.setText(total.toString());
         
         
     }//GEN-LAST:event_spinnerPrecioStateChanged
@@ -588,13 +662,22 @@ public class FacturarVentas extends javax.swing.JFrame {
     private void spinnerCantidadStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spinnerCantidadStateChanged
         // TODO add your handling code here:
         Float total = (float)spinnerPrecio.getValue() * new Float(((int)spinnerCantidad.getValue()));
-        totalNuevoRegistroTB.setText(total.toString());
+        
+        DecimalFormat df = new DecimalFormat("#.00");
+        totalNuevoRegistroTB.setText(df.format(total));
+        
     }//GEN-LAST:event_spinnerCantidadStateChanged
 
     private void registroNuevoCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registroNuevoCBActionPerformed
         // TODO add your handling code here:
         if(registroNuevoCB.isSelected() == true){
             registrosBDCB.setSelected(false);
+            this.table.setEnabled(false);
+            this.spinnerCantidad.setEnabled(true);
+            this.spinnerPrecio.setEnabled(true);
+        }
+        else{
+            registroNuevoCB.setSelected(true);
         }
     }//GEN-LAST:event_registroNuevoCBActionPerformed
 
@@ -610,8 +693,17 @@ public class FacturarVentas extends javax.swing.JFrame {
     private void spinnerPrecioInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_spinnerPrecioInputMethodTextChanged
         // TODO add your handling code here:
         Float total = (float)spinnerPrecio.getValue() * new Float(((int)spinnerCantidad.getValue()));
-        totalNuevoRegistroTB.setText(total.toString());
+        
+        DecimalFormat df = new DecimalFormat("#.00");
+        totalNuevoRegistroTB.setText(df.format(total));
     }//GEN-LAST:event_spinnerPrecioInputMethodTextChanged
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        Cobranza cobranza= new Cobranza();
+        cobranza.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -651,12 +743,13 @@ public class FacturarVentas extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton facturarB;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JPanel jPanelColor;
     private javax.swing.JLabel referenciaTB;
     private javax.swing.JCheckBox registroNuevoCB;
     private javax.swing.JCheckBox registrosBDCB;
