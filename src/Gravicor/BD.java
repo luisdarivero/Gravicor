@@ -22,10 +22,15 @@ public class BD {
         this.usuarioBD = usuarioBD;
         this.contrasenaBD = contrasenaBD;
         this.isConectado = conectarBD(generarURL());
+        
+        //https://www.thaicreate.com/java/java-sql-server-transaction.html  //prueba
     }
     
     public boolean conectarBD(String URL){
         try{
+            if(this.conexion != null){
+                this.conexion.close();
+            }
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             this.conexion = DriverManager.getConnection(URL);
         }
@@ -456,6 +461,63 @@ public class BD {
         }
         
         return queryReturn;
+    }
+    
+    //metodo que regresa un array con los clientes actuales
+    public String[] getClientesArray(){
+        
+        String query = "SELECT C.NOMBRECLIENTE FROM CLIENTE AS C";
+        String[] columnasCliente = {"NOMBRECLIENTE"};
+        LinkedList<LinkedList<String>> datosClientes = Globales.baseDatos.select(query,columnasCliente);
+        if(datosClientes == null || datosClientes.size() < 1){
+            return null;
+        }
+        String[] modeloDescripcion = new String[datosClientes.get(0).size()];
+        for(int i = 0; i<datosClientes.get(0).size(); i++){
+            modeloDescripcion[i] = datosClientes.get(0).get(i);
+        }
+        
+        
+        return modeloDescripcion;
+    }
+    
+    public boolean commitWithRollback(String[] querys){
+        Statement st = null;
+        boolean execution;
+        try{
+            this.conexion.setAutoCommit(false);
+            st = this.conexion.createStatement();
+            
+            //se ejecutan todos los querys
+            for(String query : querys){
+                execution = st.execute(query);
+            }
+           
+            st.close();
+            this.conexion.setAutoCommit(true);
+            conectarBD(Globales.baseDatos.generarURL());
+        }
+        catch(Exception e){
+            try{
+                st.close();
+                this.conexion.rollback();
+                this.conexion.setAutoCommit(true);
+                this.setUltimoError(e.getMessage());
+                return false;
+            }
+            catch(Exception e2){
+                
+                this.setUltimoError(e2.getMessage());
+                return false;
+            }
+            
+        }
+        
+        boolean bandera = conectarBD(Globales.baseDatos.generarURL());
+        if(bandera == false){
+            return bandera;
+        }
+        return true;
     }
 
     public Connection getConexion() {

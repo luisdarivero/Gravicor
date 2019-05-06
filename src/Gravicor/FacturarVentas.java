@@ -6,13 +6,18 @@
 package Gravicor;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.time.temporal.TemporalQueries;
+import java.util.Arrays;
 import java.util.LinkedList;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -362,10 +367,10 @@ public class FacturarVentas extends javax.swing.JFrame {
             }
         });
         spinnerPrecio.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 spinnerPrecioInputMethodTextChanged(evt);
-            }
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         spinnerPrecio.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
@@ -412,6 +417,11 @@ public class FacturarVentas extends javax.swing.JFrame {
         facturarB.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         facturarB.setEnabled(false);
         facturarB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/facturar2.png"))); // NOI18N
+        facturarB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                facturarBActionPerformed(evt);
+            }
+        });
 
         siguienteB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/siguiente1.png"))); // NOI18N
         siguienteB.setContentAreaFilled(false);
@@ -545,6 +555,9 @@ public class FacturarVentas extends javax.swing.JFrame {
                 Object[] listaDatos = getSelectedOptions(this.table);
                 if(listaDatos == null){
                     throw new NoTypeRequiredException("Error desconocido al recuperar los datos de las tablas");
+                }
+                if(idRepetido((String) listaDatos[0])){
+                    throw new NoTypeRequiredException("El id de la venta seleccionada ya fue usado anteriormente, por favor selecciona uno diferente");
                 }
                 this.ventasID[indexOfDatos] = (String) listaDatos[0];
                 Float precioTemp = (Float) listaDatos[2];
@@ -704,6 +717,87 @@ public class FacturarVentas extends javax.swing.JFrame {
         cobranza.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private boolean identificarIDduplicado(){
+        
+        for (int i = 0; i< ventasID.length -1; i++){
+            for(int x=i+1 ; x< ventasID.length; x++){
+                if(ventasID[x] != null && ventasID[i] !=null){
+                    if(ventasID[x].equals(ventasID[i])){
+                        return true;
+                    }
+                    
+                }
+            }
+        }
+        
+        return false;
+        
+    }
+    
+    private boolean idRepetido(String id){
+        
+        for (String x: ventasID){
+            if(x != null && x.equals(id)){
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    private void facturarBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_facturarBActionPerformed
+        
+        try{
+            //Debe revisar que el monto es correcto y que no se repitan los ID´s
+            if(identificarIDduplicado()){
+                throw new NoTypeRequiredException("Existen dos ID de venta repetidos, por favor realiza de nuevo la selección de Ventas");
+            }
+            
+            //Se selecciona un cliente para añadirlo a la factura
+            String[] clientes = Globales.baseDatos.getClientesArray();
+            if(clientes == null){
+                throw new NoConectionDataBaseException("Error al conectar con la base de datos: "
+                                                            + Globales.baseDatos.getUltimoError());
+            }
+            JComboBox<String> optionList = new JComboBox(clientes);
+            int selection = JOptionPane.showOptionDialog(null, optionList, "Asigna un cliente a la factura", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, null,null);
+            //se obtiene el ID del cliente
+            int id = Globales.baseDatos.obtenerClienteID((String) optionList.getSelectedItem());
+            if(id < 0){
+                throw new NoConectionDataBaseException("Error al conectar con la base de datos: "
+                                                            + Globales.baseDatos.getUltimoError());
+            }
+            //primero se pregunta si se desea continuar con la operacion
+            JFrame frame = new JFrame();
+            String[] options = new String[2];
+            options[0] = new String("Continuar");
+            options[1] = new String("Cancelar");
+            String mensaje = "¿Deseas continuar con la facturación?";
+            String mensaje2 = " El monto total es de: \n" + totalFacturaTB.getText();
+            JLabel label = new JLabel(mensaje + mensaje2);
+            label.setFont(new Font("Arial", Font.CENTER_BASELINE, 18));
+            int response = JOptionPane.showOptionDialog(frame.getContentPane(),label,mensaje, 0,JOptionPane.QUESTION_MESSAGE,null,options,null);
+
+            //Se procede a realizar la transacción
+            if (response == 0){
+                String query = "insert into CAMION (IDCAMION, OPERADOR, IDTIPOCAMION, COLOR, ACTIVO) VALUES(24,'jose',2,'verde', 1)";
+                String query2 = "insert into CAMION (IDCAMION, OPERADOR, IDTIPOCAMION, COLOR, ACTIVO) VALUES(24,'jose',2,'verde', 1)";
+                String[] querys = {query, query2};
+                boolean commit = Globales.baseDatos.commitWithRollback(querys);
+                if(!commit){
+                    throw new NoConectionDataBaseException("Error al conectar con la base de datos: "
+                                                             + Globales.baseDatos.getUltimoError());
+                }
+            }
+        }
+        catch(NoConectionDataBaseException e){
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+        }
+        catch(NoTypeRequiredException e){
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error en los datos ingresados o del sistema", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_facturarBActionPerformed
 
     /**
      * @param args the command line arguments
