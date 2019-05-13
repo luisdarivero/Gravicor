@@ -7,6 +7,7 @@ package Gravicor;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
@@ -612,8 +613,8 @@ public class FacturarVentas extends javax.swing.JFrame {
                     this.table.setEnabled(false);
                 }
                 else{
-                    //se calcula la nueva tabla
-                    this.indexOfDatos++;
+                    this.indexOfDatos++;                    //se calcula la nueva tabla
+
                     generarDatosTabla(this.indexOfDatos, this.datos, this.table);
                 }
                 
@@ -761,34 +762,55 @@ public class FacturarVentas extends javax.swing.JFrame {
                                                             + Globales.baseDatos.getUltimoError());
             }
             JComboBox<String> optionList = new JComboBox(clientes);
-            int selection = JOptionPane.showOptionDialog(null, optionList, "Asigna un cliente a la factura", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, null,null);
+            int selection = JOptionPane.showOptionDialog(null, optionList, "Asigna un cliente a la factura", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, null,null);
+            if(selection < 0){
+                throw new NoTypeRequiredException("Por favor selecciona un cliente antes de facturar");
+            }
             //se obtiene el ID del cliente
-            int id = Globales.baseDatos.obtenerClienteID((String) optionList.getSelectedItem());
-            if(id < 0){
+            int clienteid = Globales.baseDatos.obtenerClienteID((String) optionList.getSelectedItem());
+            if(clienteid < 0){
                 throw new NoConectionDataBaseException("Error al conectar con la base de datos: "
                                                             + Globales.baseDatos.getUltimoError());
             }
+            //Se pregunta por el ID de la factura (alfanumerica)
+            TextField textF = new TextField();
+            selection = JOptionPane.showOptionDialog(null, textF, "Ingresa el ID de la factura", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, null,null);
+            if(selection < 0){
+                throw new NoTypeRequiredException("Por favor ingresa el ID de la factura antes de facturar");
+            }
+            String idFactura = textF.getText().toLowerCase();
+            if(idFactura.length()<1){
+                throw new NoTypeRequiredException("Por favor ingresa un ID de factura válido (Solo Letras y dígitos)");
+            }
+            if(!idFactura.matches("[A-Za-z0-9]+")){
+                throw new NoTypeRequiredException("Por favor ingresa un ID de factura válido (Solo Letras y dígitos)");
+            }
+            
             //primero se pregunta si se desea continuar con la operacion
             JFrame frame = new JFrame();
             String[] options = new String[2];
             options[0] = new String("Continuar");
             options[1] = new String("Cancelar");
             String mensaje = "¿Deseas continuar con la facturación?";
-            String mensaje2 = " El monto total es de: \n" + totalFacturaTB.getText();
+            String mensaje2 = " El monto total es de: \n" + totalFacturaTB.getText() + ", El cliente es: " + (String) optionList.getSelectedItem() + ", El ID de la factura es: " + idFactura;
             JLabel label = new JLabel(mensaje + mensaje2);
             label.setFont(new Font("Arial", Font.CENTER_BASELINE, 18));
             int response = JOptionPane.showOptionDialog(frame.getContentPane(),label,mensaje, 0,JOptionPane.QUESTION_MESSAGE,null,options,null);
 
             //Se procede a realizar la transacción
             if (response == 0){
-                String query = "insert into CAMION (IDCAMION, OPERADOR, IDTIPOCAMION, COLOR, ACTIVO) VALUES(24,'jose',2,'verde', 1)";
-                String query2 = "insert into CAMION (IDCAMION, OPERADOR, IDTIPOCAMION, COLOR, ACTIVO) VALUES(24,'jose',2,'verde', 1)";
-                String[] querys = {query, query2};
+                String[] infoFactura = {idFactura, totalFacturaTB.getText(),"GETDATE()","0","NULL","1",new Integer(clienteid).toString()}; //lista de strings que guardan la info que tendrá la factura
+                System.out.println(Globales.baseDatos.generateNewFacturaQuery(infoFactura)); //genera el query para crear la factura
+                String[] ventaFDatos = {"Null", "1",idFactura,"32","0","1000"};
+                System.out.println(Globales.baseDatos.generateNewVentaFantasmaQuery(ventaFDatos));
+                String[] infoVentaNueva = {"2", idFactura};
+                System.out.println(Globales.baseDatos.generateUptateVentaQuery(infoVentaNueva));
+                /*
                 boolean commit = Globales.baseDatos.commitWithRollback(querys);
                 if(!commit){
                     throw new NoConectionDataBaseException("Error al conectar con la base de datos: "
                                                              + Globales.baseDatos.getUltimoError());
-                }
+                }*/
             }
         }
         catch(NoConectionDataBaseException e){
@@ -798,7 +820,7 @@ public class FacturarVentas extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error en los datos ingresados o del sistema", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_facturarBActionPerformed
-
+    
     /**
      * @param args the command line arguments
      */

@@ -519,6 +519,67 @@ public class BD {
         }
         return true;
     }
+    
+    public String generateNewFacturaQuery(String[] valores){
+        if(valores.length < 7){
+            this.ultimoError = "No se encontraron suficientes argumentos para crear la factura";
+            return null;
+        }
+        String resultado = "('ID',MONTO,FECHA,ESPAGADO,FECHAPAGO,ESACTIVO,CLIENTEID)";
+        
+        resultado = resultado.replaceFirst("ID", valores[0]);
+        resultado = resultado.replaceFirst("MONTO", valores[1]);
+        resultado = resultado.replaceFirst("FECHA", valores[2]);
+        resultado = resultado.replaceFirst("ESPAGADO", valores[3]);
+        resultado = resultado.replaceFirst("FECHAPAGO", valores[4]);
+        resultado = resultado.replaceFirst("ESACTIVO", valores[5]);
+        resultado = resultado.replaceFirst("CLIENTEID", valores[6]);
+        
+        resultado = "INSERT INTO FACTURA VALUES " + resultado;
+        
+        return resultado;
+    }
+    
+    public String generateUptateVentaQuery(String[] valores){
+        
+        if(valores.length < 2){
+            this.ultimoError = "No se encontraron suficientes argumentos para modificar la venta";
+            return null;
+        }
+        
+        String resultado = "VENTAID, 'FACTURAID'";
+        
+        resultado = resultado.replaceFirst("VENTAID", valores[0]);
+        resultado = resultado.replaceFirst("FACTURAID", valores[1]);
+        
+        resultado = "EXEC FACTURARVENTA " + resultado;
+        
+        
+        return resultado;
+    }
+    
+    public String generateNewVentaFantasmaQuery(String[] valores){
+        
+        if(valores.length < 6){
+            this.ultimoError = "No se encontraron suficientes argumentos para crear la venta fantasma";
+            return null;
+        }
+        
+        String resultado = "(REFERENCIAVENTA, ESACTIVO, 'IDFACTURA',CANTIDADM3,ESCONSILIADA, PRECIOM3)";
+       
+        resultado = resultado.replaceFirst("REFERENCIAVENTA", valores[0]);
+        resultado = resultado.replaceFirst("ESACTIVO", valores[1]);
+        resultado = resultado.replaceFirst("IDFACTURA", valores[2]);
+        resultado = resultado.replaceFirst("CANTIDADM3", valores[3]);
+        resultado = resultado.replaceFirst("ESCONSILIADA", valores[4]);
+        resultado = resultado.replaceFirst("PRECIOM3", valores[5]);
+        
+        resultado = "INSERT INTO VENTAFANTASMA VALUES" + resultado;
+        
+        return resultado;
+        
+        
+    }
 
     public Connection getConexion() {
         return conexion;
