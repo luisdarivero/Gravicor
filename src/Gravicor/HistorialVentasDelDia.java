@@ -350,6 +350,7 @@ public class HistorialVentasDelDia extends javax.swing.JFrame {
                     "FROM VENTA AS V, CLIENTE AS C, MATERIAL AS M\n" +
                     "WHERE V.CLIENTEID = C.CLIENTEID AND V.MATERIALID = M.MATERIALID AND V.ACTIVO = 1 AND convert(varchar, V.FECHAVENTA, 105) "
                 + "= convert(varchar, '"+getStringDate(diaHistorial.getTime())+"', 105) ";
+        
         String[] columnas = {"VENTAID","FOLIOTRANSPORTISTA","HORA","NOMBRECLIENTE","DESCRIPCIONMATERIAL","CANTIDADM3","PRECIOM3"};
         boolean validacion = Globales.baseDatos.insertarEnTabla(query, columnas, tabla);
         
@@ -375,7 +376,7 @@ public class HistorialVentasDelDia extends javax.swing.JFrame {
             diaHistorial.set(new Integer(resultadoFecha[2]),new Integer(resultadoFecha[1]) -1,new Integer(resultadoFecha[0]));
             
             limpiarTabla();
-            
+           
             actualizarTabla(fecha);
             //System.out.println(getStringDate(diaHistorial.getTime()));
             

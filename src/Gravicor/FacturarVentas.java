@@ -368,10 +368,10 @@ public class FacturarVentas extends javax.swing.JFrame {
             }
         });
         spinnerPrecio.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 spinnerPrecioInputMethodTextChanged(evt);
+            }
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         spinnerPrecio.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
@@ -467,7 +467,7 @@ public class FacturarVentas extends javax.swing.JFrame {
                                     .addGap(359, 359, 359)
                                     .addComponent(jLabel3)
                                     .addGap(18, 18, 18)
-                                    .addComponent(totalNuevoRegistroTB, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(totalNuevoRegistroTB, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanelColorLayout.createSequentialGroup()
                                 .addComponent(registrosBDCB)
                                 .addGap(684, 684, 684)))))
@@ -594,7 +594,7 @@ public class FacturarVentas extends javax.swing.JFrame {
                     throw new NoTypeRequiredException("No has especificado el valor de la factura");
                 }
                 //esta seleccionada la opcion de venta nueva
-                this.ventasID[indexOfDatos] = "";
+                this.ventasID[indexOfDatos] = null;
                 this.precios [indexOfDatos] = (float)spinnerPrecio.getValue();
                 this.cantidades[indexOfDatos] = (int)spinnerCantidad.getValue();
                 this.totalFactura[indexOfDatos] = new Double(((float) spinnerPrecio.getValue() * new Float(((int)spinnerCantidad.getValue()))));
@@ -799,18 +799,39 @@ public class FacturarVentas extends javax.swing.JFrame {
 
             //Se procede a realizar la transacción
             if (response == 0){
+                //se crea una array con el tamaño suficiente de espacios para guardar los querys
+                String[] querys = new String[ventasID.length + 1];
+                //se inicia con los datos de la factura
+                //idfactura,montofactura,fechafactura,espagado,fechapago,esactivo,clienteid
                 String[] infoFactura = {idFactura, totalFacturaTB.getText(),"GETDATE()","0","NULL","1",new Integer(clienteid).toString()}; //lista de strings que guardan la info que tendrá la factura
-                System.out.println(Globales.baseDatos.generateNewFacturaQuery(infoFactura)); //genera el query para crear la factura
-                String[] ventaFDatos = {"Null", "1",idFactura,"32","0","1000"};
-                System.out.println(Globales.baseDatos.generateNewVentaFantasmaQuery(ventaFDatos));
-                String[] infoVentaNueva = {"2", idFactura};
-                System.out.println(Globales.baseDatos.generateUptateVentaQuery(infoVentaNueva));
-                /*
+                querys[0] = Globales.baseDatos.generateNewFacturaQuery(infoFactura);
+                //se hace un ciclo para agregar querys de ventas
+                
+                for(int i = 0; i< ventasID.length; i++){
+                    if(ventasID[i] == null){//ventas fantasma
+                        //referenciaventa, esactivo,idfactura,cantidadm3,esconciliada,preciom3
+                        String[] infoVentaFantasma = {"Null", "1",idFactura,cantidades[i].toString(),"0",precios[i].toString()};
+                        querys[i+1] = Globales.baseDatos.generateNewVentaFantasmaQuery(infoVentaFantasma);
+                    }
+                    else{//ventas con ID valido
+                        String[] infoVentaNueva = {ventasID[i], idFactura}; //ventaID, facturaID
+                        querys[i+1] = Globales.baseDatos.generateUptateVentaQuery(infoVentaNueva);
+                    }
+                }
+                
+                
+                //SE realizan las transacciones
                 boolean commit = Globales.baseDatos.commitWithRollback(querys);
                 if(!commit){
                     throw new NoConectionDataBaseException("Error al conectar con la base de datos: "
                                                              + Globales.baseDatos.getUltimoError());
-                }*/
+                }
+                
+                
+                //Regresas a la ventana de cobranza
+                Cobranza cobranza= new Cobranza();
+                cobranza.setVisible(true);
+                this.dispose();
             }
         }
         catch(NoConectionDataBaseException e){
