@@ -244,7 +244,21 @@ public class HistorialVentasDelDia extends javax.swing.JFrame {
                 options[0]); //default button title
             if(n == 0){
                 String query = "UPDATE VENTA SET ACTIVO = 0 WHERE VENTAID = " + idVenta;
+                
+                
                 try{
+                    //se valida si es credito o ya fue pagada en efectivo
+                    int esCredito = Globales.baseDatos.esVentaCredito(idVenta);
+                    //se valida que la venta no este facturada
+                    int esFacturada = Globales.baseDatos.esVentaFacturada(idVenta);
+                    if(esFacturada == -1 || esCredito ==-1){
+                        throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.baseDatos.getUltimoError());
+                    }
+                    else if(esCredito == 1 && esFacturada == 1){
+                        throw new NoTypeRequiredException("La venta ya se encuentra facturada y no es posible eliminar el registro");
+                    }
+                    //se procede a modificar el registro
+                    
                     boolean bandera = Globales.baseDatos.update(query);
                     if(bandera == false){
                         throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.baseDatos.getUltimoError());

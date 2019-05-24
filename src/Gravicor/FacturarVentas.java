@@ -115,7 +115,7 @@ public class FacturarVentas extends javax.swing.JFrame {
             if(isNumeric(dato)){
                 query = "SELECT V.VENTAID, C.NOMBRECLIENTE, P.NOMBREPLANTA,V.PRECIOM3, V.CANTIDADM3, (V.PRECIOM3 * V.CANTIDADM3) AS PRECIOFINAL\n" +
                                 "FROM VENTA AS V, CLIENTE AS C, PLANTA AS P\n" +
-                                    "WHERE V.VENTAID = " + dato.toLowerCase() + " AND V.CLIENTEID = C.CLIENTEID AND V.PLANTAID = P.PLANTAID AND V.ACTIVO = 1 AND V.ESFACTURADO = 'FALSE'";
+                                    "WHERE V.VENTAID = " + dato.toLowerCase() + " AND V.CLIENTEID = C.CLIENTEID AND V.PLANTAID = P.PLANTAID AND V.ACTIVO = 1 AND V.ESFACTURADO = 'FALSE' AND V.ESCREDITO = 'TRUE'";
                 
                 LinkedList<LinkedList<String>> ventasID = Globales.baseDatos.select(query, columnas);
                 if(ventasID == null){

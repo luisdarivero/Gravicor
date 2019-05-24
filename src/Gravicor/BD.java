@@ -241,6 +241,62 @@ public class BD {
         return true;
     }
     
+    public int esVentaCredito(String idVenta){
+        if (!(this.isConectado = conectarBD(generarURL()))){
+            return -3;
+        }
+        int  queryReturn;
+        
+        try{
+            //se consulta el stored procedure
+            Connection con = this.getConexion();
+        
+            CallableStatement proc_stmt = con.prepareCall("{? = call ESVENTACREDITO(?) }");
+            proc_stmt.registerOutParameter(1, java.sql.Types.INTEGER);
+            proc_stmt.setString(2, idVenta);
+            
+            boolean rs = proc_stmt.execute();//regresar null si esta variable es falsa por que hay un error
+            
+            queryReturn = proc_stmt.getInt(1);
+            
+            
+        }
+        catch(Exception e){
+            this.setUltimoError(e.getMessage());
+            return -1;
+        }
+        
+        return queryReturn;
+    }
+    
+    public int esVentaFacturada(String idVenta){
+        if (!(this.isConectado = conectarBD(generarURL()))){
+            return -3;
+        }
+        int  queryReturn;
+        
+        try{
+            //se consulta el stored procedure
+            Connection con = this.getConexion();
+        
+            CallableStatement proc_stmt = con.prepareCall("{? = call ESVENTAFACTURADA(?) }");
+            proc_stmt.registerOutParameter(1, java.sql.Types.INTEGER);
+            proc_stmt.setString(2, idVenta);
+            
+            boolean rs = proc_stmt.execute();//regresar null si esta variable es falsa por que hay un error
+            
+            queryReturn = proc_stmt.getInt(1);
+            
+            
+        }
+        catch(Exception e){
+            this.setUltimoError(e.getMessage());
+            return -1;
+        }
+        
+        return queryReturn;
+    }
+    
     public int obtenerClienteID(String nombreCliente){
         if (!(this.isConectado = conectarBD(generarURL()))){
             return -3;
@@ -419,7 +475,7 @@ public class BD {
     }
     
     public Integer insertarVenta(int clienteID, int materialID, String folioTransportista, String matriculaCamion, String nombreChofer,
-            int plantaID, int usuarioID, float costoOperativoPlanta, boolean esFacturado, float precioM3, float cantidadM3, String folioPlanta ){
+            int plantaID, int usuarioID, float costoOperativoPlanta, float precioM3, float cantidadM3, String folioPlanta,boolean esCredito ){
         if (!(this.isConectado = conectarBD(generarURL()))){
             return -3;
         }
@@ -438,10 +494,10 @@ public class BD {
             proc_stmt.setInt(7, plantaID);
             proc_stmt.setInt(8, usuarioID);
             proc_stmt.setFloat(9, costoOperativoPlanta);
-            proc_stmt.setBoolean(10, esFacturado);
-            proc_stmt.setFloat(11, precioM3);
-            proc_stmt.setFloat(12, cantidadM3);
-            proc_stmt.setString(13, folioPlanta);
+            proc_stmt.setFloat(10, precioM3);
+            proc_stmt.setFloat(11, cantidadM3);
+            proc_stmt.setString(12, folioPlanta);
+            proc_stmt.setBoolean(13, esCredito);
             
             
             boolean rs = proc_stmt.execute();//regresar null si esta variable es falsa por que hay un error

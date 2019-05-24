@@ -470,17 +470,17 @@ public class RegistroVentas extends javax.swing.JFrame {
                     + Globales.baseDatos.getUltimoError());
             }
             String tipoPago = (String)pagoCB.getSelectedItem();
-            boolean esFacturado = false;
+            boolean esCredito = true;
             if(tipoPago.equals("Efectivo")){
-                esFacturado = true;
+                esCredito = false;
                 //System.out.println("esEfectivo");
             }
             //aqui se terminan de validar los imputs y se realiza el insert
 
             int validacion = Globales.baseDatos.insertarVenta(idCliente, idMaterial, folioTransportistaTF.getText().toLowerCase(),
                 matri.getText().toLowerCase(), nombreChoferTF.getText().toLowerCase(), idPlanta,
-                Globales.baseDatos.obtenerUsuarioID(Globales.currentUser), 0, esFacturado, precioClienteMaterial, cantidadM3,
-                folioPlantaTF.getText().toLowerCase());
+                Globales.baseDatos.obtenerUsuarioID(Globales.currentUser), 0, precioClienteMaterial, cantidadM3,
+                folioPlantaTF.getText().toLowerCase(),esCredito);
 
             if(validacion < 1){
                 throw new NoConectionDataBaseException("Error al conectar con la base de datos: "
