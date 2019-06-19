@@ -6,6 +6,7 @@
 package Gravicor;
 
 import java.util.LinkedList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -76,6 +77,11 @@ public class FacturasPorCobrar extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tabla);
 
         jButton1.setText("Borrar Factura");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Marca cobro de factura");
 
@@ -174,6 +180,37 @@ public class FacturasPorCobrar extends javax.swing.JFrame {
         cobranza.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // Codigo para borrar la facura
+        if(tabla.getSelectedRow() < 0){
+            JOptionPane.showMessageDialog(this, "Por favor selecciona de la tabla la factura que desea eliminar", "Error de selección", JOptionPane.ERROR_MESSAGE);
+        }
+        else{
+            try{
+                //se almacena el id d la factura que se va a eliminar
+                String idVenta = (String)tabla.getModel().getValueAt(tabla.getSelectedRow(), 0);
+                //se marcan las opciones del cuadro de dialogo
+                Object[] options = {"SI","NO"};
+                //se crea el cuadro de dialogo
+                int n = JOptionPane.showOptionDialog(this, //si = 0, no = 1
+                    "¿Estás seguro que deseas eliminar esta factura?",
+                    "¿Eliminar registro?",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,     //do not use a custom Icon
+                    options,  //the titles of buttons
+                    options[0]); //default button title
+                if(n == 0){
+                    //se borra el registro
+                }
+            }
+            catch(Exception e){
+                //marcar la excepcion
+            }
+        }
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void actualizarTabla() throws NoConectionDataBaseException, NoTypeRequiredException{
         String query = "SELECT F.IDFACTURA, C.NOMBRECLIENTE, F.FECHAFACTURA, F.MONTOFACTURA\n" +

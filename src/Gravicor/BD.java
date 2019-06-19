@@ -636,6 +636,28 @@ public class BD {
         
         
     }
+    
+    public boolean deleteFactura(String facturaID){
+        String query;
+        String[] columnas = {"ID"};
+        //Se obtienen los ID de las ventas
+        query = "SELECT V.VENTAID  AS ID\n" +
+                "FROM FACTURA AS F, VENTA AS V\n" +
+                "WHERE V.FACTURAID = F.IDFACTURA AND F.IDFACTURA = '" + facturaID + "'";
+        LinkedList<LinkedList<String>> ventas = Globales.baseDatos.select(query,columnas);
+        //Se obtienen los ID de las ventas fantasma
+        query = "SELECT V.VANTAID AS ID\n" +
+                "FROM FACTURA AS F, VENTAFANTASMA AS V\n" +
+                "WHERE V.IDFACTURA = F.IDFACTURA AND F.IDFACTURA = '" + facturaID + "'";
+        LinkedList<LinkedList<String>> ventasFantasma = Globales.baseDatos.select(query,columnas);
+        
+        //se crea el array de los querys a ejecutar
+        String[] querys = new String[1+ventas.size()+ventasFantasma.size()];
+        
+        //Se asignan los querys a el array para poder ejecutarse
+        
+        return true;
+    }
 
     public Connection getConexion() {
         return conexion;
