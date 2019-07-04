@@ -189,7 +189,7 @@ public class FacturasPorCobrar extends javax.swing.JFrame {
         else{
             try{
                 //se almacena el id d la factura que se va a eliminar
-                String idVenta = (String)tabla.getModel().getValueAt(tabla.getSelectedRow(), 0);
+                String idFactura = (String)tabla.getModel().getValueAt(tabla.getSelectedRow(), 0);
                 //se marcan las opciones del cuadro de dialogo
                 Object[] options = {"SI","NO"};
                 //se crea el cuadro de dialogo
@@ -203,6 +203,7 @@ public class FacturasPorCobrar extends javax.swing.JFrame {
                     options[0]); //default button title
                 if(n == 0){
                     //se borra el registro
+                    Globales.baseDatos.deleteFactura(idFactura);
                 }
             }
             catch(Exception e){

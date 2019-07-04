@@ -651,9 +651,30 @@ public class BD {
                 "WHERE V.IDFACTURA = F.IDFACTURA AND F.IDFACTURA = '" + facturaID + "'";
         LinkedList<LinkedList<String>> ventasFantasma = Globales.baseDatos.select(query,columnas);
         
-        //se crea el array de los querys a ejecutar
-        String[] querys = new String[1+ventas.size()+ventasFantasma.size()];
+        //se calcula el espacio del array
+        int ventasLenght = ventas.get(0).size();
+        int ventasFantasmaLenght = ventasFantasma.get(0).size();
         
+        //se crea el array de los querys a ejecutar
+        String[] querys = new String[1+ventasLenght+ventasFantasmaLenght];
+       
+        //se crea el query que modifica la factura y se añad al array
+        query = "UPDATE FACTURA SET ESACTIVO = 0 WHERE FACTURA.IDFACTURA = '"+ facturaID +"'";
+        querys[0] = query;
+        
+        //se añaden a la lista las actualizaciones de ventas
+        for(int i = 1; i < ventasLenght + 1; i++){
+            querys[i] = "UPDATE VENTA SET ESFACTURADO = 0, FACTURAID = NULL WHERE VENTAID = "+ventas.get(0).get(i-1)+"";
+        }
+        //se añaden a la lista las actualizaciones de ventas fantasma
+        for(int i = ventasLenght+1; i < ventasLenght+ventasFantasmaLenght+1 ; i++){
+            querys[i] = "UPDATE VENTAFANTASMA SET ESACTIVO = 0 WHERE VENTAFANTASMA.VANTAID = "+ventasFantasma.get(0).get(i-1-ventasLenght)+"";
+        }
+        
+        
+        for(String x: querys){
+            System.out.println(x);
+        }
         //Se asignan los querys a el array para poder ejecutarse
         
         return true;
