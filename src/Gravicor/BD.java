@@ -683,6 +683,10 @@ public class BD {
         return commitWithRollback(querys);
         
     }
+    
+    public String generateUpdateFacturaPagadaQuery(String idFactura){
+        return ("UPDATE FACTURA SET ESPAGADO = 1 WHERE FACTURA.IDFACTURA = '"+idFactura+"'");
+    }
 
     public Connection getConexion() {
         return conexion;

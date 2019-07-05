@@ -84,6 +84,11 @@ public class FacturasPorCobrar extends javax.swing.JFrame {
         });
 
         jButton2.setText("Marca cobro de factura");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Calibri", 1, 48)); // NOI18N
         jLabel1.setText("Facturas por cobrar");
@@ -223,6 +228,47 @@ public class FacturasPorCobrar extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // Se marca la factura como cobrada
+        if(tabla.getSelectedRow() < 0){
+            JOptionPane.showMessageDialog(this, "Por favor selecciona de la tabla la factura que desea marcar como pagada", "Error de selección", JOptionPane.ERROR_MESSAGE);
+        }
+        else{
+            try{
+                String idFactura = (String)tabla.getModel().getValueAt(tabla.getSelectedRow(), 0);
+                //se marcan las opciones del cuadro de dialogo
+                Object[] options = {"SI","NO"};
+                //se crea el cuadro de dialogo
+                int n = JOptionPane.showOptionDialog(this, //si = 0, no = 1
+                    "¿Estás seguro que deseas parcar como pagada esta factura?",
+                    "¿Marcar como pagada?",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,     //do not use a custom Icon
+                    options,  //the titles of buttons
+                    options[0]); //default button title
+                if(n == 0){
+                    //se marca cmo pagada
+                    boolean exito = Globales.baseDatos.update(Globales.baseDatos.generateUpdateFacturaPagadaQuery(idFactura));
+                    if(!exito){
+                        throw new NoConectionDataBaseException("Error al conectar con la base de datos: "
+                                                             + Globales.baseDatos.getUltimoError());
+                    }
+                    limpiarTabla();
+                    actualizarTabla();
+                    JOptionPane.showMessageDialog(this,"El registro se ha guardado con éxito","El registro se ha guardado con éxito",JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+            catch(NoConectionDataBaseException e){
+                //marcar la excepcion
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+            }
+            catch(NoTypeRequiredException e){
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     private void actualizarTabla() throws NoConectionDataBaseException, NoTypeRequiredException{
         String query = "SELECT F.IDFACTURA, C.NOMBRECLIENTE, F.FECHAFACTURA, F.MONTOFACTURA\n" +
