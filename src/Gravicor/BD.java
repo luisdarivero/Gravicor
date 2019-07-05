@@ -546,7 +546,9 @@ public class BD {
             
             //se ejecutan todos los querys
             for(String query : querys){
+                System.out.println(query);
                 execution = st.execute(query);
+                System.out.println("Se ejecuto correctamente");
             }
            
             st.close();
@@ -651,6 +653,12 @@ public class BD {
                 "WHERE V.IDFACTURA = F.IDFACTURA AND F.IDFACTURA = '" + facturaID + "'";
         LinkedList<LinkedList<String>> ventasFantasma = Globales.baseDatos.select(query,columnas);
         
+        //si hay algun error regresa falso
+        if(ventas == null || ventasFantasma == null){
+            return false;
+        }
+            
+        
         //se calcula el espacio del array
         int ventasLenght = ventas.get(0).size();
         int ventasFantasmaLenght = ventasFantasma.get(0).size();
@@ -671,13 +679,9 @@ public class BD {
             querys[i] = "UPDATE VENTAFANTASMA SET ESACTIVO = 0 WHERE VENTAFANTASMA.VANTAID = "+ventasFantasma.get(0).get(i-1-ventasLenght)+"";
         }
         
-        
-        for(String x: querys){
-            System.out.println(x);
-        }
         //Se asignan los querys a el array para poder ejecutarse
+        return commitWithRollback(querys);
         
-        return true;
     }
 
     public Connection getConexion() {

@@ -487,7 +487,7 @@ public class RegistroVentas extends javax.swing.JFrame {
                     + Globales.baseDatos.getUltimoError());
             }
 
-            JOptionPane.showMessageDialog(this,"El registro se ha guardado con éxito");
+            JOptionPane.showMessageDialog(this,"El registro se ha guardado con éxito","El registro se ha guardado con éxito",JOptionPane.INFORMATION_MESSAGE);
 
             String nombreImpresora = new ConfiguracionConexionDB().getValueWithHash("NombreImpresora");
 

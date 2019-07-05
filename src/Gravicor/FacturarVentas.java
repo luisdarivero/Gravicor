@@ -136,7 +136,7 @@ public class FacturarVentas extends javax.swing.JFrame {
             //se consulta la base de datos para los folios de transportista
             query = "SELECT V.VENTAID, C.NOMBRECLIENTE, P.NOMBREPLANTA,V.PRECIOM3, V.CANTIDADM3, (V.PRECIOM3 * V.CANTIDADM3) AS PRECIOFINAL\n" +
                         "FROM VENTA AS V, CLIENTE AS C, PLANTA AS P\n" +
-                            "WHERE V.FOLIOTRANSPORTISTA = '"+ dato.toLowerCase() + "' AND V.CLIENTEID = C.CLIENTEID AND V.PLANTAID = P.PLANTAID AND V.ACTIVO = 1 AND V.ESFACTURADO = 'FALSE'";
+                            "WHERE V.FOLIOTRANSPORTISTA = '"+ dato.toLowerCase() + "' AND V.CLIENTEID = C.CLIENTEID AND V.PLANTAID = P.PLANTAID AND V.ACTIVO = 1 AND V.ESFACTURADO = 'FALSE' AND V.ESCREDITO = 'TRUE'";
             
             LinkedList<LinkedList<String>> foliosTransportista = Globales.baseDatos.select(query, columnas);
             if(foliosTransportista == null){
@@ -154,7 +154,7 @@ public class FacturarVentas extends javax.swing.JFrame {
             //Se consulta el folio de la planta
             query = "SELECT V.VENTAID, C.NOMBRECLIENTE, P.NOMBREPLANTA,V.PRECIOM3, V.CANTIDADM3, (V.PRECIOM3 * V.CANTIDADM3) AS PRECIOFINAL\n" +
                         "FROM VENTA AS V, CLIENTE AS C, PLANTA AS P\n" +
-                            "WHERE V.FOLIOPLANTA = '"+ dato.toLowerCase() + "' AND V.CLIENTEID = C.CLIENTEID AND V.PLANTAID = P.PLANTAID AND V.ACTIVO = 1 AND V.ESFACTURADO = 'FALSE'";
+                            "WHERE V.FOLIOPLANTA = '"+ dato.toLowerCase() + "' AND V.CLIENTEID = C.CLIENTEID AND V.PLANTAID = P.PLANTAID AND V.ACTIVO = 1 AND V.ESFACTURADO = 'FALSE' AND V.ESCREDITO = 'TRUE'";
             
             LinkedList<LinkedList<String>> foliosPlantas = Globales.baseDatos.select(query, columnas);
             if(foliosPlantas == null){
@@ -639,7 +639,7 @@ public class FacturarVentas extends javax.swing.JFrame {
         }
         DecimalFormat df = new DecimalFormat("#.00");
         
-        totalFacturaTB.setText(df.format(inicio));
+        totalFacturaTB.setText(df.format(inicio).replace(',', '.'));
     }
     private void organizarPantalla(JTable tabla){
         limpiarTabla(tabla);
@@ -678,7 +678,7 @@ public class FacturarVentas extends javax.swing.JFrame {
         Float total = (float)spinnerPrecio.getValue() * new Float(((int)spinnerCantidad.getValue()));
         
         DecimalFormat df = new DecimalFormat("#.00");
-        totalNuevoRegistroTB.setText(df.format(total));
+        totalNuevoRegistroTB.setText(df.format(total).replace(',', '.'));
         
     }//GEN-LAST:event_spinnerCantidadStateChanged
 
@@ -709,7 +709,7 @@ public class FacturarVentas extends javax.swing.JFrame {
         Float total = (float)spinnerPrecio.getValue() * new Float(((int)spinnerCantidad.getValue()));
         
         DecimalFormat df = new DecimalFormat("#.00");
-        totalNuevoRegistroTB.setText(df.format(total));
+        totalNuevoRegistroTB.setText(df.format(total).replace(',', '.'));
     }//GEN-LAST:event_spinnerPrecioInputMethodTextChanged
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

@@ -203,11 +203,22 @@ public class FacturasPorCobrar extends javax.swing.JFrame {
                     options[0]); //default button title
                 if(n == 0){
                     //se borra el registro
-                    Globales.baseDatos.deleteFactura(idFactura);
+                    boolean exito = Globales.baseDatos.deleteFactura(idFactura);
+                    if(!exito){
+                        throw new NoConectionDataBaseException("Error al conectar con la base de datos: "
+                                                             + Globales.baseDatos.getUltimoError());
+                    }
+                    limpiarTabla();
+                    actualizarTabla();
+                    JOptionPane.showMessageDialog(this,"El registro se ha borrado con éxito","El registro se ha borrado con éxito",JOptionPane.INFORMATION_MESSAGE);
                 }
             }
-            catch(Exception e){
+            catch(NoConectionDataBaseException e){
                 //marcar la excepcion
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+            }
+            catch(NoTypeRequiredException e){
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
             }
         }
         
