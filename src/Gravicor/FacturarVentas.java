@@ -778,6 +778,9 @@ public class FacturarVentas extends javax.swing.JFrame {
             if(selection < 0){
                 throw new NoTypeRequiredException("Por favor ingresa el ID de la factura antes de facturar");
             }
+            if(textF.getText().length() < 2){
+                throw new NoTypeRequiredException("Por favor ingresa un nombre de factura superior a 2 caracteres");
+            }
             String idFactura = textF.getText().toLowerCase();
             if(idFactura.length()<1){
                 throw new NoTypeRequiredException("Por favor ingresa un ID de factura válido (Solo Letras y dígitos)");
