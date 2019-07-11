@@ -13,19 +13,19 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Daniel
  */
-public class FacturasPorCobrar extends javax.swing.JFrame {
+public class ConciliarVentas extends javax.swing.JFrame {
 
     /**
      * Creates new form FacturasPorCobrar
      */
-    public FacturasPorCobrar() {
+    public ConciliarVentas() {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setResizable(false);
-        this.setTitle("Facturas por cobrar");
+        this.setTitle("Conciliar Ventas");
         try{
             actualizarTabla("");
-            totalPorCobrar.setText(generarTotalPorCobrar().toString());
+            actualizarTabla2("");
             
         }
         catch(Exception e){
@@ -45,14 +45,14 @@ public class FacturasPorCobrar extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
-        totalPorCobrar = new javax.swing.JLabel();
         searchTF = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tabla2 = new javax.swing.JTable();
+        searchTF2 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -60,14 +60,14 @@ public class FacturasPorCobrar extends javax.swing.JFrame {
 
         tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null}
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Factura ID", "Cliente", "Fecha de creación", "Monto de factura"
+                "Venta ID", "Folio Transportista", "Folio Planta", "Nombre Cliente", "Material", "Fecha Venta", "Monto"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -77,14 +77,7 @@ public class FacturasPorCobrar extends javax.swing.JFrame {
         tabla.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tabla);
 
-        jButton1.setText("Borrar Factura");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        jButton2.setText("Marca cobro de factura");
+        jButton2.setText("Marcar factura como no pagada");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -92,7 +85,7 @@ public class FacturasPorCobrar extends javax.swing.JFrame {
         });
 
         jLabel1.setFont(new java.awt.Font("Calibri", 1, 48)); // NOI18N
-        jLabel1.setText("Facturas por cobrar");
+        jLabel1.setText("Conciliar Ventas");
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/encabezadoLogoGravicor.png"))); // NOI18N
 
@@ -106,13 +99,33 @@ public class FacturasPorCobrar extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setText("Total por cobrar:");
-
-        totalPorCobrar.setText("0.0");
-
         searchTF.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 searchTFKeyReleased(evt);
+            }
+        });
+
+        tabla2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null}
+            },
+            new String [] {
+                "Factura ID", "Cantidad M3", "Precio M3", "Monto"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(tabla2);
+
+        searchTF2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                searchTF2KeyReleased(evt);
             }
         });
 
@@ -120,33 +133,34 @@ public class FacturasPorCobrar extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(231, 231, 231)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton2)
-                .addGap(317, 317, 317))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(473, 473, 473)
                         .addComponent(jLabel1)
-                        .addGap(161, 161, 161)
-                        .addComponent(searchTF, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(68, 68, 68)
+                        .addComponent(searchTF, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(82, 82, 82)
                         .addComponent(jButton3)
                         .addGap(72, 72, 72)
-                        .addComponent(jLabel2))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(293, 293, 293)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 682, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(505, 505, 505)
-                        .addComponent(jLabel3)
-                        .addGap(18, 18, 18)
-                        .addComponent(totalPorCobrar, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(104, Short.MAX_VALUE))
+                        .addComponent(jLabel2)))
+                .addContainerGap(164, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 682, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jButton2)
+                                .addGap(548, 548, 548))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 682, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(285, 285, 285))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(searchTF2, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(110, 110, 110))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -159,21 +173,15 @@ public class FacturasPorCobrar extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(searchTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(37, 37, 37)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(44, 44, 44)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(totalPorCobrar))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
-                        .addComponent(jButton2)
-                        .addGap(97, 97, 97))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1)
-                        .addGap(87, 87, 87))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15)
+                .addComponent(searchTF2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36)
+                .addComponent(jButton2)
+                .addGap(91, 91, 91))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -197,66 +205,29 @@ public class FacturasPorCobrar extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // Codigo para borrar la facura
-        if(tabla.getSelectedRow() < 0){
-            JOptionPane.showMessageDialog(this, "Por favor selecciona de la tabla la factura que desea eliminar", "Error de selección", JOptionPane.ERROR_MESSAGE);
-        }
-        else{
-            try{
-                //se almacena el id d la factura que se va a eliminar
-                String idFactura = (String)tabla.getModel().getValueAt(tabla.getSelectedRow(), 0);
-                //se marcan las opciones del cuadro de dialogo
-                Object[] options = {"SI","NO"};
-                //se crea el cuadro de dialogo
-                int n = JOptionPane.showOptionDialog(this, //si = 0, no = 1
-                    "¿Estás seguro que deseas eliminar esta factura?",
-                    "¿Eliminar registro?",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE,
-                    null,     //do not use a custom Icon
-                    options,  //the titles of buttons
-                    options[0]); //default button title
-                if(n == 0){
-                    if(idFactura.equals("") || idFactura.equals(null)){
-                        throw new NoConectionDataBaseException("Error al conectar con la base de datos: "
-                                                             + "Selecciona una factura valida");
-                    }
-                    //se borra el registro
-                    boolean exito = Globales.baseDatos.deleteFactura(idFactura);
-                    if(!exito){
-                        throw new NoConectionDataBaseException("Error al conectar con la base de datos: "
-                                                             + Globales.baseDatos.getUltimoError());
-                    }
-                    limpiarTabla();
-                    actualizarTabla("");
-                    JOptionPane.showMessageDialog(this,"El registro se ha borrado con éxito","El registro se ha borrado con éxito",JOptionPane.INFORMATION_MESSAGE);
-                }
-            }
-            catch(NoConectionDataBaseException e){
-                //marcar la excepcion
-                JOptionPane.showMessageDialog(this, e.getMessage(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
-            }
-            catch(NoTypeRequiredException e){
-                JOptionPane.showMessageDialog(this, e.getMessage(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        
         // Se marca la factura como cobrada
         if(tabla.getSelectedRow() < 0){
-            JOptionPane.showMessageDialog(this, "Por favor selecciona de la tabla la factura que desea marcar como pagada", "Error de selección", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Por favor selecciona un elemento que desea conciliar de la primera tabla", "Error de selección", JOptionPane.ERROR_MESSAGE);
+        }
+        else if(tabla2.getSelectedRow() < 0){
+            JOptionPane.showMessageDialog(this, "Por favor selecciona un elemento que desea conciliar de la segunda tabla", "Error de selección", JOptionPane.ERROR_MESSAGE);
         }
         else{
             try{
-                String idFactura = (String)tabla.getModel().getValueAt(tabla.getSelectedRow(), 0);
+                //se guardan los datos en variables
+                String idVenta = (String)tabla.getModel().getValueAt(tabla.getSelectedRow(), 0);
+                String idVentaFantasma = (String)tabla2.getModel().getValueAt(tabla2.getSelectedRow(), 0);
+                //se revisa que se hayan seleccionado variables válidas
+                if(idVenta.equals("") || idVenta == null || idVentaFantasma.equals("") || idVentaFantasma == null){
+                    throw  new NoTypeRequiredException("");
+                }
                 //se marcan las opciones del cuadro de dialogo
                 Object[] options = {"SI","NO"};
                 //se crea el cuadro de dialogo
                 int n = JOptionPane.showOptionDialog(this, //si = 0, no = 1
-                    "¿Estás seguro que deseas marcar como pagada esta factura?",
+                    "¿Estás seguro que deseas marcar esta factura como no pagada?",
                     "¿Marcar como pagada?",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE,
@@ -264,15 +235,15 @@ public class FacturasPorCobrar extends javax.swing.JFrame {
                     options,  //the titles of buttons
                     options[0]); //default button title
                 if(n == 0){
-                    //se marca cmo pagada
-                    boolean exito = Globales.baseDatos.update(Globales.baseDatos.generateUpdateFacturaPagadaQuery(idFactura));
-                    if(!exito){
-                        throw new NoConectionDataBaseException("Error al conectar con la base de datos: "
-                                                             + Globales.baseDatos.getUltimoError());
-                    }
+                    //Se realiza el procedimiento
+                    
+                    
+                    //se actualizan las tablas
                     limpiarTabla();
                     actualizarTabla("");
-                    JOptionPane.showMessageDialog(this,"El registro se ha guardado con éxito","El registro se ha guardado con éxito",JOptionPane.INFORMATION_MESSAGE);
+                    limpiarTabla2();
+                    actualizarTabla("2");
+                    JOptionPane.showMessageDialog(this,"El registro se ha marcado como no pagado con éxito","El registro se ha guardado como no pagadp con éxito",JOptionPane.INFORMATION_MESSAGE);
                 }
             }
             catch(NoConectionDataBaseException e){
@@ -290,7 +261,14 @@ public class FacturasPorCobrar extends javax.swing.JFrame {
         try{
             if(!searchTF.getText().equals("")){
                 limpiarTabla();
-                actualizarTabla(" AND F.IDFACTURA LIKE '%" + searchTF.getText() + "%'");
+                String query = "AND (";
+                if(searchTF.getText().matches("-?\\d+(\\.\\d+)?")){
+                    query += "V.VENTAID = "+searchTF.getText()+" OR ";
+                }
+                query += "V.FOLIOTRANSPORTISTA LIKE '%"+searchTF.getText()+"%' OR ";
+                query +=  "V.FOLIOPLANTA LIKE '%"+searchTF.getText()+"%')";
+          
+                actualizarTabla(query);
             }
             else{
                 limpiarTabla();
@@ -302,44 +280,69 @@ public class FacturasPorCobrar extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_searchTFKeyReleased
 
-    private void actualizarTabla(String search) throws NoConectionDataBaseException, NoTypeRequiredException{
-        String query = "SELECT F.IDFACTURA, C.NOMBRECLIENTE, F.FECHAFACTURA, F.MONTOFACTURA\n" +
-                        "FROM FACTURA AS F, CLIENTE AS C\n" +
-                        "WHERE F.CLIENTEID = C.CLIENTEID AND F.ESACTIVO  = 1 AND F.ESPAGADO = 'FALSE' " + search;
+    private void searchTF2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchTF2KeyReleased
+        // TODO add your handling code here:
+        try{
+            if(!searchTF2.getText().equals("")){
+                limpiarTabla2();
+                actualizarTabla2("AND (IDFACTURA LIKE '%" + searchTF2.getText() + "%')");
+            }
+            else{
+                limpiarTabla2();
+                actualizarTabla2("");
+            }
+        }
+        catch (Exception e){
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_searchTF2KeyReleased
+
+    private void actualizarTabla(String searchVenta) throws NoConectionDataBaseException, NoTypeRequiredException{
+        //Se llena la primera tabla
+        String query = "SELECT V.VENTAID, V.FOLIOTRANSPORTISTA, V.FOLIOPLANTA, C.NOMBRECLIENTE, M.DESCRIPCIONMATERIAL, V.FECHAVENTA, (V.PRECIOM3 * V.CANTIDADM3) AS MONTO\n" +
+                        "FROM VENTA AS V, CLIENTE AS C, MATERIAL AS M\n" +
+                        "WHERE V.CLIENTEID = C.CLIENTEID AND V.MATERIALID = M.MATERIALID AND V.ACTIVO = 1 AND V.ESFACTURADO = 0 AND V.ESCREDITO = 1 " +
+                                         searchVenta;
         
-        String[] columnas = {"IDFACTURA", "NOMBRECLIENTE", "FECHAFACTURA", "MONTOFACTURA"};
+        String[] columnas = {"VENTAID", "FOLIOTRANSPORTISTA", "FOLIOPLANTA", "NOMBRECLIENTE", "DESCRIPCIONMATERIAL", "FECHAVENTA", "MONTO"};
         boolean validacion = Globales.baseDatos.insertarEnTabla(query, columnas, tabla);
         
         if(validacion == false){
                 throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.baseDatos.getUltimoError());
         }
+    }
+    
+    private void actualizarTabla2(String searchVentaFantasma) throws NoConectionDataBaseException, NoTypeRequiredException{
+        //Se llena la primera tabla
+        String query = "SELECT IDFACTURA, CANTIDADM3, PRECIOM3, (CANTIDADM3 * PRECIOM3) AS MONTO\n" +
+                        "FROM VENTAFANTASMA\n" +
+                        "WHERE ESACTIVO = 1 " + searchVentaFantasma;
         
+        String[] columnas = {"IDFACTURA", "CANTIDADM3", "PRECIOM3", "MONTO"};
+        boolean validacion = Globales.baseDatos.insertarEnTabla(query, columnas, tabla2);
         
+        if(validacion == false){
+                throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.baseDatos.getUltimoError());
+        }
     }
     
     private void limpiarTabla(){
+        //se limplia la tabla 1
         DefaultTableModel dtm = (DefaultTableModel)tabla.getModel(); 
-        int numRows = dtm.getRowCount();
-        //dtm.removeRow(0);
         dtm.setRowCount(0);
-        String[] columnas = {"","","",""};
+        String[] columnas = {"","","","","","",""};
         dtm.addRow(columnas);
+        
+        
     }
     
-    private Float generarTotalPorCobrar(){
-        String query = "SELECT SUM(F.MONTOFACTURA) AS SUMA\n" +
-                        "FROM FACTURA AS F\n" +
-                        "WHERE  F.ESACTIVO  = 1 AND F.ESPAGADO = 'FALSE'";
-        String[] columnas = {"SUMA"};
-        LinkedList<LinkedList<String>> totalQuery = Globales.baseDatos.select(query, columnas);
+    private void limpiarTabla2(){
+        //se limpia la tabla 2
+        DefaultTableModel dtm2 = (DefaultTableModel)tabla2.getModel(); 
+        dtm2.setRowCount(0);
+        String[] columnas2 = {"","","",""};
+        dtm2.addRow(columnas2);
         
-        if(totalQuery == null){
-            return null;
-        }
-        
-        Float total = new Float(totalQuery.get(0).get(0));
-        
-        return total;
     }
     
     /**
@@ -359,35 +362,38 @@ public class FacturasPorCobrar extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FacturasPorCobrar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ConciliarVentas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FacturasPorCobrar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ConciliarVentas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FacturasPorCobrar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ConciliarVentas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FacturasPorCobrar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ConciliarVentas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FacturasPorCobrar().setVisible(true);
+                new ConciliarVentas().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField searchTF;
+    private javax.swing.JTextField searchTF2;
     private javax.swing.JTable tabla;
-    private javax.swing.JLabel totalPorCobrar;
+    private javax.swing.JTable tabla2;
     // End of variables declaration//GEN-END:variables
 }

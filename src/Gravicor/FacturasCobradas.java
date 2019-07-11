@@ -49,8 +49,6 @@ public class FacturasCobradas extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
-        totalPorCobrar = new javax.swing.JLabel();
         searchTF = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -76,7 +74,7 @@ public class FacturasCobradas extends javax.swing.JFrame {
         tabla.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tabla);
 
-        jButton2.setText("Marca cobro de factura");
+        jButton2.setText("Marcar factura como no pagada");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -97,10 +95,6 @@ public class FacturasCobradas extends javax.swing.JFrame {
                 jButton3ActionPerformed(evt);
             }
         });
-
-        jLabel3.setText("Total por cobrar:");
-
-        totalPorCobrar.setText("0.0");
 
         searchTF.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -124,11 +118,6 @@ public class FacturasCobradas extends javax.swing.JFrame {
                         .addComponent(jButton3)
                         .addGap(72, 72, 72)
                         .addComponent(jLabel2))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(505, 505, 505)
-                        .addComponent(jLabel3)
-                        .addGap(18, 18, 18)
-                        .addComponent(totalPorCobrar, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(293, 293, 293)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 682, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -154,11 +143,7 @@ public class FacturasCobradas extends javax.swing.JFrame {
                         .addComponent(searchTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)))
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(totalPorCobrar))
-                .addGap(78, 78, 78)
+                .addGap(136, 136, 136)
                 .addComponent(jButton2)
                 .addGap(91, 91, 91))
         );
@@ -196,7 +181,7 @@ public class FacturasCobradas extends javax.swing.JFrame {
                 Object[] options = {"SI","NO"};
                 //se crea el cuadro de dialogo
                 int n = JOptionPane.showOptionDialog(this, //si = 0, no = 1
-                    "¿Estás seguro que deseas parcar como pagada esta factura?",
+                    "¿Estás seguro que deseas marcar esta factura como no pagada?",
                     "¿Marcar como pagada?",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE,
@@ -204,8 +189,12 @@ public class FacturasCobradas extends javax.swing.JFrame {
                     options,  //the titles of buttons
                     options[0]); //default button title
                 if(n == 0){
-                    //se marca cmo pagada
-                    
+                    //
+                    boolean exito = Globales.baseDatos.update(Globales.baseDatos.generateUpdateFacturaNoPagadaQuery(idFactura));
+                    if(!exito){
+                        throw new NoConectionDataBaseException("Error al conectar con la base de datos: "
+                                                             + Globales.baseDatos.getUltimoError());
+                    }
                     limpiarTabla();
                     actualizarTabla("");
                     JOptionPane.showMessageDialog(this,"El registro se ha marcado como no pagado con éxito","El registro se ha guardado como no pagadp con éxito",JOptionPane.INFORMATION_MESSAGE);
@@ -305,11 +294,9 @@ public class FacturasCobradas extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField searchTF;
     private javax.swing.JTable tabla;
-    private javax.swing.JLabel totalPorCobrar;
     // End of variables declaration//GEN-END:variables
 }
