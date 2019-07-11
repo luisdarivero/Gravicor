@@ -261,8 +261,8 @@ public class EstablecerConfiguraciones extends javax.swing.JFrame {
         // TODO add your handling code here:
         boolean bandera = Globales.baseDatos.conectarBD(Globales.baseDatos.generarURL());
         if(bandera != false){
-            GestionDePiedra pantallaConfiguracion= new GestionDePiedra();
-            pantallaConfiguracion.setVisible(true);
+            MenuPrincipal menu= new MenuPrincipal();
+            menu.setVisible(true);
             this.dispose();
         }
         else{

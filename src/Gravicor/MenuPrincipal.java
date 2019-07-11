@@ -136,6 +136,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
         tesoreriaB.setContentAreaFilled(false);
         tesoreriaB.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         tesoreriaB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/inventarios2.png"))); // NOI18N
+        tesoreriaB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tesoreriaBActionPerformed(evt);
+            }
+        });
 
         gastosg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/gestionGastosGenerales.png"))); // NOI18N
         gastosg.setContentAreaFilled(false);
@@ -314,6 +319,20 @@ public class MenuPrincipal extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.baseDatos.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_cobranzaBActionPerformed
+
+    private void tesoreriaBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tesoreriaBActionPerformed
+        // TODO add your handling code here:
+        // Configuraciones
+        boolean bandera = Globales.baseDatos.conectarBD(Globales.baseDatos.generarURL());
+        if(bandera != false){
+            EstablecerConfiguraciones config= new EstablecerConfiguraciones();
+            config.setVisible(true);
+            this.dispose();
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos: " + Globales.baseDatos.getUltimoError(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_tesoreriaBActionPerformed
 
     /**
      * @param args the command line arguments

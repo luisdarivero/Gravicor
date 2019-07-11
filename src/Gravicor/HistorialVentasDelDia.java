@@ -5,6 +5,7 @@
  */
 package Gravicor;
 
+import java.awt.TextField;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -80,6 +81,7 @@ public class HistorialVentasDelDia extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jButton5 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -123,6 +125,11 @@ public class HistorialVentasDelDia extends javax.swing.JFrame {
         jButton2.setToolTipText("");
         jButton2.setContentAreaFilled(false);
         jButton2.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/corteDelDia2.png"))); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/Actualizar.png"))); // NOI18N
         jButton3.setContentAreaFilled(false);
@@ -146,6 +153,13 @@ public class HistorialVentasDelDia extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Calibri", 1, 48)); // NOI18N
         jLabel2.setText("Historial de ventas del día");
+
+        jButton5.setText("Editar precio por M3");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -175,11 +189,13 @@ public class HistorialVentasDelDia extends javax.swing.JFrame {
                                 .addComponent(calendario, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(73, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(153, 153, 153)
+                .addGap(77, 77, 77)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton5)
+                .addGap(145, 145, 145)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 397, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(167, 167, 167))
+                .addGap(99, 99, 99))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -198,16 +214,21 @@ public class HistorialVentasDelDia extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(jButton3)))
                         .addGap(23, 23, 23)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addGap(16, 16, 16))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(63, 63, 63)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jButton1)
+                        .addGap(16, 16, 16))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jButton2)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jButton5)
+                        .addGap(65, 65, 65))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -229,7 +250,7 @@ public class HistorialVentasDelDia extends javax.swing.JFrame {
         
         //eliminar venta de un día
         if(tabla.getSelectedRow() < 0){
-            JOptionPane.showMessageDialog(this, "Por favor selecciona de la tabla el viaje que desea eliminar", "Error de selección", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Por favor selecciona de la tabla la venta que desea eliminar", "Error de selección", JOptionPane.ERROR_MESSAGE);
         }
         else{
             String idVenta = (String)tabla.getModel().getValueAt(tabla.getSelectedRow(), 0);
@@ -424,6 +445,83 @@ public class HistorialVentasDelDia extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        if(tabla.getSelectedRow() < 0){
+            JOptionPane.showMessageDialog(this, "Por favor selecciona de la tabla la venta que deseas modificar", "Error de selección", JOptionPane.ERROR_MESSAGE);
+        }
+        else{
+            try{
+                //se guarda el id de la venta
+                String idVenta = (String)tabla.getModel().getValueAt(tabla.getSelectedRow(), 0);
+                //se valida que la seleccion de la venta sea valida  no sea n null o vacio
+                if(idVenta.equals("") || idVenta == null){
+                    throw new NoTypeRequiredException("Por favor selecciona un registro válido");
+                }
+                //se valida si es credito o ya fue pagada en efectivo
+                int esCredito = Globales.baseDatos.esVentaCredito(idVenta);
+                //se valida que la venta no este facturada
+                int esFacturada = Globales.baseDatos.esVentaFacturada(idVenta);
+                if(esFacturada == -1 || esCredito ==-1){
+                    throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.baseDatos.getUltimoError());
+                }
+                else if(esCredito == 1 && esFacturada == 1){
+                    throw new NoTypeRequiredException("La venta ya se encuentra facturada y no es posible editar el registro");
+                }
+                
+                //se confirma que se desea editar el registro
+                TextField textF = new TextField();
+                int selection = JOptionPane.showOptionDialog(null, textF, "Ingresa el nuevo precio del material", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, null,null);
+                if(selection < 0){
+                    throw new NoTypeRequiredException("Por favor ingresa un número válido antes de continuar");
+                }
+                Float nuevoMonto = new Float (0);
+                try{
+                    nuevoMonto = new Float(textF.getText());
+                }
+                catch(Exception e){
+                    throw new NoTypeRequiredException("Por favor ingresa un número válido antes de continuar");
+                }
+                
+                Object[] options = {"SI",
+                    "NO"};
+                int n = JOptionPane.showOptionDialog(this, //si = 0, no = 1
+                    "¿Estás seguro que deseas cambiar el precio del material a $"+nuevoMonto+" de la venta #"+idVenta+"?",
+                    "¿Editar registro?",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,     //do not use a custom Icon
+                    options,  //the titles of buttons
+                    options[0]); //default button title
+                if(n == 0){
+                    //se procede a editar el registro
+                    String query = "UPDATE VENTA SET PRECIOM3 = " + nuevoMonto + " WHERE VENTA.VENTAID = " + idVenta;
+                    boolean exito = Globales.baseDatos.update(query);
+                    if(!exito){
+                        throw new NoConectionDataBaseException("Error al conectar con la base de datos: " + Globales.baseDatos.getUltimoError());
+                    }
+                    limpiarTabla();
+                    actualizarTabla(getStringDate(diaHistorial.getTime()));
+                    JOptionPane.showMessageDialog(this,"El registro se ha guardado con éxito","El registro se ha guardado con éxito",JOptionPane.INFORMATION_MESSAGE);
+                    
+                }
+                
+                
+            }
+           
+            catch(NoTypeRequiredException e){
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error al guardar el registro", JOptionPane.WARNING_MESSAGE);
+            }
+            catch(NoConectionDataBaseException e){
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -465,6 +563,7 @@ public class HistorialVentasDelDia extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
