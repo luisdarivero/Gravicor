@@ -77,7 +77,7 @@ public class ConciliarVentas extends javax.swing.JFrame {
         tabla.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tabla);
 
-        jButton2.setText("Marcar factura como no pagada");
+        jButton2.setText("Conciliar venta");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -107,14 +107,14 @@ public class ConciliarVentas extends javax.swing.JFrame {
 
         tabla2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null}
+                {null, null, null, null, null}
             },
             new String [] {
-                "Factura ID", "Cantidad M3", "Precio M3", "Monto"
+                "Venta Fantasma ID", "Factura ID", "Cantidad M3", "Precio M3", "Monto"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -221,14 +221,20 @@ public class ConciliarVentas extends javax.swing.JFrame {
                 String idVentaFantasma = (String)tabla2.getModel().getValueAt(tabla2.getSelectedRow(), 0);
                 //se revisa que se hayan seleccionado variables válidas
                 if(idVenta.equals("") || idVenta == null || idVentaFantasma.equals("") || idVentaFantasma == null){
-                    throw  new NoTypeRequiredException("");
+                    throw  new NoTypeRequiredException("Por favor selecciona un registro válido");
+                }
+                //se valida que los montos de la venta y venta fantasma sean los mismos
+                String montoVenta = (String)tabla.getModel().getValueAt(tabla.getSelectedRow(), 6);;
+                String montoVentaFantasma = (String)tabla2.getModel().getValueAt(tabla2.getSelectedRow(), 4);;
+                if(!montoVenta.equals(montoVentaFantasma)){
+                    throw  new NoTypeRequiredException("Los montos de la venta y de la venta fantasma deben coincidir");
                 }
                 //se marcan las opciones del cuadro de dialogo
                 Object[] options = {"SI","NO"};
                 //se crea el cuadro de dialogo
                 int n = JOptionPane.showOptionDialog(this, //si = 0, no = 1
-                    "¿Estás seguro que deseas marcar esta factura como no pagada?",
-                    "¿Marcar como pagada?",
+                    "¿Estás seguro que deseas conciliar la venta #"+idVenta+" con la venta fantasma #"+idVentaFantasma+"?",
+                    "¿Marcar conciliación?",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE,
                     null,     //do not use a custom Icon
@@ -237,13 +243,25 @@ public class ConciliarVentas extends javax.swing.JFrame {
                 if(n == 0){
                     //Se realiza el procedimiento
                     
-                    
+                    //se genera el query de la venta actualizada
+                    String[] infoVentaNueva = {idVenta, (String)tabla2.getModel().getValueAt(tabla2.getSelectedRow(), 1)}; //ventaID, facturaID
+                    String queryActualizarVenta = Globales.baseDatos.generateUptateVentaQuery(infoVentaNueva);
+                    //se genera el query para desactivar la venta fantasma
+                    String queryActualizarVentaFantasma = "UPDATE VENTAFANTASMA SET ESCONCILIADA = 1, "
+                            + "REFERENCIAVENTA = "+idVenta+" WHERE VENTAFANTASMA.VANTAID = " + idVentaFantasma;
+                    //se ejecutan los querys
+                    String[] querys = {queryActualizarVenta,queryActualizarVentaFantasma};
+                    boolean exito = Globales.baseDatos.commitWithRollback(querys);
+                    if(!exito){
+                        throw new NoConectionDataBaseException("Error al conectar con la base de datos: " + 
+                                Globales.baseDatos.getUltimoError());
+                    }
                     //se actualizan las tablas
                     limpiarTabla();
                     actualizarTabla("");
                     limpiarTabla2();
-                    actualizarTabla("2");
-                    JOptionPane.showMessageDialog(this,"El registro se ha marcado como no pagado con éxito","El registro se ha guardado como no pagadp con éxito",JOptionPane.INFORMATION_MESSAGE);
+                    actualizarTabla2("");
+                    JOptionPane.showMessageDialog(this,"La conciliación se ha marcado con éxito","El registro se ha guardado con éxito",JOptionPane.INFORMATION_MESSAGE);
                 }
             }
             catch(NoConectionDataBaseException e){
@@ -251,7 +269,7 @@ public class ConciliarVentas extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, e.getMessage(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
             }
             catch(NoTypeRequiredException e){
-                JOptionPane.showMessageDialog(this, e.getMessage(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Error de formato", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -314,11 +332,11 @@ public class ConciliarVentas extends javax.swing.JFrame {
     
     private void actualizarTabla2(String searchVentaFantasma) throws NoConectionDataBaseException, NoTypeRequiredException{
         //Se llena la primera tabla
-        String query = "SELECT IDFACTURA, CANTIDADM3, PRECIOM3, (CANTIDADM3 * PRECIOM3) AS MONTO\n" +
+        String query = "SELECT VANTAID , IDFACTURA, CANTIDADM3, PRECIOM3, (CANTIDADM3 * PRECIOM3) AS MONTO\n" +
                         "FROM VENTAFANTASMA\n" +
-                        "WHERE ESACTIVO = 1 " + searchVentaFantasma;
+                        "WHERE ESCONCILIADA = 0 AND ESACTIVO = 1 " + searchVentaFantasma;
         
-        String[] columnas = {"IDFACTURA", "CANTIDADM3", "PRECIOM3", "MONTO"};
+        String[] columnas = {"VANTAID","IDFACTURA", "CANTIDADM3", "PRECIOM3", "MONTO"};
         boolean validacion = Globales.baseDatos.insertarEnTabla(query, columnas, tabla2);
         
         if(validacion == false){

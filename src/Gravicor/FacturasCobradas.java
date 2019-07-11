@@ -82,7 +82,7 @@ public class FacturasCobradas extends javax.swing.JFrame {
         });
 
         jLabel1.setFont(new java.awt.Font("Calibri", 1, 48)); // NOI18N
-        jLabel1.setText("Facturas por cobrar");
+        jLabel1.setText("Facturas Cobradas");
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/encabezadoLogoGravicor.png"))); // NOI18N
 
@@ -181,8 +181,8 @@ public class FacturasCobradas extends javax.swing.JFrame {
                 Object[] options = {"SI","NO"};
                 //se crea el cuadro de dialogo
                 int n = JOptionPane.showOptionDialog(this, //si = 0, no = 1
-                    "¿Estás seguro que deseas marcar esta factura como no pagada?",
-                    "¿Marcar como pagada?",
+                    "¿Estás seguro que deseas marcar esta factura como NO pagada?",
+                    "¿Marcar como NO pagada?",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE,
                     null,     //do not use a custom Icon

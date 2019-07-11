@@ -439,12 +439,12 @@ public class BD {
     
     public Float obtenerPrecioClienteMaterial(String nombreCliente, String nombreMaterial){
         Integer idCliente = obtenerClienteID(nombreCliente);
-        //System.out.println(nombreCliente + " = " + idCliente);
+        
         if(idCliente < 0){
             return (float)-1.0;
         }
         Integer idMaterial = obtenerMaterialID(nombreMaterial);
-        //System.out.println(nombreMaterial + " = " + idMaterial);
+       
         
         if(idMaterial < 0){
             return (float)-2.0;
@@ -546,9 +546,9 @@ public class BD {
             
             //se ejecutan todos los querys
             for(String query : querys){
-                System.out.println(query);
+                
                 execution = st.execute(query);
-                System.out.println("Se ejecuto correctamente");
+                
             }
            
             st.close();
