@@ -273,7 +273,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
         boolean bandera = Globales.baseDatos.conectarBD(Globales.baseDatos.generarURL());
         if(bandera != false){
-            ReporteEstadisticas reportes = new ReporteEstadisticas();
+            GenerarReportes reportes = new GenerarReportes();
             reportes.setVisible(true);
             this.dispose();
         }
