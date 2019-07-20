@@ -23,22 +23,7 @@ public class GestionarClientes extends javax.swing.JFrame {
         this.setTitle("Gestionar Clientes");
         
         try{
-            String query = "SELECT DISTINCT CLIENTE.CLIENTEID,CLIENTE.NOMBRECLIENTE ,\n" +
-                "\n" +
-                "(SELECT PRECIO_CLIENTE_MATERIAL.PRECIO \n" +
-                "	FROM PRECIO_CLIENTE_MATERIAL \n" +
-                "	WHERE  PRECIO_CLIENTE_MATERIAL.CLIENTEID = CLIENTE.CLIENTEID AND PRECIO_CLIENTE_MATERIAL.MATERIALID = 1 ) AS 'GRAVAUNMEDIO',\n" +
-                "\n" +
-                "(SELECT PRECIO_CLIENTE_MATERIAL.PRECIO \n" +
-                "	FROM PRECIO_CLIENTE_MATERIAL \n" +
-                "	WHERE  PRECIO_CLIENTE_MATERIAL.CLIENTEID = CLIENTE.CLIENTEID AND PRECIO_CLIENTE_MATERIAL.MATERIALID = 2 ) AS 'GRAVATRESCUARTOS',\n" +
-                "\n" +
-                "(SELECT PRECIO_CLIENTE_MATERIAL.PRECIO \n" +
-                "	FROM PRECIO_CLIENTE_MATERIAL \n" +
-                "	WHERE  PRECIO_CLIENTE_MATERIAL.CLIENTEID = CLIENTE.CLIENTEID AND PRECIO_CLIENTE_MATERIAL.MATERIALID = 3 ) AS 'ARENILLA'\n" +
-                "\n" +
-                "FROM CLIENTE, PRECIO_CLIENTE_MATERIAL \n" +
-                "WHERE CLIENTE.CLIENTEID = PRECIO_CLIENTE_MATERIAL.CLIENTEID";
+            String query = Globales.baseDatos.generateReporteClientesQuery();
             String[] columnas = {"CLIENTEID","NOMBRECLIENTE","GRAVAUNMEDIO","GRAVATRESCUARTOS","ARENILLA"};
             
             boolean  bandera = Globales.baseDatos.insertarEnTabla( query,columnas, tabla);
@@ -146,7 +131,7 @@ public class GestionarClientes extends javax.swing.JFrame {
                                 .addGap(119, 119, 119)
                                 .addComponent(jLabel1))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 936, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(116, Short.MAX_VALUE))
+                .addContainerGap(35, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jLabel2)
@@ -176,11 +161,14 @@ public class GestionarClientes extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(71, 71, 71))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();

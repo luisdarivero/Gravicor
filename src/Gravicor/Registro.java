@@ -286,8 +286,10 @@ public class Registro extends javax.swing.JFrame {
                     }
                     //termina el guardado de info
                     Globales.currentUser = user.toLowerCase();
-                    this.dispose();
+                    
                     MenuPrincipal menu = new MenuPrincipal();
+                    
+                    this.dispose();
                     menu.setVisible(true);
                 }
                 else{
@@ -305,6 +307,9 @@ public class Registro extends javax.swing.JFrame {
         }
         catch(NoConectionDataBaseException e){
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+        }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error inesperado", JOptionPane.ERROR_MESSAGE);
         }
         
         

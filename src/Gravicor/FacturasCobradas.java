@@ -197,7 +197,7 @@ public class FacturasCobradas extends javax.swing.JFrame {
                     }
                     limpiarTabla();
                     actualizarTabla("");
-                    JOptionPane.showMessageDialog(this,"El registro se ha marcado como no pagado con éxito","El registro se ha guardado como no pagadp con éxito",JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this,"El registro se ha marcado como no pagado con éxito","El registro se ha guardado como no pagado con éxito",JOptionPane.INFORMATION_MESSAGE);
                 }
             }
             catch(NoConectionDataBaseException e){

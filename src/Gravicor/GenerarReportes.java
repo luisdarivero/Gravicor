@@ -5,11 +5,14 @@
  */
 package Gravicor;
 
+import java.io.File;
 import javafx.scene.control.RadioButton;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
+
 
 /**
  *
@@ -133,8 +136,10 @@ public class GenerarReportes extends javax.swing.JFrame {
             }
         });
 
+        CamionesActivosCB.setSelected(true);
         CamionesActivosCB.setText("Camiones Activos");
 
+        camionesInactivosCB.setSelected(true);
         camionesInactivosCB.setText("Camiones Inactivos");
 
         generarReportesB.setText("Generar Reportes");
@@ -236,8 +241,14 @@ public class GenerarReportes extends javax.swing.JFrame {
         // TODO add your handling code here:
         JFileChooser j = new JFileChooser(FileSystemView.getFileSystemView()); 
         j.showSaveDialog(null); 
+        
         try{
-            pathTF.setText(j.getSelectedFile().getAbsolutePath() + ".csv");
+            String path = j.getSelectedFile().getPath();
+            if(!path.endsWith(".xlsx")){
+                path += ".xlsx";
+            }
+            pathTF.setText(path);
+            
         }
         catch(Exception e){
             
@@ -302,17 +313,45 @@ public class GenerarReportes extends javax.swing.JFrame {
    //Metodo que genera los reportes
     private void generarReportesBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarReportesBActionPerformed
         // TODO add your handling code here:
+        
         try{
+            //se revisa que se haya seleccionado el lugar del archivo
+            if(this.pathTF.getText().equals("") || this.pathTF == null){
+                throw new NoTypeRequiredException("Por favor selecciona una ubicación de archivo válida");
+            }
+            String query = "";
+            String[] columnas = {};
             int radioButtonSeleccionado = radioButtonSeleccionado();
             switch (radioButtonSeleccionado){
                 case -1: //no hay ninguna opcion seleccionada
                     throw new NoTypeRequiredException("Por favor selecciona una opcion para generar un reporte");
                 case 0:// reporte de camiones
-                    
+                    query = Globales.baseDatos.generateReporteCamionesQuery(CamionesActivosCB.isSelected(), camionesInactivosCB.isSelected());
+                    if(query == null){
+                        throw new NoTypeRequiredException("Por favor selecciona por lo menos una opción para generar el reporte de camiones");
+                    }
+                    String[] columnasCamiones = {"IDCAMION", "NombreOperador", "DescripcionCamion", "ColorCamion", "EstatusCamion"};
+                    columnas = columnasCamiones;
+                case 1:// reporte de clientes
+                    query = Globales.baseDatos.generateReporteClientesQuery();
+                    String[] columnasClientes = {"CLIENTEID","NOMBRECLIENTE","GRAVAUNMEDIO","GRAVATRESCUARTOS","ARENILLA"};
+                    columnas = columnasClientes;
             }
+            
+            //se genera el reporte
+            boolean exito = Globales.baseDatos.createReportFile(this.pathTF.getText(), query, columnas);
+            
+            //se verifica que sea correcta la escritura del archivo
+            if(!exito){
+                throw new NoConectionDataBaseException("Error al conectar con la base de datos: " + Globales.baseDatos.getUltimoError());
+            }
+            JOptionPane.showMessageDialog(this,"El registro se ha guardado con éxito","El registro se ha guardado con éxito",JOptionPane.INFORMATION_MESSAGE);
         }
         catch(NoTypeRequiredException e){
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error procesar la solicitud", JOptionPane.WARNING_MESSAGE);
+        }
+        catch(NoConectionDataBaseException e){
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error al conectar con la base de datos", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_generarReportesBActionPerformed
 

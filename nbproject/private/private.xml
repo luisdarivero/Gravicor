@@ -3,7 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Gravicor/Documents/NetBeansProjects/Gravicor/src/Gravicor/GestionDeVentas.java</file>
+            <file>file:/C:/Users/Gravicor/Documents/NetBeansProjects/Gravicor/src/Gravicor/BD.java</file>
+            <file>file:/C:/Users/Gravicor/Documents/NetBeansProjects/Gravicor/src/Gravicor/Registro.java</file>
+            <file>file:/C:/Users/Gravicor/Documents/NetBeansProjects/Gravicor/src/Gravicor/FacturasCobradas.java</file>
+            <file>file:/C:/Users/Gravicor/Documents/NetBeansProjects/Gravicor/src/Gravicor/CreateExcelFile.java</file>
+            <file>file:/C:/Users/Gravicor/Documents/NetBeansProjects/Gravicor/src/Gravicor/GestionarClientes.java</file>
             <file>file:/C:/Users/Gravicor/Documents/NetBeansProjects/Gravicor/src/Gravicor/GenerarReportes.java</file>
             <file>file:/C:/Users/Gravicor/Documents/NetBeansProjects/Gravicor/src/Gravicor/MenuPrincipal.java</file>
         </group>

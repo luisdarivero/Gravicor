@@ -200,11 +200,13 @@
         </Component>
         <Component class="javax.swing.JCheckBox" name="CamionesActivosCB">
           <Properties>
+            <Property name="selected" type="boolean" value="true"/>
             <Property name="text" type="java.lang.String" value="Camiones Activos"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JCheckBox" name="camionesInactivosCB">
           <Properties>
+            <Property name="selected" type="boolean" value="true"/>
             <Property name="text" type="java.lang.String" value="Camiones Inactivos"/>
           </Properties>
         </Component>

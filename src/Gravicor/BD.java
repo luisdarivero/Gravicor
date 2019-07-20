@@ -1,4 +1,5 @@
 package Gravicor;
+import java.io.FileWriter;
 import java.sql.*;
 import java.util.LinkedList;
 import javax.swing.JTable;
@@ -113,7 +114,7 @@ public class BD {
         
         else{
             
-            Object[][] resultado = new Object [lista.size()][lista.get(0).size()];;
+            Object[][] resultado = new Object [lista.size()][lista.get(0).size()];
             for(int i = 0; i < lista.size(); i++){
                 for(int j = 0; j < lista.get(0).size(); j++){
                     resultado[i][j] = lista.get(i).get(j);
@@ -691,6 +692,64 @@ public class BD {
     public String generateUpdateFacturaNoPagadaQuery(String idFactura){
         return ("UPDATE FACTURA SET ESPAGADO = 0 WHERE FACTURA.IDFACTURA = '"+idFactura+"'");
     }
+    
+    public String generateReporteCamionesQuery(boolean camionesActivos, boolean camionesInactivos){
+        if(!camionesActivos && !camionesInactivos){//no hay nada seleccionado 
+            return null;
+        }
+        
+        String queryClause = "SELECT C.IDCAMION, C.OPERADOR AS NombreOperador, T.DESCRIPCION AS DescripcionCamion, C.COLOR AS ColorCamion, A.DESCRIPCION AS EstatusCamion\n";
+        queryClause += "FROM CAMION AS C, ACTIVO AS A, TIPOCAMION AS T\n";
+        queryClause += "WHERE C.ACTIVO = A.IDACTIVO AND C.IDTIPOCAMION = T.IDTIPOCAMION ";
+        
+        if(camionesActivos && camionesInactivos){//ambas opciones están seleccionadas
+            return queryClause;
+        }
+        else if(camionesActivos){//camiones activos
+            queryClause += "AND C.ACTIVO = 1";
+        }
+        else{//camiones inactivos
+            queryClause += "AND C.ACTIVO = 0";
+        }
+        
+        return queryClause;
+    }
+    
+    public String generateReporteClientesQuery(){
+        return "SELECT DISTINCT CLIENTE.CLIENTEID,CLIENTE.NOMBRECLIENTE ,\n" +
+                "\n" +
+                "(SELECT PRECIO_CLIENTE_MATERIAL.PRECIO \n" +
+                "	FROM PRECIO_CLIENTE_MATERIAL \n" +
+                "	WHERE  PRECIO_CLIENTE_MATERIAL.CLIENTEID = CLIENTE.CLIENTEID AND PRECIO_CLIENTE_MATERIAL.MATERIALID = 1 ) AS 'GRAVAUNMEDIO',\n" +
+                "\n" +
+                "(SELECT PRECIO_CLIENTE_MATERIAL.PRECIO \n" +
+                "	FROM PRECIO_CLIENTE_MATERIAL \n" +
+                "	WHERE  PRECIO_CLIENTE_MATERIAL.CLIENTEID = CLIENTE.CLIENTEID AND PRECIO_CLIENTE_MATERIAL.MATERIALID = 2 ) AS 'GRAVATRESCUARTOS',\n" +
+                "\n" +
+                "(SELECT PRECIO_CLIENTE_MATERIAL.PRECIO \n" +
+                "	FROM PRECIO_CLIENTE_MATERIAL \n" +
+                "	WHERE  PRECIO_CLIENTE_MATERIAL.CLIENTEID = CLIENTE.CLIENTEID AND PRECIO_CLIENTE_MATERIAL.MATERIALID = 3 ) AS 'ARENILLA'\n" +
+                "\n" +
+                "FROM CLIENTE, PRECIO_CLIENTE_MATERIAL \n" +
+                "WHERE CLIENTE.CLIENTEID = PRECIO_CLIENTE_MATERIAL.CLIENTEID";
+    }
+    
+    public boolean createReportFile(String filePath, String query, String[] columnas){
+        Object[][] data = selectO(query, columnas);
+        CreateExcelFile excelFile = new CreateExcelFile();
+        if(data == null){
+            return false;
+        }
+        //boolean exito = excelFile.createFile(data, filePath, columnas);
+        if(!excelFile.createFile(data, filePath,columnas)){
+            this.setUltimoError("Error al intentar guardar el archivo");
+            return false;
+        }
+        
+        return true;
+    }
+    
+    
 
     public Connection getConexion() {
         return conexion;
