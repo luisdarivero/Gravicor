@@ -108,10 +108,14 @@ public class BD {
     
     public Object[][] selectO(String query,String[] columnas){
         LinkedList<LinkedList<String>> lista = select(query, columnas);
+        
         if(lista == null){
             return null;
         }
-        
+        else if(lista.size() == 0){
+            this.setUltimoError("No se encontraron datos para generar el reporte");
+            return null;
+        }
         else{
             
             Object[][] resultado = new Object [lista.size()][lista.get(0).size()];
@@ -732,6 +736,34 @@ public class BD {
                 "\n" +
                 "FROM CLIENTE, PRECIO_CLIENTE_MATERIAL \n" +
                 "WHERE CLIENTE.CLIENTEID = PRECIO_CLIENTE_MATERIAL.CLIENTEID";
+    }
+    
+    public String generateReporteFacturasQuery(boolean facturasActivas, boolean facturasInactivas, String fechaInicial, String fechaFinal){
+        
+        if(!facturasActivas && !facturasInactivas){//no hay nada seleccionado 
+            return null;
+        }
+        
+        String queryClause = "SELECT F.IDFACTURA,F.MONTOFACTURA,  F.FECHAFACTURA AS FechaFacturaCreada, \n" +
+                    "(CASE WHEN F.ESPAGADO = 1 THEN 'TRUE' ELSE 'FALSE' END)  AS EsFacturaPagada, \n" +
+                    "convert(varchar,F.FECHAPAGO, 101) AS FechaFacturaPagada,A.DESCRIPCION  AS EsFacturaActiva, C.NOMBRECLIENTE\n" +
+                    "FROM FACTURA AS F, CLIENTE AS C, ACTIVO AS A\n" +
+                    "WHERE C.CLIENTEID = F.CLIENTEID AND A.IDACTIVO = F.ESACTIVO ";
+        
+        String dateQuery = " AND (F.FECHAFACTURA BETWEEN '"+fechaInicial+"' AND '"+fechaFinal+"') ";
+        queryClause += dateQuery;
+        
+        if(facturasActivas && facturasInactivas){//ambas opciones están seleccionadas
+            return queryClause;
+        }
+        else if(facturasActivas){//camiones activos
+            queryClause += " AND F.ESACTIVO = 1";
+        }
+        else{//camiones inactivos
+            queryClause += " AND F.ESACTIVO = 0";
+        }
+        
+        return queryClause;
     }
     
     public boolean createReportFile(String filePath, String query, String[] columnas){

@@ -6,6 +6,11 @@
 package Gravicor;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.LinkedList;
 import javafx.scene.control.RadioButton;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -30,6 +35,38 @@ public class GenerarReportes extends javax.swing.JFrame {
         this.setTitle("Generar reportes");
         generarradiolist();
         
+        try{
+            String queryFecha = "SELECT convert(varchar, getdate(), 105) as FECHA";
+            String[] columnasFecha = {"FECHA"};
+            LinkedList<LinkedList<String>> fecha = Globales.baseDatos.select(queryFecha, columnasFecha);
+            if(fecha == null){
+                throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.baseDatos.getUltimoError());
+            }
+            if(fecha.size() <1 || fecha.get(0).size() < 1){
+                throw new NoTypeRequiredException("No se pudo conectar con la base de datos, error inesperado");
+            }
+            
+            String[] resultadoFecha = fecha.get(0).get(0).split("-");//obtiene la fecha actual
+            GregorianCalendar dia = new GregorianCalendar();
+            dia.set(new Integer(resultadoFecha[2]),new Integer(resultadoFecha[1]) -1,new Integer(resultadoFecha[0]));
+            //se establece la decha maxima para ambos calendarios
+            fechaFinal.setMaxSelectableDate(dia.getTime());
+            fechaInicial.setMaxSelectableDate(dia.getTime());
+            //se establece la decha minima para ambos calendarios
+            dia.set(2018,0,1);
+            fechaFinal.setMinSelectableDate(dia.getTime());
+            fechaInicial.setMinSelectableDate(dia.getTime());
+        }
+        catch(NoConectionDataBaseException e){
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+            fechaInicial.setVisible(false);
+            fechaFinal.setVisible(false);
+        }
+        catch(NoTypeRequiredException e){
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error al cargar el calendario", JOptionPane.WARNING_MESSAGE);
+            fechaInicial.setVisible(false);
+            fechaFinal.setVisible(false);
+        }
     }
     
     //metodo que declara el array de los radio buttons
@@ -43,6 +80,15 @@ public class GenerarReportes extends javax.swing.JFrame {
         this.radioButtons[6] = this.radioViajesB;
     }
 
+    private void enableCalendarios(){
+        fechaFinal.setEnabled(true);
+        fechaInicial.setEnabled(true);
+    }
+    
+    private void desactivateCalendarios(){
+        fechaFinal.setEnabled(false);
+        fechaInicial.setEnabled(false);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -52,6 +98,8 @@ public class GenerarReportes extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        dateChooserDialog1 = new datechooser.beans.DateChooserDialog();
+        dateChooserDialog2 = new datechooser.beans.DateChooserDialog();
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -66,6 +114,10 @@ public class GenerarReportes extends javax.swing.JFrame {
         CamionesActivosCB = new javax.swing.JCheckBox();
         camionesInactivosCB = new javax.swing.JCheckBox();
         generarReportesB = new javax.swing.JButton();
+        fechaInicial = new com.toedter.calendar.JDateChooser();
+        fechaFinal = new com.toedter.calendar.JDateChooser();
+        facturasActivasCB = new javax.swing.JCheckBox();
+        facturasInactivasCB = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -149,51 +201,76 @@ public class GenerarReportes extends javax.swing.JFrame {
             }
         });
 
+        fechaInicial.setEnabled(false);
+
+        fechaFinal.setEnabled(false);
+
+        facturasActivasCB.setSelected(true);
+        facturasActivasCB.setText("Facturas Activas");
+
+        facturasInactivasCB.setSelected(true);
+        facturasInactivasCB.setText("Facturas Inactivas");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(56, 56, 56)
-                .addComponent(jButton1)
-                .addGap(97, 97, 97)
-                .addComponent(pathTF, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
-                .addComponent(jButton2)
-                .addGap(136, 136, 136))
-            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pathTF, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fechaInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(77, 77, 77)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(radioCamionesB)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(radioViajesB)
-                                    .addComponent(radioVentasFantasmaB, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(radioVentasB, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(radioGastosGeneralesB, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(radioClientesB, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(CamionesActivosCB)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(radioFacturasB)
-                                .addGap(86, 86, 86)))
                         .addGap(56, 56, 56)
-                        .addComponent(camionesInactivosCB))
+                        .addComponent(jButton1))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(356, 356, 356)
-                        .addComponent(generarReportesB)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(356, 356, 356)
+                                .addComponent(generarReportesB))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(77, 77, 77)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(radioCamionesB)
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                    .addComponent(radioViajesB)
+                                                    .addComponent(radioVentasFantasmaB, javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(radioVentasB, javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(radioGastosGeneralesB, javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(radioClientesB, javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(CamionesActivosCB)))
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(radioFacturasB)
+                                                .addGap(86, 86, 86))))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(177, 177, 177)
+                                        .addComponent(facturasActivasCB)))
+                                .addGap(56, 56, 56)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(facturasInactivasCB)
+                                    .addComponent(camionesInactivosCB))))
+                        .addGap(66, 66, 66)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(fechaFinal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(136, 151, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(47, 47, 47)
+                .addComponent(jButton1)
+                .addGap(16, 16, 16)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(fechaInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fechaFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(63, 63, 63)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(pathTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(67, 67, 67)
+                    .addComponent(pathTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2))
+                .addGap(18, 18, 18)
                 .addComponent(radioCamionesB)
                 .addGap(19, 19, 19)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -201,9 +278,13 @@ public class GenerarReportes extends javax.swing.JFrame {
                     .addComponent(camionesInactivosCB))
                 .addGap(20, 20, 20)
                 .addComponent(radioClientesB)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(radioFacturasB)
-                .addGap(67, 67, 67)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(facturasActivasCB)
+                    .addComponent(facturasInactivasCB))
+                .addGap(18, 18, 18)
                 .addComponent(radioGastosGeneralesB)
                 .addGap(85, 85, 85)
                 .addComponent(radioVentasB)
@@ -260,18 +341,21 @@ public class GenerarReportes extends javax.swing.JFrame {
         // TODO add your handling code here:
         limpiarOpciones();
         this.radioCamionesB.setSelected(true);
+        desactivateCalendarios();
     }//GEN-LAST:event_radioCamionesBActionPerformed
 
     private void radioClientesBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioClientesBActionPerformed
         // TODO add your handling code here:
         limpiarOpciones();
         this.radioClientesB.setSelected(true);
+        desactivateCalendarios();
     }//GEN-LAST:event_radioClientesBActionPerformed
 
     private void radioFacturasBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioFacturasBActionPerformed
         // TODO add your handling code here:
         limpiarOpciones();
         this.radioFacturasB.setSelected(true);
+        enableCalendarios();
     }//GEN-LAST:event_radioFacturasBActionPerformed
 
     private void radioGastosGeneralesBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioGastosGeneralesBActionPerformed
@@ -310,6 +394,21 @@ public class GenerarReportes extends javax.swing.JFrame {
         return -1;
     }
     
+    //metodo que valida que las fechas son validas
+    private boolean checkDates(){
+        
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+
+        if(fechaFinal.getCalendar() == null || fechaInicial.getCalendar() ==null){
+            return false;
+        }
+        if(fechaInicial.getCalendar().after(fechaFinal.getCalendar()) && !sdf.format(fechaInicial.getDate()).equals(sdf.format(fechaFinal.getDate()))){
+            return false;
+        }
+        
+        return true;
+    }
+    
    //Metodo que genera los reportes
     private void generarReportesBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarReportesBActionPerformed
         // TODO add your handling code here:
@@ -326,16 +425,34 @@ public class GenerarReportes extends javax.swing.JFrame {
                 case -1: //no hay ninguna opcion seleccionada
                     throw new NoTypeRequiredException("Por favor selecciona una opcion para generar un reporte");
                 case 0:// reporte de camiones
+                    
                     query = Globales.baseDatos.generateReporteCamionesQuery(CamionesActivosCB.isSelected(), camionesInactivosCB.isSelected());
                     if(query == null){
                         throw new NoTypeRequiredException("Por favor selecciona por lo menos una opción para generar el reporte de camiones");
                     }
                     String[] columnasCamiones = {"IDCAMION", "NombreOperador", "DescripcionCamion", "ColorCamion", "EstatusCamion"};
                     columnas = columnasCamiones;
+                    break;
                 case 1:// reporte de clientes
+                    
                     query = Globales.baseDatos.generateReporteClientesQuery();
                     String[] columnasClientes = {"CLIENTEID","NOMBRECLIENTE","GRAVAUNMEDIO","GRAVATRESCUARTOS","ARENILLA"};
                     columnas = columnasClientes;
+                    break;
+                case 2:// reporte de facturas
+                    if(!checkDates()){
+                        throw new NoTypeRequiredException("Por favor selecciona fechas válidas para generar el reporte de facturas");
+                    }
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    query = Globales.baseDatos.generateReporteFacturasQuery(facturasActivasCB.isSelected(), facturasInactivasCB.isSelected(), sdf.format(fechaInicial.getDate()), sdf.format(fechaInicial.getDate()));
+                    if(query == null){
+                        throw new NoTypeRequiredException("Por favor selecciona por lo menos una opción para generar el reporte de facturas");
+                    }
+                    String[] columnasFactura = {"IDFACTURA","MONTOFACTURA", "FechaFacturaCreada", "EsFacturaPagada", "FechaFacturaPagada", "EsFacturaActiva", "NOMBRECLIENTE"};
+                    columnas = columnasFactura;
+                    
+                    break;
+                    
             }
             
             //se genera el reporte
@@ -400,6 +517,12 @@ public class GenerarReportes extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox CamionesActivosCB;
     private javax.swing.JCheckBox camionesInactivosCB;
+    private datechooser.beans.DateChooserDialog dateChooserDialog1;
+    private datechooser.beans.DateChooserDialog dateChooserDialog2;
+    private javax.swing.JCheckBox facturasActivasCB;
+    private javax.swing.JCheckBox facturasInactivasCB;
+    private com.toedter.calendar.JDateChooser fechaFinal;
+    private com.toedter.calendar.JDateChooser fechaInicial;
     private javax.swing.JButton generarReportesB;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
