@@ -8,11 +8,17 @@ package Gravicor;
  
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.regex.Pattern;
  
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import org.apache.poi.ss.usermodel.CreationHelper;  
 /**
  *
  * @author Gravicor
@@ -39,10 +45,29 @@ public class CreateExcelFile {
                     Cell cell = row.createCell(++columnCount);
                     String dataCell = (String) data[j][i];
                     try{
-                        Double numero = new Double(dataCell);
-                        cell.setCellValue(numero);
+                        
+                        if(Pattern.matches("\\d{4}-\\d{2}-\\d{2}", dataCell)){//se intenta introducir una fecha
+                            CreationHelper createHelper = workbook.getCreationHelper();  
+                            CellStyle cellStyle = workbook.createCellStyle();  
+                            cellStyle.setDataFormat(createHelper.createDataFormat().getFormat("dd-mm-yyyy")); 
+                            
+                            
+                            //se crea un calendario
+                            Calendar calendar = new GregorianCalendar();
+                            String[] fecha = dataCell.split("-");
+                            calendar.set(new Integer(fecha[0]),(new Integer(fecha[1])) - 1,(new Integer(fecha[2])),0,0,0);
+                            
+                            cell.setCellValue(calendar);
+                            cell.setCellStyle(cellStyle);
+                            
+                        }
+                        else{//se intenta introducir un numero
+                            Double numero = new Double(dataCell);
+                            cell.setCellValue(numero);
+                        }
+                        
                     }
-                    catch(Exception e){
+                    catch(Exception e){ //se inserta como texto
                         cell.setCellValue(dataCell);
                     }
                     

@@ -101,7 +101,7 @@ public class GenerarReportes extends javax.swing.JFrame {
         dateChooserDialog1 = new datechooser.beans.DateChooserDialog();
         dateChooserDialog2 = new datechooser.beans.DateChooserDialog();
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        regresarB = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         pathTF = new javax.swing.JTextField();
         radioCamionesB = new javax.swing.JRadioButton();
@@ -123,10 +123,10 @@ public class GenerarReportes extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(249, 255, 255));
 
-        jButton1.setText("Regresar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        regresarB.setText("Regresar");
+        regresarB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                regresarBActionPerformed(evt);
             }
         });
 
@@ -221,7 +221,7 @@ public class GenerarReportes extends javax.swing.JFrame {
                     .addComponent(fechaInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(56, 56, 56)
-                        .addComponent(jButton1))
+                        .addComponent(regresarB))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -261,7 +261,7 @@ public class GenerarReportes extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(47, 47, 47)
-                .addComponent(jButton1)
+                .addComponent(regresarB)
                 .addGap(16, 16, 16)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(fechaInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -311,12 +311,12 @@ public class GenerarReportes extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void regresarBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regresarBActionPerformed
         // TODO add your handling code here:
         MenuPrincipal menu= new MenuPrincipal();
         menu.setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_regresarBActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
@@ -414,6 +414,9 @@ public class GenerarReportes extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         try{
+            //Se desactivan los botones de crear factura y regresar
+            generarReportesB.setEnabled(false);
+            regresarB.setEnabled(false);
             //se revisa que se haya seleccionado el lugar del archivo
             if(this.pathTF.getText().equals("") || this.pathTF == null){
                 throw new NoTypeRequiredException("Por favor selecciona una ubicación de archivo válida");
@@ -444,7 +447,7 @@ public class GenerarReportes extends javax.swing.JFrame {
                         throw new NoTypeRequiredException("Por favor selecciona fechas válidas para generar el reporte de facturas");
                     }
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                    query = Globales.baseDatos.generateReporteFacturasQuery(facturasActivasCB.isSelected(), facturasInactivasCB.isSelected(), sdf.format(fechaInicial.getDate()), sdf.format(fechaInicial.getDate()));
+                    query = Globales.baseDatos.generateReporteFacturasQuery(facturasActivasCB.isSelected(), facturasInactivasCB.isSelected(), sdf.format(fechaInicial.getDate()), sdf.format(fechaFinal.getDate()));
                     if(query == null){
                         throw new NoTypeRequiredException("Por favor selecciona por lo menos una opción para generar el reporte de facturas");
                     }
@@ -469,6 +472,10 @@ public class GenerarReportes extends javax.swing.JFrame {
         }
         catch(NoConectionDataBaseException e){
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error al conectar con la base de datos", JOptionPane.WARNING_MESSAGE);
+        }
+        finally{
+            generarReportesB.setEnabled(true);
+            regresarB.setEnabled(true);
         }
     }//GEN-LAST:event_generarReportesBActionPerformed
 
@@ -524,7 +531,6 @@ public class GenerarReportes extends javax.swing.JFrame {
     private com.toedter.calendar.JDateChooser fechaFinal;
     private com.toedter.calendar.JDateChooser fechaInicial;
     private javax.swing.JButton generarReportesB;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField pathTF;
@@ -535,5 +541,6 @@ public class GenerarReportes extends javax.swing.JFrame {
     private javax.swing.JRadioButton radioVentasB;
     private javax.swing.JRadioButton radioVentasFantasmaB;
     private javax.swing.JRadioButton radioViajesB;
+    private javax.swing.JButton regresarB;
     // End of variables declaration//GEN-END:variables
 }

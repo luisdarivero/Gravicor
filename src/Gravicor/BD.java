@@ -112,7 +112,7 @@ public class BD {
         if(lista == null){
             return null;
         }
-        else if(lista.size() == 0){
+        else if(lista.size() == 0 || lista.get(0).size() == 0){
             this.setUltimoError("No se encontraron datos para generar el reporte");
             return null;
         }
@@ -746,7 +746,7 @@ public class BD {
         
         String queryClause = "SELECT F.IDFACTURA,F.MONTOFACTURA,  F.FECHAFACTURA AS FechaFacturaCreada, \n" +
                     "(CASE WHEN F.ESPAGADO = 1 THEN 'TRUE' ELSE 'FALSE' END)  AS EsFacturaPagada, \n" +
-                    "convert(varchar,F.FECHAPAGO, 101) AS FechaFacturaPagada,A.DESCRIPCION  AS EsFacturaActiva, C.NOMBRECLIENTE\n" +
+                    "F.FECHAPAGO AS FechaFacturaPagada,A.DESCRIPCION  AS EsFacturaActiva, C.NOMBRECLIENTE\n" +
                     "FROM FACTURA AS F, CLIENTE AS C, ACTIVO AS A\n" +
                     "WHERE C.CLIENTEID = F.CLIENTEID AND A.IDACTIVO = F.ESACTIVO ";
         
@@ -754,6 +754,7 @@ public class BD {
         queryClause += dateQuery;
         
         if(facturasActivas && facturasInactivas){//ambas opciones están seleccionadas
+            
             return queryClause;
         }
         else if(facturasActivas){//camiones activos
@@ -762,6 +763,7 @@ public class BD {
         else{//camiones inactivos
             queryClause += " AND F.ESACTIVO = 0";
         }
+        
         
         return queryClause;
     }
