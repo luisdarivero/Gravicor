@@ -757,11 +757,39 @@ public class BD {
             
             return queryClause;
         }
-        else if(facturasActivas){//camiones activos
+        else if(facturasActivas){//facturas activos
             queryClause += " AND F.ESACTIVO = 1";
         }
-        else{//camiones inactivos
+        else{//facturas inactivos
             queryClause += " AND F.ESACTIVO = 0";
+        }
+        
+        
+        return queryClause;
+    }
+    
+    public String generateReporteGastosGeneralesQuery(boolean gastosActivos, boolean gastosInactivos, String fechaInicial, String fechaFinal){
+        if(!gastosActivos && !gastosInactivos){//no hay nada seleccionado 
+            return null;
+        }
+        
+        String queryClause = "SELECT G.IDFOLIOPAGO, G.FECHAFOLIOPAGO, G.FOLIOFACTURA, G.FECHAFACTURA, G.TOTAL AS MONTOTOTAL, G.DESCRIPCION, G.EQUIPO,\n" +
+                        "G.PROVEEDOR, A.DESCRIPCION AS EsGastoGeneralActivo\n" +
+                        "FROM GASTOGENERAL AS G, ACTIVO AS A\n" +
+                        "WHERE A.IDACTIVO = G.ESACTIVO ";
+        
+        String dateQuery = " AND (G.FECHAFACTURA BETWEEN '"+fechaInicial+"' AND '"+fechaFinal+"') ";
+        queryClause += dateQuery;
+        
+        if(gastosActivos && gastosInactivos){//ambas opciones están seleccionadas
+            
+            return queryClause;
+        }
+        else if(gastosActivos){//gastos activos
+            queryClause += " AND G.ESACTIVO = 1";
+        }
+        else{//gastos inactivos
+            queryClause += " AND G.ESACTIVO = 0";
         }
         
         

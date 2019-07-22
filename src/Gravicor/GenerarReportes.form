@@ -94,6 +94,7 @@
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="facturasInactivasCB" min="-2" max="-2" attributes="0"/>
                                       <Component id="camionesInactivosCB" min="-2" max="-2" attributes="0"/>
+                                      <Component id="gastosInactivosCB" alignment="0" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -102,6 +103,10 @@
                               <Component id="fechaFinal" max="32767" attributes="0"/>
                               <Component id="jButton2" max="32767" attributes="0"/>
                           </Group>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="179" max="-2" attributes="0"/>
+                          <Component id="gastosActivosCB" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace min="136" pref="151" max="32767" attributes="0"/>
@@ -141,9 +146,14 @@
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="radioGastosGeneralesB" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="85" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="gastosActivosCB" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="gastosInactivosCB" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
                   <Component id="radioVentasB" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="61" max="-2" attributes="0"/>
                   <Component id="radioVentasFantasmaB" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="61" max="-2" attributes="0"/>
                   <Component id="radioViajesB" min="-2" max="-2" attributes="0"/>
@@ -272,6 +282,18 @@
           <Properties>
             <Property name="selected" type="boolean" value="true"/>
             <Property name="text" type="java.lang.String" value="Facturas Inactivas"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JCheckBox" name="gastosActivosCB">
+          <Properties>
+            <Property name="selected" type="boolean" value="true"/>
+            <Property name="text" type="java.lang.String" value="Gastos Activos"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JCheckBox" name="gastosInactivosCB">
+          <Properties>
+            <Property name="selected" type="boolean" value="true"/>
+            <Property name="text" type="java.lang.String" value="Gastos Inactivos"/>
           </Properties>
         </Component>
       </SubComponents>

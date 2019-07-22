@@ -118,6 +118,8 @@ public class GenerarReportes extends javax.swing.JFrame {
         fechaFinal = new com.toedter.calendar.JDateChooser();
         facturasActivasCB = new javax.swing.JCheckBox();
         facturasInactivasCB = new javax.swing.JCheckBox();
+        gastosActivosCB = new javax.swing.JCheckBox();
+        gastosInactivosCB = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -211,6 +213,12 @@ public class GenerarReportes extends javax.swing.JFrame {
         facturasInactivasCB.setSelected(true);
         facturasInactivasCB.setText("Facturas Inactivas");
 
+        gastosActivosCB.setSelected(true);
+        gastosActivosCB.setText("Gastos Activos");
+
+        gastosInactivosCB.setSelected(true);
+        gastosInactivosCB.setText("Gastos Inactivos");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -250,11 +258,15 @@ public class GenerarReportes extends javax.swing.JFrame {
                                 .addGap(56, 56, 56)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(facturasInactivasCB)
-                                    .addComponent(camionesInactivosCB))))
+                                    .addComponent(camionesInactivosCB)
+                                    .addComponent(gastosInactivosCB))))
                         .addGap(66, 66, 66)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(fechaFinal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(179, 179, 179)
+                        .addComponent(gastosActivosCB)))
                 .addGap(136, 151, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -286,9 +298,13 @@ public class GenerarReportes extends javax.swing.JFrame {
                     .addComponent(facturasInactivasCB))
                 .addGap(18, 18, 18)
                 .addComponent(radioGastosGeneralesB)
-                .addGap(85, 85, 85)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(gastosActivosCB)
+                    .addComponent(gastosInactivosCB))
+                .addGap(37, 37, 37)
                 .addComponent(radioVentasB)
-                .addGap(54, 54, 54)
+                .addGap(61, 61, 61)
                 .addComponent(radioVentasFantasmaB)
                 .addGap(61, 61, 61)
                 .addComponent(radioViajesB)
@@ -362,6 +378,7 @@ public class GenerarReportes extends javax.swing.JFrame {
         // TODO add your handling code here:
         limpiarOpciones();
         this.radioGastosGeneralesB.setSelected(true);
+        enableCalendarios();
     }//GEN-LAST:event_radioGastosGeneralesBActionPerformed
 
     private void radioVentasBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioVentasBActionPerformed
@@ -421,6 +438,7 @@ public class GenerarReportes extends javax.swing.JFrame {
             if(this.pathTF.getText().equals("") || this.pathTF == null){
                 throw new NoTypeRequiredException("Por favor selecciona una ubicación de archivo válida");
             }
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             String query = "";
             String[] columnas = {};
             int radioButtonSeleccionado = radioButtonSeleccionado();
@@ -446,7 +464,7 @@ public class GenerarReportes extends javax.swing.JFrame {
                     if(!checkDates()){
                         throw new NoTypeRequiredException("Por favor selecciona fechas válidas para generar el reporte de facturas");
                     }
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    
                     query = Globales.baseDatos.generateReporteFacturasQuery(facturasActivasCB.isSelected(), facturasInactivasCB.isSelected(), sdf.format(fechaInicial.getDate()), sdf.format(fechaFinal.getDate()));
                     if(query == null){
                         throw new NoTypeRequiredException("Por favor selecciona por lo menos una opción para generar el reporte de facturas");
@@ -456,6 +474,17 @@ public class GenerarReportes extends javax.swing.JFrame {
                     
                     break;
                     
+                case 3: //reportes de datos generales
+                    if(!checkDates()){
+                        throw new NoTypeRequiredException("Por favor selecciona fechas válidas para generar el reporte de facturas");
+                    }
+                    query = Globales.baseDatos.generateReporteGastosGeneralesQuery(gastosActivosCB.isSelected(), gastosInactivosCB.isSelected(), sdf.format(fechaInicial.getDate()), sdf.format(fechaFinal.getDate()));
+                    if(query == null){
+                        throw new NoTypeRequiredException("Por favor selecciona por lo menos una opción para generar el reporte de gastos generales");
+                    }
+                    String[] columnasDatosGenerales = {"IDFOLIOPAGO", "FECHAFOLIOPAGO", "FOLIOFACTURA", "FECHAFACTURA", "MONTOTOTAL", "DESCRIPCION", "EQUIPO", "PROVEEDOR", "EsGastoGeneralActivo"};
+                    columnas = columnasDatosGenerales;
+                    break;
             }
             
             //se genera el reporte
@@ -530,6 +559,8 @@ public class GenerarReportes extends javax.swing.JFrame {
     private javax.swing.JCheckBox facturasInactivasCB;
     private com.toedter.calendar.JDateChooser fechaFinal;
     private com.toedter.calendar.JDateChooser fechaInicial;
+    private javax.swing.JCheckBox gastosActivosCB;
+    private javax.swing.JCheckBox gastosInactivosCB;
     private javax.swing.JButton generarReportesB;
     private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel1;
