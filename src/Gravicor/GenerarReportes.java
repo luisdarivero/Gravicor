@@ -120,6 +120,12 @@ public class GenerarReportes extends javax.swing.JFrame {
         facturasInactivasCB = new javax.swing.JCheckBox();
         gastosActivosCB = new javax.swing.JCheckBox();
         gastosInactivosCB = new javax.swing.JCheckBox();
+        ventasActivasCB = new javax.swing.JCheckBox();
+        VentasinactivasCB = new javax.swing.JCheckBox();
+        VentasFActivasCB = new javax.swing.JCheckBox();
+        ventasFInactivas = new javax.swing.JCheckBox();
+        viajesActivosCB = new javax.swing.JCheckBox();
+        viajesInactivosCB = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -219,6 +225,24 @@ public class GenerarReportes extends javax.swing.JFrame {
         gastosInactivosCB.setSelected(true);
         gastosInactivosCB.setText("Gastos Inactivos");
 
+        ventasActivasCB.setSelected(true);
+        ventasActivasCB.setText("Ventas Activas");
+
+        VentasinactivasCB.setSelected(true);
+        VentasinactivasCB.setText("Ventas Inactivas");
+
+        VentasFActivasCB.setSelected(true);
+        VentasFActivasCB.setText("Ventas Fantasmas Activas");
+
+        ventasFInactivas.setSelected(true);
+        ventasFInactivas.setText("Ventas Fantasmas Inactivas");
+
+        viajesActivosCB.setSelected(true);
+        viajesActivosCB.setText("Viajes Activos");
+
+        viajesInactivosCB.setSelected(true);
+        viajesInactivosCB.setText("Viajes Inactivos");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -231,43 +255,53 @@ public class GenerarReportes extends javax.swing.JFrame {
                         .addGap(56, 56, 56)
                         .addComponent(regresarB))
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(179, 179, 179)
+                        .addComponent(gastosActivosCB))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(180, 180, 180)
+                        .addComponent(ventasActivasCB))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(182, 182, 182)
+                        .addComponent(VentasFActivasCB))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(356, 356, 356)
-                                .addComponent(generarReportesB))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(77, 77, 77)
+                                .addGap(77, 77, 77)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(radioCamionesB)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(radioCamionesB)
-                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                    .addComponent(radioViajesB)
-                                                    .addComponent(radioVentasFantasmaB, javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(radioVentasB, javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(radioGastosGeneralesB, javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(radioClientesB, javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(CamionesActivosCB)))
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addComponent(radioFacturasB)
-                                                .addGap(86, 86, 86))))
+                                            .addComponent(radioViajesB)
+                                            .addComponent(radioVentasFantasmaB, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(radioVentasB, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(radioGastosGeneralesB, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(radioClientesB, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(CamionesActivosCB)))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(177, 177, 177)
-                                        .addComponent(facturasActivasCB)))
-                                .addGap(56, 56, 56)
+                                        .addComponent(radioFacturasB)
+                                        .addGap(86, 86, 86))))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(177, 177, 177)
+                                .addComponent(facturasActivasCB))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(184, 184, 184)
+                                .addComponent(viajesActivosCB)))
+                        .addGap(56, 56, 56)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(viajesInactivosCB)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(facturasInactivasCB)
                                     .addComponent(camionesInactivosCB)
-                                    .addComponent(gastosInactivosCB))))
-                        .addGap(66, 66, 66)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(fechaFinal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(179, 179, 179)
-                        .addComponent(gastosActivosCB)))
-                .addGap(136, 151, Short.MAX_VALUE))
+                                    .addComponent(gastosInactivosCB)
+                                    .addComponent(VentasinactivasCB)
+                                    .addComponent(ventasFInactivas)
+                                    .addComponent(generarReportesB))
+                                .addGap(66, 66, 66)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(fechaFinal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
+                .addContainerGap(136, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -304,13 +338,24 @@ public class GenerarReportes extends javax.swing.JFrame {
                     .addComponent(gastosInactivosCB))
                 .addGap(37, 37, 37)
                 .addComponent(radioVentasB)
-                .addGap(61, 61, 61)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ventasActivasCB)
+                    .addComponent(VentasinactivasCB))
+                .addGap(20, 20, 20)
                 .addComponent(radioVentasFantasmaB)
-                .addGap(61, 61, 61)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(VentasFActivasCB)
+                    .addComponent(ventasFInactivas))
+                .addGap(20, 20, 20)
                 .addComponent(radioViajesB)
-                .addGap(48, 48, 48)
-                .addComponent(generarReportesB)
-                .addContainerGap())
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(viajesActivosCB)
+                    .addComponent(viajesInactivosCB))
+                .addGap(18, 18, 18)
+                .addComponent(generarReportesB))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -385,18 +430,21 @@ public class GenerarReportes extends javax.swing.JFrame {
         // TODO add your handling code here:
         limpiarOpciones();
         this.radioVentasB.setSelected(true);
+        enableCalendarios();
     }//GEN-LAST:event_radioVentasBActionPerformed
 
     private void radioVentasFantasmaBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioVentasFantasmaBActionPerformed
         // TODO add your handling code here:
         limpiarOpciones();
         this.radioVentasFantasmaB.setSelected(true);
+        desactivateCalendarios();
     }//GEN-LAST:event_radioVentasFantasmaBActionPerformed
 
     private void radioViajesBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioViajesBActionPerformed
         // TODO add your handling code here:
         limpiarOpciones();
         this.radioViajesB.setSelected(true);
+        enableCalendarios();
     }//GEN-LAST:event_radioViajesBActionPerformed
 
     //metodo que regresa el radiobutton que esta seleccionado
@@ -485,6 +533,41 @@ public class GenerarReportes extends javax.swing.JFrame {
                     String[] columnasDatosGenerales = {"IDFOLIOPAGO", "FECHAFOLIOPAGO", "FOLIOFACTURA", "FECHAFACTURA", "MONTOTOTAL", "DESCRIPCION", "EQUIPO", "PROVEEDOR", "EsGastoGeneralActivo"};
                     columnas = columnasDatosGenerales;
                     break;
+                
+                case 4: //reporte de ventas
+                    if(!checkDates()){
+                        throw new NoTypeRequiredException("Por favor selecciona fechas válidas para generar el reporte de facturas");
+                    }
+                    query = Globales.baseDatos.generateReporteVentasQuery(ventasActivasCB.isSelected(), VentasinactivasCB.isSelected(), sdf.format(fechaInicial.getDate()), sdf.format(fechaFinal.getDate()));
+                    if(query == null){
+                        throw new NoTypeRequiredException("Por favor selecciona por lo menos una opción para generar el reporte de gastos generales");
+                    }
+                    String[] columnasVentas = {"VENTAID","EsVentaActiva", "NOMBRECLIENTE", "NOMBREPLANTA","DESCRIPCIONMATERIAL", "PRECIOM3",
+                                            "CANTIDADM3", "MontoTotal",  "FECHAVENTA", "HORAVENTA", "EsVentaCredito", "EsVentaFacturada",
+                                            "FACTURAID", "FOLIOTRANSPORTISTA", "FOLIOPLANTA",  "MATRICULACAMION", "NOMBRECHOFER"};
+                    columnas = columnasVentas;
+                    break;
+                case 5: //reporte de ventas fantasmas
+                    query = Globales.baseDatos.generateReporteVentasFantasmaQuery(VentasFActivasCB.isSelected(), ventasFInactivas.isSelected());
+                    if(query == null){
+                        throw new NoTypeRequiredException("Por favor selecciona por lo menos una opción para generar el reporte de gastos generales");
+                    }
+                    String[] columnasVentasF = {"VANTAID", "EsVentaFantasmaActiva", "IDFACTURA", "CANTIDADM3", "PRECIOM3", 
+                                                "MontoTotalVentaFantasma", "EsVentaFantasmaConciliada", "IDVentaConciliada"};
+                    columnas = columnasVentasF;
+                    break;
+                case 6: //reporte de viajes
+                    if(!checkDates()){
+                        throw new NoTypeRequiredException("Por favor selecciona fechas válidas para generar el reporte de facturas");
+                    }
+                    query = Globales.baseDatos.generateReporteViajesQuery(viajesActivosCB.isSelected(), viajesInactivosCB.isSelected(), sdf.format(fechaInicial.getDate()), sdf.format(fechaFinal.getDate()));
+                    if(query == null){
+                        throw new NoTypeRequiredException("Por favor selecciona por lo menos una opción para generar el reporte de gastos generales");
+                    }
+                    String[] columnasViajes = {"IDVIAJE", "IDCAMION", "NombreOperador", "DESCRIPCIONCAMION",
+                                    "CAPACIDADCAMIONM3", "FechaDeViaje", "HoraDeViaje", "EsViajeActivo"};
+                    columnas = columnasViajes;
+                    System.out.println(query);
             }
             
             //se genera el reporte
@@ -552,6 +635,8 @@ public class GenerarReportes extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox CamionesActivosCB;
+    private javax.swing.JCheckBox VentasFActivasCB;
+    private javax.swing.JCheckBox VentasinactivasCB;
     private javax.swing.JCheckBox camionesInactivosCB;
     private datechooser.beans.DateChooserDialog dateChooserDialog1;
     private datechooser.beans.DateChooserDialog dateChooserDialog2;
@@ -573,5 +658,9 @@ public class GenerarReportes extends javax.swing.JFrame {
     private javax.swing.JRadioButton radioVentasFantasmaB;
     private javax.swing.JRadioButton radioViajesB;
     private javax.swing.JButton regresarB;
+    private javax.swing.JCheckBox ventasActivasCB;
+    private javax.swing.JCheckBox ventasFInactivas;
+    private javax.swing.JCheckBox viajesActivosCB;
+    private javax.swing.JCheckBox viajesInactivosCB;
     // End of variables declaration//GEN-END:variables
 }

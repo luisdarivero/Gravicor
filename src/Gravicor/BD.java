@@ -796,6 +796,89 @@ public class BD {
         return queryClause;
     }
     
+    public String generateReporteVentasQuery(boolean ventasActivas, boolean ventasInactivas, String fechaInicial, String fechaFinal){
+        if(!ventasActivas && !ventasInactivas){//no hay nada seleccionado 
+            return null;
+        }
+        
+        String queryClause = "SELECT V.VENTAID,A.DESCRIPCION AS EsVentaActiva, C.NOMBRECLIENTE, P.NOMBREPLANTA,M.DESCRIPCIONMATERIAL, V.PRECIOM3, V.CANTIDADM3, \n" +
+                "(V.PRECIOM3*V.CANTIDADM3) AS MontoTotal,  V.FECHAVENTA, V.HORAVENTA,\n" +
+                "(CASE WHEN V.ESCREDITO = 1 THEN 'TRUE' ELSE 'FALSE' END)  AS EsVentaCredito,\n" +
+                " (CASE WHEN V.ESFACTURADO = 1 THEN 'TRUE' ELSE 'FALSE' END)  AS EsVentaFacturada, V.FACTURAID,\n" +
+                " V.FOLIOTRANSPORTISTA, V.FOLIOPLANTA,  V.MATRICULACAMION, V.NOMBRECHOFER\n" +
+                "FROM VENTA AS V, CLIENTE AS C, MATERIAL AS M, PLANTA AS P, ACTIVO AS A\n" +
+                "WHERE C.CLIENTEID = V.CLIENTEID AND M.MATERIALID = V.MATERIALID AND P.PLANTAID = V.PLANTAID AND A.IDACTIVO = V.ACTIVO ";
+        
+        String dateQuery = " AND (V.FECHAVENTA BETWEEN '"+fechaInicial+"' AND '"+fechaFinal+"') ";
+        queryClause += dateQuery;
+        
+        if(ventasActivas && ventasInactivas){//ambas opciones están seleccionadas
+            
+            return queryClause;
+        }
+        else if(ventasActivas){//VENTAS activas
+            queryClause += " AND V.ACTIVO = 1";
+        }
+        else{//gastos inactivos
+            queryClause += " AND V.ACTIVO = 0";
+        }
+        
+        return queryClause;
+    }
+    
+    public String generateReporteVentasFantasmaQuery(boolean ventasFActivas, boolean ventasFInactivas){
+        if(!ventasFActivas && !ventasFInactivas){//no hay nada seleccionado 
+            return null;
+        }
+        String queryClause = "SELECT VF.VANTAID, A.DESCRIPCION as EsVentaFantasmaActiva, VF.IDFACTURA, VF.CANTIDADM3, VF.PRECIOM3,\n" +
+                    "(VF.CANTIDADM3 * VF.PRECIOM3) AS MontoTotalVentaFantasma,\n" +
+                    "(CASE WHEN VF.ESCONCILIADA = 1 THEN 'TRUE' ELSE 'FALSE' END)  AS EsVentaFantasmaConciliada, vf.REFERENCIAVENTA as  IDVentaConciliada\n" +
+                    "FROM VENTAFANTASMA AS VF, ACTIVO AS A \n" +
+                    "WHERE A.IDACTIVO = VF.ESACTIVO ";
+        
+        if(ventasFActivas && ventasFInactivas){//ambas opciones están seleccionadas
+            
+            return queryClause;
+        }
+        else if(ventasFActivas){//VENTAS fantasma activas
+            queryClause += " AND VF.ESACTIVO = 1";
+        }
+        else{//gastos inactivos
+            queryClause += " AND VF.ESACTIVO = 0";
+        }
+        
+        
+        return queryClause;
+    }
+    
+    public String generateReporteViajesQuery(boolean viajesActivos, boolean viajesInactivos, String fechaInicial, String fechaFinal){
+        if(!viajesActivos && !viajesInactivos){//no hay nada seleccionado 
+            return null;
+        }
+        String queryClause = "SELECT V.IDVIAJE, C.IDCAMION, C.OPERADOR AS NombreOperador, T.DESCRIPCION AS DESCRIPCIONCAMION,\n" +
+            "T.CAPACIDAD AS CAPACIDADCAMIONM3, V.FECHA AS FechaDeViaje, V.HORA AS HoraDeViaje, A.DESCRIPCION AS EsViajeActivo\n" +
+            "FROM VIAJE AS V, CAMION AS C, TIPOCAMION AS T, ACTIVO AS A\n" +
+            "WHERE C.IDCAMION = V.IDCAMION AND T.IDTIPOCAMION = C.IDTIPOCAMION AND A.IDACTIVO = V.ESACTIVO ";
+        
+        String dateQuery = " AND (V.FECHA BETWEEN '"+fechaInicial+"' AND '"+fechaFinal+"') ";
+        queryClause += dateQuery;
+        
+        if(viajesActivos && viajesInactivos){//ambas opciones están seleccionadas
+            
+            return queryClause;
+        }
+        else if(viajesActivos){//Viajes fantasma activas
+            queryClause += " AND V.ESACTIVO = 1";
+        }
+        else{//gastos inactivos
+            queryClause += " AND V.ESACTIVO = 0";
+        }
+        
+        
+        return queryClause;
+    }
+            
+    
     public boolean createReportFile(String filePath, String query, String[] columnas){
         Object[][] data = selectO(query, columnas);
         CreateExcelFile excelFile = new CreateExcelFile();
