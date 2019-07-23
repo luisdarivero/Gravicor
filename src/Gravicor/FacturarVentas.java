@@ -67,7 +67,7 @@ public class FacturarVentas extends javax.swing.JFrame {
     public void programInnit(){
         try{
             String[] titulosColumnas = {"Seleccionar","Referencia","Venta ID","Cliente","Planta","Precio M3","Cantidad M3","Precio Final"};
-            Integer[] coordenadasTabla = {110,250,850,270};
+            Integer[] coordenadasTabla = {110,350,850,390};
             this.table= checkBoxTable(titulosColumnas,coordenadasTabla);
             generarDatosTabla(this.indexOfDatos, this.datos, this.table);
             //se inicializan las listas
@@ -252,7 +252,7 @@ public class FacturarVentas extends javax.swing.JFrame {
       //THE TABLE
       JTable table=new JTable();
       
-      scroll.setSize(900, 150);//es lo que realmente asigna el tamaño de la tabla
+      scroll.setSize(900, 250);//es lo que realmente asigna el tamaño de la tabla
       scroll.setViewportView(table);
       
       jPanelColor.add(scroll);
@@ -319,6 +319,7 @@ public class FacturarVentas extends javax.swing.JFrame {
         facturarB = new javax.swing.JButton();
         siguienteB = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -436,6 +437,9 @@ public class FacturarVentas extends javax.swing.JFrame {
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/encabezadoLogoGravicor.png"))); // NOI18N
 
+        jLabel7.setFont(new java.awt.Font("Calibri", 1, 48)); // NOI18N
+        jLabel7.setText("Facturar Ventas");
+
         javax.swing.GroupLayout jPanelColorLayout = new javax.swing.GroupLayout(jPanelColor);
         jPanelColor.setLayout(jPanelColorLayout);
         jPanelColorLayout.setHorizontalGroup(
@@ -477,14 +481,19 @@ public class FacturarVentas extends javax.swing.JFrame {
                 .addComponent(jLabel6)
                 .addGap(163, 163, 163))
             .addGroup(jPanelColorLayout.createSequentialGroup()
-                .addGap(215, 215, 215)
-                .addComponent(jLabel5)
-                .addGap(48, 48, 48)
-                .addComponent(referenciaTB, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(93, 93, 93)
-                .addComponent(jLabel4)
-                .addGap(18, 18, 18)
-                .addComponent(totalFacturaTB, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanelColorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelColorLayout.createSequentialGroup()
+                        .addGap(225, 225, 225)
+                        .addComponent(jLabel5)
+                        .addGap(48, 48, 48)
+                        .addComponent(referenciaTB, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(93, 93, 93)
+                        .addComponent(jLabel4)
+                        .addGap(18, 18, 18)
+                        .addComponent(totalFacturaTB, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelColorLayout.createSequentialGroup()
+                        .addGap(390, 390, 390)
+                        .addComponent(jLabel7)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanelColorLayout.setVerticalGroup(
@@ -492,7 +501,9 @@ public class FacturarVentas extends javax.swing.JFrame {
             .addGroup(jPanelColorLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
+                .addGap(29, 29, 29)
+                .addComponent(jLabel7)
+                .addGap(41, 41, 41)
                 .addGroup(jPanelColorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(referenciaTB)
                     .addComponent(jLabel5)
@@ -500,7 +511,7 @@ public class FacturarVentas extends javax.swing.JFrame {
                     .addComponent(totalFacturaTB))
                 .addGap(18, 18, 18)
                 .addComponent(registrosBDCB)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 158, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 265, Short.MAX_VALUE)
                 .addComponent(registroNuevoCB)
                 .addGap(18, 18, 18)
                 .addGroup(jPanelColorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -517,7 +528,7 @@ public class FacturarVentas extends javax.swing.JFrame {
                 .addGroup(jPanelColorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(totalNuevoRegistroTB))
-                .addGap(48, 48, 48)
+                .addGap(39, 39, 39)
                 .addGroup(jPanelColorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(facturarB)
                     .addComponent(jButton2)
@@ -533,7 +544,9 @@ public class FacturarVentas extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelColor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jPanelColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -889,6 +902,7 @@ public class FacturarVentas extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanelColor;
     private javax.swing.JLabel referenciaTB;
     private javax.swing.JCheckBox registroNuevoCB;
