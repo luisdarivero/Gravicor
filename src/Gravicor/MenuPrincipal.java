@@ -102,10 +102,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
             }
         });
 
-        reportesB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/reportesYEstadisticas.png"))); // NOI18N
+        reportesB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/reportes.png"))); // NOI18N
         reportesB.setContentAreaFilled(false);
         reportesB.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        reportesB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/reportesYEstadisticas2.png"))); // NOI18N
+        reportesB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/reportes2.png"))); // NOI18N
         reportesB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 reportesBActionPerformed(evt);
@@ -132,10 +132,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
             }
         });
 
-        tesoreriaB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/inventarios.png"))); // NOI18N
+        tesoreriaB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/configuracionesGenerales.png"))); // NOI18N
         tesoreriaB.setContentAreaFilled(false);
         tesoreriaB.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        tesoreriaB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/inventarios2.png"))); // NOI18N
+        tesoreriaB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/configuracionesGenerales2.png"))); // NOI18N
         tesoreriaB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tesoreriaBActionPerformed(evt);

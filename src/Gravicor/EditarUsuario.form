@@ -336,7 +336,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="18" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Reportes y estadist&#xed;cas"/>
+            <Property name="text" type="java.lang.String" value="Reportes"/>
             <Property name="contentAreaFilled" type="boolean" value="false"/>
           </Properties>
         </Component>
@@ -363,7 +363,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="18" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Gesti&#xf3;n de gastos"/>
+            <Property name="text" type="java.lang.String" value="Gesti&#xf3;n de gastos generales"/>
             <Property name="contentAreaFilled" type="boolean" value="false"/>
           </Properties>
         </Component>
@@ -372,7 +372,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="18" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Inventarios"/>
+            <Property name="text" type="java.lang.String" value="Configuraciones Generales"/>
             <Property name="contentAreaFilled" type="boolean" value="false"/>
           </Properties>
           <Events>

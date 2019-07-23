@@ -126,19 +126,27 @@ public class GenerarReportes extends javax.swing.JFrame {
         ventasFInactivas = new javax.swing.JCheckBox();
         viajesActivosCB = new javax.swing.JCheckBox();
         viajesInactivosCB = new javax.swing.JCheckBox();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(249, 255, 255));
 
-        regresarB.setText("Regresar");
+        regresarB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/regresar.png"))); // NOI18N
+        regresarB.setContentAreaFilled(false);
+        regresarB.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        regresarB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/regresar2.png"))); // NOI18N
         regresarB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 regresarBActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Ubicación de archivo");
+        jButton2.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        jButton2.setText("Selecciona la ubicación y nombre del archivo");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -146,7 +154,9 @@ public class GenerarReportes extends javax.swing.JFrame {
         });
 
         pathTF.setEditable(false);
+        pathTF.setFont(new java.awt.Font("Calibri", 0, 20)); // NOI18N
 
+        radioCamionesB.setFont(new java.awt.Font("Calibri", 0, 20)); // NOI18N
         radioCamionesB.setText("Reporte de camiones");
         radioCamionesB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -154,6 +164,7 @@ public class GenerarReportes extends javax.swing.JFrame {
             }
         });
 
+        radioClientesB.setFont(new java.awt.Font("Calibri", 0, 20)); // NOI18N
         radioClientesB.setText("Reporte de clientes");
         radioClientesB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -161,6 +172,7 @@ public class GenerarReportes extends javax.swing.JFrame {
             }
         });
 
+        radioFacturasB.setFont(new java.awt.Font("Calibri", 0, 20)); // NOI18N
         radioFacturasB.setText("Reporte de facturas");
         radioFacturasB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -168,6 +180,7 @@ public class GenerarReportes extends javax.swing.JFrame {
             }
         });
 
+        radioGastosGeneralesB.setFont(new java.awt.Font("Calibri", 0, 20)); // NOI18N
         radioGastosGeneralesB.setText("Reporte de gastos generales");
         radioGastosGeneralesB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -175,6 +188,7 @@ public class GenerarReportes extends javax.swing.JFrame {
             }
         });
 
+        radioVentasB.setFont(new java.awt.Font("Calibri", 0, 20)); // NOI18N
         radioVentasB.setText("Reporte de ventas");
         radioVentasB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -182,6 +196,7 @@ public class GenerarReportes extends javax.swing.JFrame {
             }
         });
 
+        radioVentasFantasmaB.setFont(new java.awt.Font("Calibri", 0, 20)); // NOI18N
         radioVentasFantasmaB.setText("Reporte de ventas fantasmas");
         radioVentasFantasmaB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -189,6 +204,7 @@ public class GenerarReportes extends javax.swing.JFrame {
             }
         });
 
+        radioViajesB.setFont(new java.awt.Font("Calibri", 0, 20)); // NOI18N
         radioViajesB.setText("Reporte de viajes de piedra en greña");
         radioViajesB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -196,13 +212,17 @@ public class GenerarReportes extends javax.swing.JFrame {
             }
         });
 
+        CamionesActivosCB.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         CamionesActivosCB.setSelected(true);
         CamionesActivosCB.setText("Camiones Activos");
 
         camionesInactivosCB.setSelected(true);
         camionesInactivosCB.setText("Camiones Inactivos");
 
-        generarReportesB.setText("Generar Reportes");
+        generarReportesB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/generarReporte.png"))); // NOI18N
+        generarReportesB.setContentAreaFilled(false);
+        generarReportesB.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        generarReportesB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/generarReporte2.png"))); // NOI18N
         generarReportesB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 generarReportesBActionPerformed(evt);
@@ -213,35 +233,57 @@ public class GenerarReportes extends javax.swing.JFrame {
 
         fechaFinal.setEnabled(false);
 
+        facturasActivasCB.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         facturasActivasCB.setSelected(true);
         facturasActivasCB.setText("Facturas Activas");
 
+        facturasInactivasCB.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         facturasInactivasCB.setSelected(true);
         facturasInactivasCB.setText("Facturas Inactivas");
 
+        gastosActivosCB.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         gastosActivosCB.setSelected(true);
         gastosActivosCB.setText("Gastos Activos");
 
+        gastosInactivosCB.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         gastosInactivosCB.setSelected(true);
         gastosInactivosCB.setText("Gastos Inactivos");
 
+        ventasActivasCB.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         ventasActivasCB.setSelected(true);
         ventasActivasCB.setText("Ventas Activas");
 
+        VentasinactivasCB.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         VentasinactivasCB.setSelected(true);
         VentasinactivasCB.setText("Ventas Inactivas");
 
+        VentasFActivasCB.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         VentasFActivasCB.setSelected(true);
         VentasFActivasCB.setText("Ventas Fantasmas Activas");
 
+        ventasFInactivas.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         ventasFInactivas.setSelected(true);
         ventasFInactivas.setText("Ventas Fantasmas Inactivas");
 
+        viajesActivosCB.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         viajesActivosCB.setSelected(true);
         viajesActivosCB.setText("Viajes Activos");
 
+        viajesInactivosCB.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         viajesInactivosCB.setSelected(true);
         viajesInactivosCB.setText("Viajes Inactivos");
+
+        jLabel1.setFont(new java.awt.Font("Calibri", 0, 20)); // NOI18N
+        jLabel1.setText("Fecha inicial:");
+
+        jLabel2.setFont(new java.awt.Font("Calibri", 1, 20)); // NOI18N
+        jLabel2.setText("Seleciona el reporte que deseas generar:");
+
+        jLabel3.setFont(new java.awt.Font("Calibri", 0, 20)); // NOI18N
+        jLabel3.setText("Fecha final:");
+
+        jLabel4.setFont(new java.awt.Font("Calibri", 1, 48)); // NOI18N
+        jLabel4.setText("Generar reportes");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -249,84 +291,104 @@ public class GenerarReportes extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pathTF, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fechaInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(56, 56, 56)
-                        .addComponent(regresarB))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(179, 179, 179)
-                        .addComponent(gastosActivosCB))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(180, 180, 180)
-                        .addComponent(ventasActivasCB))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(182, 182, 182)
-                        .addComponent(VentasFActivasCB))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(77, 77, 77)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(77, 77, 77)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(radioCamionesB)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(radioViajesB)
-                                            .addComponent(radioVentasFantasmaB, javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(radioVentasB, javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(radioGastosGeneralesB, javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(radioClientesB, javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(CamionesActivosCB)))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(radioFacturasB)
-                                        .addGap(86, 86, 86))))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(177, 177, 177)
-                                .addComponent(facturasActivasCB))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(184, 184, 184)
-                                .addComponent(viajesActivosCB)))
-                        .addGap(56, 56, 56)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(viajesInactivosCB)
+                            .addComponent(radioVentasB)
+                            .addComponent(radioGastosGeneralesB)
+                            .addComponent(radioClientesB)
+                            .addComponent(radioFacturasB)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(radioCamionesB)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                    .addGap(33, 33, 33)
+                                    .addComponent(CamionesActivosCB))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                    .addGap(39, 39, 39)
+                                    .addComponent(facturasActivasCB)))
+                            .addComponent(radioViajesB)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(radioVentasFantasmaB)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(42, 42, 42)
+                                        .addComponent(gastosActivosCB))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(45, 45, 45)
+                                        .addComponent(ventasActivasCB))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(46, 46, 46)
+                                        .addComponent(VentasFActivasCB)))
+                                .addGap(51, 51, 51)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(facturasInactivasCB)
-                                    .addComponent(camionesInactivosCB)
                                     .addComponent(gastosInactivosCB)
+                                    .addComponent(camionesInactivosCB)
                                     .addComponent(VentasinactivasCB)
-                                    .addComponent(ventasFInactivas)
-                                    .addComponent(generarReportesB))
-                                .addGap(66, 66, 66)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(fechaFinal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
-                .addContainerGap(136, Short.MAX_VALUE))
+                                    .addComponent(ventasFInactivas)))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(regresarB, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(112, 112, 112)
+                        .addComponent(jLabel4))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(83, 83, 83)
+                        .addComponent(pathTF, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(41, 41, 41)
+                        .addComponent(jButton2))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(126, 126, 126)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(fechaInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(70, 70, 70)
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addComponent(fechaFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(50, 50, 50)
+                        .addComponent(jLabel2))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(124, 124, 124)
+                        .addComponent(viajesActivosCB)
+                        .addGap(175, 175, 175)
+                        .addComponent(viajesInactivosCB))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(191, 191, 191)
+                        .addComponent(generarReportesB)))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(47, 47, 47)
-                .addComponent(regresarB)
-                .addGap(16, 16, 16)
+                .addGap(23, 23, 23)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(fechaInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fechaFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(63, 63, 63)
+                    .addComponent(regresarB, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addGap(24, 24, 24)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(pathTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2))
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(56, 56, 56)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(fechaInicial, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                        .addComponent(fechaFinal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel3))
+                .addGap(35, 35, 35)
+                .addComponent(jLabel2)
                 .addGap(18, 18, 18)
                 .addComponent(radioCamionesB)
-                .addGap(19, 19, 19)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(CamionesActivosCB)
                     .addComponent(camionesInactivosCB))
-                .addGap(20, 20, 20)
-                .addComponent(radioClientesB)
                 .addGap(18, 18, 18)
+                .addComponent(radioClientesB)
+                .addGap(27, 27, 27)
                 .addComponent(radioFacturasB)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(facturasActivasCB)
                     .addComponent(facturasInactivasCB))
@@ -336,26 +398,27 @@ public class GenerarReportes extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(gastosActivosCB)
                     .addComponent(gastosInactivosCB))
-                .addGap(37, 37, 37)
+                .addGap(18, 18, 18)
                 .addComponent(radioVentasB)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ventasActivasCB)
                     .addComponent(VentasinactivasCB))
-                .addGap(20, 20, 20)
+                .addGap(18, 18, 18)
                 .addComponent(radioVentasFantasmaB)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(VentasFActivasCB)
                     .addComponent(ventasFInactivas))
-                .addGap(20, 20, 20)
+                .addGap(18, 18, 18)
                 .addComponent(radioViajesB)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(viajesActivosCB)
                     .addComponent(viajesInactivosCB))
-                .addGap(18, 18, 18)
-                .addComponent(generarReportesB))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addComponent(generarReportesB, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -366,7 +429,7 @@ public class GenerarReportes extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -648,6 +711,10 @@ public class GenerarReportes extends javax.swing.JFrame {
     private javax.swing.JCheckBox gastosInactivosCB;
     private javax.swing.JButton generarReportesB;
     private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField pathTF;
     private javax.swing.JRadioButton radioCamionesB;

@@ -149,7 +149,7 @@ public class EditarCamion extends javax.swing.JFrame {
         continuarB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/aceptar.png"))); // NOI18N
         continuarB.setContentAreaFilled(false);
         continuarB.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        continuarB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/cancelar2.png"))); // NOI18N
+        continuarB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/aceptar2.png"))); // NOI18N
         continuarB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 continuarBActionPerformed(evt);

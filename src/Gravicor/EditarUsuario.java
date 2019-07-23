@@ -203,7 +203,7 @@ public class EditarUsuario extends javax.swing.JFrame {
         });
 
         reportesB.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        reportesB.setText("Reportes y estadistícas");
+        reportesB.setText("Reportes");
         reportesB.setContentAreaFilled(false);
 
         cobranzaB.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -215,11 +215,11 @@ public class EditarUsuario extends javax.swing.JFrame {
         cuentasB.setContentAreaFilled(false);
 
         gastosB.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        gastosB.setText("Gestión de gastos");
+        gastosB.setText("Gestión de gastos generales");
         gastosB.setContentAreaFilled(false);
 
         tesoreriaB.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        tesoreriaB.setText("Inventarios");
+        tesoreriaB.setText("Configuraciones Generales");
         tesoreriaB.setContentAreaFilled(false);
         tesoreriaB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

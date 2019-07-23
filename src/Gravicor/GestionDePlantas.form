@@ -122,6 +122,9 @@
               <Image iconType="3" name="/Gravicor/AssetsNuevos/regresar.png"/>
             </Property>
             <Property name="contentAreaFilled" type="boolean" value="false"/>
+            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+              <Color id="Cursor de Mano"/>
+            </Property>
             <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/Gravicor/AssetsNuevos/regresar2.png"/>
             </Property>
@@ -136,6 +139,9 @@
               <Image iconType="3" name="/Gravicor/AssetsNuevos/editarPlanta.png"/>
             </Property>
             <Property name="contentAreaFilled" type="boolean" value="false"/>
+            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+              <Color id="Cursor de Mano"/>
+            </Property>
             <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/Gravicor/AssetsNuevos/editarPlanta2.png"/>
             </Property>
@@ -150,6 +156,9 @@
               <Image iconType="3" name="/Gravicor/AssetsNuevos/anadirPlanta.png"/>
             </Property>
             <Property name="contentAreaFilled" type="boolean" value="false"/>
+            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+              <Color id="Cursor de Mano"/>
+            </Property>
             <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/Gravicor/AssetsNuevos/anadirPlanta2.png"/>
             </Property>

@@ -84,6 +84,7 @@ public class AnadirPlanta extends javax.swing.JFrame {
 
         cancelarB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/cancelar.png"))); // NOI18N
         cancelarB.setContentAreaFilled(false);
+        cancelarB.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         cancelarB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/cancelar2.png"))); // NOI18N
         cancelarB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -93,6 +94,7 @@ public class AnadirPlanta extends javax.swing.JFrame {
 
         aceptarB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/aceptar.png"))); // NOI18N
         aceptarB.setContentAreaFilled(false);
+        aceptarB.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         aceptarB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/aceptar2.png"))); // NOI18N
         aceptarB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
