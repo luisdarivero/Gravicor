@@ -66,7 +66,7 @@ public class FacturarVentas extends javax.swing.JFrame {
     //---------Termina metodo que se ejecuta desde una clase externa
     public void programInnit(){
         try{
-            String[] titulosColumnas = {"Seleccionar","Referencia","Venta ID","Cliente","Planta","Precio M3","Cantidad M3","Precio Final"};
+            String[] titulosColumnas = {"Seleccionar","Referencia","Venta ID","Cliente","Planta","Precio M3","Cantidad M3","Precio Final", "Fecha Venta"};
             Integer[] coordenadasTabla = {110,350,850,390};
             this.table= checkBoxTable(titulosColumnas,coordenadasTabla);
             generarDatosTabla(this.indexOfDatos, this.datos, this.table);
@@ -105,7 +105,7 @@ public class FacturarVentas extends javax.swing.JFrame {
         String dato = datos.get(indexOfDatos);
         limpiarTabla(tabla);
         String query;
-        String[] columnas = {"VENTAID", "NOMBRECLIENTE", "NOMBREPLANTA","PRECIOM3", "CANTIDADM3", "PRECIOFINAL"};
+        String[] columnas = {"VENTAID", "NOMBRECLIENTE", "NOMBREPLANTA","PRECIOM3", "CANTIDADM3", "PRECIOFINAL", "FECHAVENTA"};
       
         try{
             //pone el encabezado de la referencia
@@ -113,7 +113,7 @@ public class FacturarVentas extends javax.swing.JFrame {
             //se revisa si el dato es un entero
             //Se consulta la base de datos para los ID de ventas 
             if(isNumeric(dato)){
-                query = "SELECT V.VENTAID, C.NOMBRECLIENTE, P.NOMBREPLANTA,V.PRECIOM3, V.CANTIDADM3, (V.PRECIOM3 * V.CANTIDADM3) AS PRECIOFINAL\n" +
+                query = "SELECT V.VENTAID, C.NOMBRECLIENTE, P.NOMBREPLANTA,V.PRECIOM3, V.CANTIDADM3, (V.PRECIOM3 * V.CANTIDADM3) AS PRECIOFINAL, convert(varchar,V.FECHAVENTA, 105) as FECHAVENTA\n" +
                                 "FROM VENTA AS V, CLIENTE AS C, PLANTA AS P\n" +
                                     "WHERE V.VENTAID = " + dato.toLowerCase() + " AND V.CLIENTEID = C.CLIENTEID AND V.PLANTAID = P.PLANTAID AND V.ACTIVO = 1 AND V.ESFACTURADO = 'FALSE' AND V.ESCREDITO = 'TRUE'";
                 
@@ -134,9 +134,9 @@ public class FacturarVentas extends javax.swing.JFrame {
             }
 
             //se consulta la base de datos para los folios de transportista
-            query = "SELECT V.VENTAID, C.NOMBRECLIENTE, P.NOMBREPLANTA,V.PRECIOM3, V.CANTIDADM3, (V.PRECIOM3 * V.CANTIDADM3) AS PRECIOFINAL\n" +
+            query = "SELECT V.VENTAID, C.NOMBRECLIENTE, P.NOMBREPLANTA,V.PRECIOM3, V.CANTIDADM3, (V.PRECIOM3 * V.CANTIDADM3) AS PRECIOFINAL, convert(varchar,V.FECHAVENTA, 105) as FECHAVENTA\n" +
                         "FROM VENTA AS V, CLIENTE AS C, PLANTA AS P\n" +
-                            "WHERE V.FOLIOTRANSPORTISTA = '"+ dato.toLowerCase() + "' AND V.CLIENTEID = C.CLIENTEID AND V.PLANTAID = P.PLANTAID AND V.ACTIVO = 1 AND V.ESFACTURADO = 'FALSE' AND V.ESCREDITO = 'TRUE'";
+                            "WHERE V.FOLIOTRANSPORTISTA LIKE '%"+ dato.toLowerCase() + "%' AND V.CLIENTEID = C.CLIENTEID AND V.PLANTAID = P.PLANTAID AND V.ACTIVO = 1 AND V.ESFACTURADO = 'FALSE' AND V.ESCREDITO = 'TRUE'";
             
             LinkedList<LinkedList<String>> foliosTransportista = Globales.baseDatos.select(query, columnas);
             if(foliosTransportista == null){
@@ -152,9 +152,9 @@ public class FacturarVentas extends javax.swing.JFrame {
             }
             
             //Se consulta el folio de la planta
-            query = "SELECT V.VENTAID, C.NOMBRECLIENTE, P.NOMBREPLANTA,V.PRECIOM3, V.CANTIDADM3, (V.PRECIOM3 * V.CANTIDADM3) AS PRECIOFINAL\n" +
+            query = "SELECT V.VENTAID, C.NOMBRECLIENTE, P.NOMBREPLANTA,V.PRECIOM3, V.CANTIDADM3, (V.PRECIOM3 * V.CANTIDADM3) AS PRECIOFINAL, convert(varchar,V.FECHAVENTA, 105) as FECHAVENTA\n" +
                         "FROM VENTA AS V, CLIENTE AS C, PLANTA AS P\n" +
-                            "WHERE V.FOLIOPLANTA = '"+ dato.toLowerCase() + "' AND V.CLIENTEID = C.CLIENTEID AND V.PLANTAID = P.PLANTAID AND V.ACTIVO = 1 AND V.ESFACTURADO = 'FALSE' AND V.ESCREDITO = 'TRUE'";
+                            "WHERE V.FOLIOPLANTA LIKE '%"+ dato.toLowerCase() + "%' AND V.CLIENTEID = C.CLIENTEID AND V.PLANTAID = P.PLANTAID AND V.ACTIVO = 1 AND V.ESFACTURADO = 'FALSE' AND V.ESCREDITO = 'TRUE'";
             
             LinkedList<LinkedList<String>> foliosPlantas = Globales.baseDatos.select(query, columnas);
             if(foliosPlantas == null){
