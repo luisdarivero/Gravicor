@@ -269,10 +269,25 @@ public class Registro extends javax.swing.JFrame {
             //Globales.baseDatos = new BD("LAPTOP-LVSV7Q0O","1433","GRAVICOR","luisdarivero.s@gmail.com","adminJava");
             Globales.baseDatos = new BD(ip,"1433","GRAVICOR",usuarioBD,contrasenaBD);
             if(Globales.baseDatos.isIsConectado() == true){
+                //comprobar la version de uso
+                String[] columnasVersionActiva = {"DESCRIPCION"};
+                String queryVersionActiva = "SELECT A.DESCRIPCION FROM VERSIONACTIVA AS V, ACTIVO AS A WHERE A.IDACTIVO = V.ESACTIVO AND V.VERSIONACTIVAID = '" + Globales.softwareVersion + "'";
+                LinkedList<LinkedList<String>> resultadoVersionActiva = Globales.baseDatos.select(queryVersionActiva, columnasVersionActiva);
+                if(resultadoVersionActiva == null){
+                    throw new NoConectionDataBaseException("Error al conectar con la base de datos: " + Globales.baseDatos.getUltimoError());
+                }
+                else if(resultadoVersionActiva.get(0).size() < 1){
+                    throw new NoTypeRequiredException("Error: No se encuentra la version de este sotware registrado en la base de datos");
+                }
+                else if(!resultadoVersionActiva.get(0).get(0).equals("ACTIVO")){
+                    throw new NoTypeRequiredException("Error: La versión de este software ya no es válida, por favor actualiza el software");
+                }
                 //comprobar el usuario y contraseña
                 String[] columnas = {"CONTRASENA"};
                 LinkedList<LinkedList<String>> resultado = Globales.baseDatos.select("select CONTRASENA FROM USUARIO WHERE USUARIO.USERNAME = '"+user.toLowerCase()+"'", columnas);
-                
+                if(resultado == null){
+                    throw new NoConectionDataBaseException("Error al conectar con la base de datos: " + Globales.baseDatos.getUltimoError());
+                }
                 if(resultado.get(0).size() > 0){
                     if(!(resultado.get(0).get(0)).equals(textoEncriptadoConMD5)){
                         throw new NoTypeRequiredException("La contraseña o usuario son incorectos, por favor corrígelos");

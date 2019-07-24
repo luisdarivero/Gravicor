@@ -15,6 +15,9 @@ import javax.swing.table.DefaultTableModel;
  * @author Daniel
  */
 public class Globales {
+    
+    //GUARDA LA INFORMACION DE LA VERSION DE ESTE SOFTWARE
+    public static String softwareVersion = "JavaSwing1";
     //guarda la informacion de la base de datos que hace todas las peticiones
     public static BD baseDatos = null;
     //guarda el usuario que está dentro del sistema
