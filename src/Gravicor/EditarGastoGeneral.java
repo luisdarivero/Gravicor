@@ -33,7 +33,7 @@ public class EditarGastoGeneral extends javax.swing.JFrame {
         this.setTitle("Añadir Gasto General");
         generarLimitesEnFechas();
         anadirFechaCB.setSelected(true);
-        mostrarInfoGasto();
+        //mostrarInfoGasto();
     }
     
     public void setAnoYMesYgasto(Integer ano, Integer mes, Integer idGasto){
@@ -52,10 +52,11 @@ public class EditarGastoGeneral extends javax.swing.JFrame {
                             "WHERE G.GASTOGENERALID = "+this.idGastoAEditar+" AND G.ESACTIVO = 1";
             String[] columnas = {"GASTOGENERALID", "IDFOLIOPAGO", "FECHAFOLIOPAGO", "FOLIOFACTURA", "FECHAFACTURA", "TOTAL", "DESCRIPCION", "EQUIPO", "PROVEEDOR"};
             LinkedList<LinkedList<String>> datosGasto = Globales.baseDatos.select(query, columnas);
+            
             if(datosGasto == null){
                 throw new NoConectionDataBaseException("Error al conectar a la base de datos: " + Globales.baseDatos.getUltimoError());
             }
-            if(datosGasto.size() < 1){
+            if(datosGasto.get(0).size() < 1){
                 throw new NoTypeRequiredException("No se pudo conectar con la base de datos, error inesperado");
             }
             //System.out.println(datosGasto);

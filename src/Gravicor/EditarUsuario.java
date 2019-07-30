@@ -451,7 +451,7 @@ public class EditarUsuario extends javax.swing.JFrame {
                 l[7] = "1";
             }
             else{
-                l[7] = "2";
+                l[7] = "0";
             }
             String query = "";
             if(editarContrasenaCB.isSelected()){

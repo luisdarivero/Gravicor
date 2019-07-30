@@ -44,7 +44,7 @@ public class RegistroVentas extends javax.swing.JFrame {
             }
             
             fechaTB.setText(datosGenerales.get(0).get(0));
-            numeroVentaL.setText(numeroVentaL.getText() + (Integer.parseInt(datosGenerales.get(1).get(0)) + 1));
+            //numeroVentaL.setText(numeroVentaL.getText() + (Integer.parseInt(datosGenerales.get(1).get(0)) + 1));
             
             //llenar combo boxes----
             query = "SELECT C.NOMBRECLIENTE FROM CLIENTE AS C";
@@ -146,7 +146,7 @@ public class RegistroVentas extends javax.swing.JFrame {
         nombreChoferTF = new javax.swing.JTextField();
         matri = new javax.swing.JTextField();
         plantaCB = new javax.swing.JComboBox<>();
-        jButton2 = new javax.swing.JButton();
+        continuarB = new javax.swing.JButton();
         numeroVentaL = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -213,18 +213,18 @@ public class RegistroVentas extends javax.swing.JFrame {
 
         plantaCB.setFont(new java.awt.Font("Calibri", 0, 20)); // NOI18N
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/continuar.png"))); // NOI18N
-        jButton2.setContentAreaFilled(false);
-        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton2.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/continuar2.png"))); // NOI18N
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        continuarB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/continuar.png"))); // NOI18N
+        continuarB.setContentAreaFilled(false);
+        continuarB.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        continuarB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/Gravicor/AssetsNuevos/continuar2.png"))); // NOI18N
+        continuarB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                continuarBActionPerformed(evt);
             }
         });
 
         numeroVentaL.setFont(new java.awt.Font("Calibri", 1, 36)); // NOI18N
-        numeroVentaL.setText("Folio de Venta: #");
+        numeroVentaL.setText("Registrar Venta");
 
         jLabel2.setFont(new java.awt.Font("Calibri", 0, 22)); // NOI18N
         jLabel2.setText("Cliente:");
@@ -306,7 +306,7 @@ public class RegistroVentas extends javax.swing.JFrame {
                                     .addComponent(jLabel3)
                                     .addComponent(jLabel11)
                                     .addComponent(jLabel4)))
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 397, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(continuarB, javax.swing.GroupLayout.PREFERRED_SIZE, 397, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(48, 48, 48)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(pagoCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -318,12 +318,12 @@ public class RegistroVentas extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel6))
+                                .addComponent(jLabel6)
+                                .addGap(40, 40, 40))
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(199, 199, 199)
-                                .addComponent(numeroVentaL, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addGap(40, 40, 40)
+                                .addGap(229, 229, 229)
+                                .addComponent(numeroVentaL, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addComponent(fechaTB, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(90, 90, 90))
         );
@@ -341,7 +341,7 @@ public class RegistroVentas extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(29, 29, 29)
+                                .addGap(27, 27, 27)
                                 .addComponent(numeroVentaL)))
                         .addGap(19, 19, 19)))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -374,7 +374,7 @@ public class RegistroVentas extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(folioPlantaTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(47, 47, 47)
-                .addComponent(jButton2)
+                .addComponent(continuarB)
                 .addGap(28, 28, 28))
         );
 
@@ -408,9 +408,9 @@ public class RegistroVentas extends javax.swing.JFrame {
         actualizarPrecio();
     }//GEN-LAST:event_cantidadSStateChanged
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void continuarBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_continuarBActionPerformed
         // validar todos los datos para meterlos al sistema
-
+        continuarB.setEnabled(false);
         try{
             Float precioClienteMaterial = (float)0;
             try{
@@ -524,16 +524,18 @@ public class RegistroVentas extends javax.swing.JFrame {
         }
         catch(NoTypeRequiredException e){
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error de formato", JOptionPane.ERROR_MESSAGE);
+            continuarB.setEnabled(false);
         }
         catch(NoConectionDataBaseException e){
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error de conexión con la base de datos", JOptionPane.ERROR_MESSAGE);
+            continuarB.setEnabled(false);
         }
         catch(Exception e){
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error inesperado del sistema", JOptionPane.ERROR_MESSAGE);
-            
+            continuarB.setEnabled(false);
         }
 
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_continuarBActionPerformed
 
     private void folioTransportistaTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_folioTransportistaTFActionPerformed
         // TODO add your handling code here:
@@ -596,11 +598,11 @@ public class RegistroVentas extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JSpinner cantidadS;
     private javax.swing.JComboBox<String> clienteCB;
+    private javax.swing.JButton continuarB;
     private javax.swing.JTextField fechaTB;
     private javax.swing.JTextField folioPlantaTF;
     private javax.swing.JTextField folioTransportistaTF;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

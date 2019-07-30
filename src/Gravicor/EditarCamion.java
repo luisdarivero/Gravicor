@@ -286,7 +286,7 @@ public class EditarCamion extends javax.swing.JFrame {
                 camionActivo = "1";
             }
             else{
-                camionActivo = "2";
+                camionActivo = "0";
             }
             
             String query = "select tipocamion.IDTIPOCAMION from tipocamion where tipocamion.descripcion = '"+ descripcionCB.getSelectedItem()+"'";
